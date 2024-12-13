@@ -1,0 +1,9 @@
+.hover-area {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 10px; /* Adjust to your desired hover width */
+  height: 100%;
+  background: transparent; /* Ensure it's invisible */
+  z-index: 1000; /* Make sure it's above other elements */
+}
