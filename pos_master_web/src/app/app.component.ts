@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 
 import { FloatLabelModule } from "primeng/floatlabel"
@@ -17,11 +17,12 @@ import { DrawerModule } from 'primeng/drawer';
 import { AvatarModule } from 'primeng/avatar';
 import { StyleClass } from 'primeng/styleclass';
 import { Drawer } from 'primeng/drawer';
+import { AppModule } from './app.module';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ButtonModule, FloatLabelModule, InputTextModule, FormsModule, Ripple, Toast,DrawerModule, ButtonModule, Ripple, AvatarModule, StyleClass],
+  imports: [AppModule, ButtonModule, FloatLabelModule, InputTextModule, FormsModule, Ripple, Toast, DrawerModule, ButtonModule, Ripple, AvatarModule, StyleClass,RouterModule],
   providers: [MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -29,11 +30,11 @@ import { Drawer } from 'primeng/drawer';
 export class AppComponent {
   @ViewChild('drawerRef') drawerRef!: Drawer;
 
-    closeCallback(e: Event): void {
-        this.drawerRef.close(e);
-    }
+  closeCallback(e: Event): void {
+    this.drawerRef.close(e);
+  }
 
-    visible: boolean = false;
+  visible: boolean = false;
 
   constructor(public themeService: ThemeService, private messageService: MessageService) { }
   show() {

@@ -7,3 +7,12 @@
   background: transparent; /* Ensure it's invisible */
   z-index: 1000; /* Make sure it's above other elements */
 }
+
+
+::ng-deep .p-drawer {
+  width: 20%;
+  border-top-right-radius: 10%; /* Set the desired border radius */
+  border-bottom-right-radius: 10%;
+}
+
+
