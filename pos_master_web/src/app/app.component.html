@@ -1,35 +1,37 @@
-<div class="box">
-    <!-- In your component template -->
-    <p-button label="Toggle Dark Mode" (onClick)="themeService.toggleDarkMode()"></p-button>
 
-    <p-toast />
-    <!-- <p-button (onClick)="show()" label="Show" /> -->
-    <!-- <div class="hover-area" (mouseenter)="visible = true">
-    </div> -->
-    <router-outlet></router-outlet>
-    <!-- <div class="card flex justify-center">
-        <p-drawer [(visible)]="visible">
-            <ng-template #header>
-                <div class="flex items-center gap-2">
-                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                        shape="circle" />
-                    <span class="font-bold">Amy Elsner</span>
-                </div>
-            </ng-template>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                aliquip ex ea commodo consequat.
-            </p>
-            <ng-template #footer>
-                <div class="flex items-center gap-2">
-                    <button pButton label="Account" icon="pi pi-user" class="w-full" outlined></button>
-                    <button pButton label="Logout" icon="pi pi-sign-out" class="w-full" severity="danger" text></button>
-                </div>
-            </ng-template>
-        </p-drawer>
-        <button pButton (mouseenter)="visible =true" icon="pi pi-plus"></button>
-    </div> -->
-
-</div>
-
+<div class="relative pt-2 m-2 card" >
+    <!-- <p-menubar [model]="items"
+      [style]="{ 'border-radius': '1rem', display: 'flex', 'border-color': 'var(--p-primary-color)' }"
+      styleClass="p-4 bg-surface-0 dark:bg-surface-900 b border-[var(--p-primary-color)]" /> -->
+  </div>
+  
+  <!-- Toggle Button -->
+  <div [ngClass]="{ 'loading-container': loadingSpinnerService.loading$ | async, 'hide': false  }">
+    <div class="m-2">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  
+  <div class="fixed z-[9999] bottom-16 left-32">
+    <p-speeddial [model]="buttonItems" [radius]="120" type="semi-circle"
+      [style]="{ position: 'absolute', left: '0', top: '0' }">
+      <ng-template let-item pTemplate="item">
+        <button type="button" [title]="item.title" [ngStyle]="{ 'background-color': item.color }" (click)="item.action()"
+          class="w-8 h-8 rounded-full cursor-pointer"></button>
+      </ng-template>
+    </p-speeddial>
+  </div>
+  
+  <div class="fixed z-50 flex items-center space-x-4 bg-transparent theme-toggle bottom-1 right-2">
+    <p-toggleButton [(ngModel)]="isDarkTheme" (onChange)="toggleTheme()" onIcon="pi pi-moon"
+      offIcon="pi pi-sun"></p-toggleButton>
+  </div>
+  
+  
+  <div class="fixed inset-0 z-50 flex items-center justify-center" *ngIf="loadingSpinnerService.loading$ | async">
+    <div class="loader"></div>
+  </div>
+  
+  
+  
+  

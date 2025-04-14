@@ -1,18 +1,86 @@
-.hover-area {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 10px; /* Adjust to your desired hover width */
-  height: 100%;
-  background: transparent; /* Ensure it's invisible */
-  z-index: 1000; /* Make sure it's above other elements */
+// .content{
+//     max-width: fit-content;
+
+// }
+
+.loading-container {
+  display: none; /* Default to flex when not loading */
+}
+
+.loading-container.hide {
+  display: flex; /* Hide when loading is true */
+}
+
+/* Apply styles for the menubar */
+/* Apply styles to the menubar */
+.custom-menubar .p-menubar .p-menu {
+  z-index: 1000; /* Ensure dropdowns appear on top */
+}
+
+/* Ensure that the submenu opens upwards */
+.custom-menubar .p-menubar .p-submenu {
+  top: auto;          /* Disable the default downward direction */
+  bottom: 100%;       /* Open the submenu above the parent */
+  z-index: 1010;      /* Ensure submenu appears on top */
+}
+
+/* Ensure submenu items are correctly positioned */
+.custom-menubar .p-menubar .p-menuitem-link {
+  position: relative;
+  z-index: 1010;
 }
 
 
-::ng-deep .p-drawer {
-  width: 20%;
-  border-top-right-radius: 10%; /* Set the desired border radius */
-  border-bottom-right-radius: 10%;
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 50px;
+  aspect-ratio: 1.154;
+  position: relative;
+  background: conic-gradient(from 120deg at 50% 64%,#0000, var(--p-primary-color) 1deg 120deg,#0000 121deg);
+  animation: l27-0 1.5s infinite cubic-bezier(0.3,1,0,1);
+}
+.loader:before,
+.loader:after {
+  content:'';
+  position: absolute;
+  inset:0;
+  background:inherit;
+  transform-origin: 50% 66%;
+  animation: l27-1 1.5s infinite;
+}
+.loader:after {
+  --s:-1;
+}
+@keyframes l27-0 {
+   0%,30%      {transform: rotate(0)}
+   70%         {transform: rotate(120deg)}
+   70.01%,100% {transform: rotate(360deg)}
+}
+@keyframes l27-1 {
+   0%      {transform: rotate(calc(var(--s,1)*120deg)) translate(0)}
+   30%,70% {transform: rotate(calc(var(--s,1)*120deg)) translate(calc(var(--s,1)*-5px),10px)}
+   100%    {transform: rotate(calc(var(--s,1)*120deg)) translate(0)}
 }
 
 
+.color-scroll-container {
+  display: flex;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  gap: 0.5rem; /* Adds spacing between buttons */
+  padding: 0.5rem; /* Optional padding */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #ccc transparent; /* Optional: scrollbar customization */
+}
+
+.color-scroll-container::-webkit-scrollbar {
+  height: 8px; /* Height of horizontal scrollbar */
+}
+
+.color-scroll-container::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Scrollbar color */
+  border-radius: 4px; /* Optional: scrollbar roundness */
+}
+
+.color-scroll-container::-webkit-scrollbar-track {
+  background: transparent; /* Background of scrollbar track */
+}

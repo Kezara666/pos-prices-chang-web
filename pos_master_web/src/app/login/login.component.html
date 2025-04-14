@@ -1,0 +1,29 @@
+
+<div class="flex justify-center p-10 card">
+  <p-dialog  [(visible)]="visible" styleClass="!border-0 !bg-black">
+    <ng-template #headless>
+      <div class="flex flex-col gap-6 px-8 py-8 rounded-2xl"
+        style="border-radius: 12px; background-image: radial-gradient(circle at left top, var(--p-primary-400), var(--p-primary-700))">
+
+        <div class="flex items-center justify-center">
+          <i class="text-6xl pi pi-lock" style="font-size: 2rem;"></i> <!-- Default Icon -->
+        </div>
+
+        <div class="inline-flex flex-col gap-2">
+          <label for="username" class="font-semibold text-primary-50">Username</label>
+          <input pInputText id="username" class="!bg-white/20 !border-0 !p-4 !text-primary-50 w-80" [(ngModel)]="userName"/>
+        </div>
+        <div class="inline-flex flex-col gap-2">
+          <label for="password" class="font-semibold text-primary-50">Password</label>
+          <input pInputText id="password" class="!bg-white/20 !border-0 !p-4 !text-primary-50 w-80" type="password" [(ngModel)]="password"/>
+        </div>
+        <div class="flex items-center gap-4">
+          <p-button label="Sign-In" (click)="SignIn()" [text]="true"
+            styleClass="!p-4 w-full !text-white !border !border-white hover:!bg-white hover:!text-black"
+            class="w-full" />
+
+        </div>
+      </div>
+    </ng-template>
+  </p-dialog>
+</div>
