@@ -15,9 +15,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { Dialog } from 'primeng/dialog';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { FloatLabel } from 'primeng/floatlabel';
+import {AutoCompleteModule } from 'primeng/autocomplete';
+import { QtyTypesComponent } from './inventory/qty-types/qty-types.component';
+import { QtyComponent } from './inventory/qty/qty.component';
 @NgModule({
   declarations: [
-    AddItemComponent
+    AddItemComponent,
+    QtyTypesComponent,
+    QtyComponent
   ],
   imports: [
     FormsModule,
@@ -34,6 +40,10 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     AvatarGroupModule,
     InputNumberModule,
     DatePickerModule,
+    FloatLabel,
+    AutoCompleteModule,
+    IftaLabelModule,
+    AutoCompleteModule
   ],
   providers: [MessageService,ConfirmationService,],
 })

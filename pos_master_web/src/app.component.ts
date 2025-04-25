@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
-import { AppModule } from './app.module';
+
 import { MessageService } from 'primeng/api';
 //import { SidebarComponent } from './sidebar/sidebar.component';
 import { MenubarModule } from 'primeng/menubar';
@@ -15,10 +15,11 @@ import Aura from '@primeng/themes/aura';
 import Lara from '@primeng/themes/lara';
 import { updatePreset } from '@primeng/themes';
 import { ColorPickerModule } from 'primeng/colorpicker';
-import tinycolor from 'tinycolor2';
 import { ToastModule } from 'primeng/toast';
 import { SpeedDialModule } from 'primeng/speeddial';
-import { LoginService } from './login/login/login.service';
+
+import { AppModule } from './app/app.module';
+import { LoginService } from './app/login.service';
 @Component({
   selector: 'app-root',
   standalone: true,

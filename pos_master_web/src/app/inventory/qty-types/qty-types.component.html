@@ -1,0 +1,23 @@
+<div class="card flex flex-wrap items-end gap-4">
+    <p-floatlabel>
+        <input pInputText id="name" [(ngModel)]="name" autocomplete="off" />
+        <label for="Qntity Type">Qntity Type</label>
+    </p-floatlabel>
+
+    <p-floatlabel>
+        <input pInputText id="primaryToThisWeight" [(ngModel)]="primaryToThisWeight" autocomplete="off" />
+        <label for="primaryToThisWeight">Primary To This Weight</label>
+    </p-floatlabel>
+
+    <p-dropdown
+            [filter]="true"
+            [appendTo]="'body'"
+            id="id"
+            [options]="items"
+            optionLabel="name"
+            optionValue="id"
+            name="employeeId"           
+            placeholder="Select the parent weight"
+          ></p-dropdown>
+    
+</div>
