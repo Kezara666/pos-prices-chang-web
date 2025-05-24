@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { CreateQtyTypeDto } from '../../../models/create-qty-type.dto';
 import { CreateProductDto } from '../../../models/create-product.dto';
+import { CreateQtyTypeDto } from '../../../models/qty-type/qty-type';
 
 @Component({
   selector: 'app-qty',

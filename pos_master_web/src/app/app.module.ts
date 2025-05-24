@@ -19,13 +19,21 @@ import { FloatLabel } from 'primeng/floatlabel';
 import {AutoCompleteModule } from 'primeng/autocomplete';
 import { QtyTypesComponent } from './inventory/qty-types/qty-types.component';
 import { QtyComponent } from './inventory/qty/qty.component';
+import { Select } from 'primeng/select';
+import { SupplierComponent } from './inventory/supplier/supplier.component';
+import { ProductPriceComponent } from './inventory/product-price/product-price.component';
+import { ProductComponent } from './inventory/product/product.component';
 @NgModule({
   declarations: [
     AddItemComponent,
     QtyTypesComponent,
-    QtyComponent
+    QtyComponent,
+    SupplierComponent,
+    ProductPriceComponent,
+    ProductComponent
   ],
   imports: [
+    Select,
     FormsModule,
     ReactiveFormsModule,
     TableModule,
@@ -43,7 +51,8 @@ import { QtyComponent } from './inventory/qty/qty.component';
     FloatLabel,
     AutoCompleteModule,
     IftaLabelModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+
   ],
   providers: [MessageService,ConfirmationService,],
 })

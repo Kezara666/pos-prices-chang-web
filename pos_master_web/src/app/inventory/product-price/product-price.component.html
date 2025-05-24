@@ -1,0 +1,111 @@
+<!-- Toast for notifications -->
+<p-toast></p-toast>
+
+<!-- Heading and Add Button -->
+<div class="flex items-center justify-center mt-4">
+  <div class="relative flex items-center justify-center gap-5 py-4 mt-2 bg-primary border border-[var(--p-primary-color)] min-w-96 rounded-xl backdrop-filter backdrop-blur-sm bg-opacity-10">
+    <div class="text-lg text-center text-white uppercase md:text-xl bg-clip-text">
+      Product Price Management
+    </div>
+    <div>
+      <p-button type="button" icon="pi pi-plus" (click)="showAddModal()"></p-button>
+    </div>
+  </div>
+</div>
+
+<!-- Product Prices Table -->
+<div class="mt-10 border-2 border-[var(--p-primary-color)] rounded-xl">
+  <div class="p-1">
+    <p-table [value]="productPrices" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10,20]"
+      [scrollable]="true" [scrollDirection]="'both'" [scrollHeight]="'50rem'"
+      [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template pTemplate="header">
+        <div class="flex items-center space-x-4">
+          <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" class="w-96"
+            placeholder="Search product price..." />
+          <p-button type="button" icon="pi pi-file" (click)="exportExcel()" pTooltip="CSV"
+            tooltipPosition="bottom" label="Download"></p-button>
+        </div>
+        <tr>
+          <th>ID</th>
+          <th>Product</th>
+          <th>Wholesale Price</th>
+          <th>Brought Price</th>
+          <th>Primary Sale Price</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-pp>
+        <tr>
+          <td>{{ pp.id }}</td>
+          <td>{{ pp.product?.name }}</td>
+          <td>{{ pp.wholeSalePrice }}</td>
+          <td>{{ pp.broughtPrice }}</td>
+          <td>{{ pp.primarySalePrice }}</td>
+          <td>
+            <div class="flex gap-1">
+              <p-button type="button" icon="pi pi-pencil" label="Edit" (click)="editProductPrice(pp)"></p-button>
+              <p-button type="button" icon="pi pi-trash" label="Delete" (click)="confirmDeleteProductPrice(pp)"></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!-- Add/Edit Product Price Dialog -->
+    <p-dialog header="{{ isEditMode ? 'Edit Product Price' : 'Add Product Price' }}" [(visible)]="displayModal"
+      [style]="{ width: '30rem' }"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+      <form #productPriceForm="ngForm">
+        <div class="space-y-4">
+          <!-- Product Select -->
+          <div>
+            <label for="product" class="mb-1 block">Product</label>
+            <p-dropdown [options]="products" optionLabel="name" optionValue="id" placeholder="Select Product"
+              [(ngModel)]="currentProductPrice.productId" name="product" class="w-full md:w-56" required>
+            </p-dropdown>
+          </div>
+          <!-- Wholesale Price -->
+          <div>
+            <p-floatlabel>
+              <input pInputText id="wholeSalePrice" name="wholeSalePrice" type="number" [(ngModel)]="currentProductPrice.wholeSalePrice" autocomplete="off" required />
+              <label for="wholeSalePrice">Wholesale Price</label>
+            </p-floatlabel>
+          </div>
+          <!-- Brought Price -->
+          <div>
+            <p-floatlabel>
+              <input pInputText id="broughtPrice" name="broughtPrice" type="number" [(ngModel)]="currentProductPrice.broughtPrice" autocomplete="off" required />
+              <label for="broughtPrice">Brought Price</label>
+            </p-floatlabel>
+          </div>
+          <!-- Primary Sale Price -->
+          <div>
+            <p-floatlabel>
+              <input pInputText id="primarySalePrice" name="primarySalePrice" type="number" [(ngModel)]="currentProductPrice.primarySalePrice" autocomplete="off" required />
+              <label for="primarySalePrice">Primary Sale Price</label>
+            </p-floatlabel>
+          </div>
+        </div>
+      </form>
+      <!-- Footer -->
+      <footer class="flex justify-between mt-6">
+        <p-button type="button" icon="pi pi-times" (click)="closeModal()" label="Cancel"></p-button>
+        <p-button type="button" icon="pi pi-save" (click)="saveProductPrice()" label="Save"></p-button>
+      </footer>
+    </p-dialog>
+  </div>
+</div>
+
+<!-- Delete Confirmation Toast -->
+<p-toast key="confirm" position="bottom-center" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="message">
+    <div class="flex flex-col items-start flex-auto">
+      <div class="flex items-center gap-2">
+        <span class="font-bold">Dear User</span>
+      </div>
+      <div class="my-4 text-lg font-medium">{{ message.summary }}</div>
+      <p-button severity="danger" size="small" label="Yes" (click)="onConfirmDelete()"></p-button>
+    </div>
+  </ng-template>
+</p-toast>

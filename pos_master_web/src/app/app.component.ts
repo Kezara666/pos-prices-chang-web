@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { AppModule } from './app.module';
@@ -21,6 +21,7 @@ import { ThemeService } from './services/theme.service';
 import { LoadingSpinnerService } from '../loading-spinner.service';
 import { LoginService } from './login/login.service';
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, ToastModule, SpeedDialModule, AppModule, MenubarModule, CommonModule, MatProgressSpinnerModule, ToggleButtonModule, FormsModule, ColorPickerModule],

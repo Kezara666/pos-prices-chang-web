@@ -1,37 +1,32 @@
 
-<div class="relative pt-2 m-2 card" >
-    <!-- <p-menubar [model]="items"
-      [style]="{ 'border-radius': '1rem', display: 'flex', 'border-color': 'var(--p-primary-color)' }"
-      styleClass="p-4 bg-surface-0 dark:bg-surface-900 b border-[var(--p-primary-color)]" /> -->
+
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
+<!-- Toggle Button -->
+<div [ngClass]="{ 'loading-container': loadingSpinnerService.loading$ | async, 'hide': false  }">
+  <div class="m-2">
+    <router-outlet></router-outlet>
   </div>
-  
-  <!-- Toggle Button -->
-  <div [ngClass]="{ 'loading-container': loadingSpinnerService.loading$ | async, 'hide': false  }">
-    <div class="m-2">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-  
-  <div class="fixed z-[9999] bottom-16 left-32">
-    <p-speeddial [model]="buttonItems" [radius]="120" type="semi-circle"
-      [style]="{ position: 'absolute', left: '0', top: '0' }">
-      <ng-template let-item pTemplate="item">
-        <button type="button" [title]="item.title" [ngStyle]="{ 'background-color': item.color }" (click)="item.action()"
-          class="w-8 h-8 rounded-full cursor-pointer"></button>
-      </ng-template>
-    </p-speeddial>
-  </div>
-  
-  <div class="fixed z-50 flex items-center space-x-4 bg-transparent theme-toggle bottom-1 right-2">
-    <p-toggleButton [(ngModel)]="isDarkTheme" (onChange)="toggleTheme()" onIcon="pi pi-moon"
-      offIcon="pi pi-sun"></p-toggleButton>
-  </div>
-  
-  
-  <div class="fixed inset-0 z-50 flex items-center justify-center" *ngIf="loadingSpinnerService.loading$ | async">
-    <div class="loader"></div>
-  </div>
-  
-  
-  
-  
+</div>
+
+<div class="fixed z-[9999] bottom-16 left-32">
+  <p-speeddial [model]="buttonItems" [radius]="120" type="semi-circle"
+    [style]="{ position: 'absolute', left: '0', top: '0' }">
+    <ng-template let-item pTemplate="item">
+      <button type="button" [title]="item.title" [ngStyle]="{ 'background-color': item.color }" (click)="item.action()"
+        class="w-8 h-8 rounded-full cursor-pointer"></button>
+    </ng-template>
+  </p-speeddial>
+</div>
+
+<div class="fixed z-50 flex items-center space-x-4 bg-transparent theme-toggle bottom-1 right-2">
+  <p-toggleButton [(ngModel)]="isDarkTheme" (onChange)="toggleTheme()" onIcon="pi pi-moon"
+    offIcon="pi pi-sun"></p-toggleButton>
+</div>
+
+
+<div class="fixed inset-0 z-50 flex items-center justify-center" *ngIf="loadingSpinnerService.loading$ | async">
+  <div class="loader"></div>
+</div>
+
+
+
