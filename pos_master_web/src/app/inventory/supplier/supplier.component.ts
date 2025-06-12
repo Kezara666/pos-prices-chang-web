@@ -87,7 +87,7 @@ export class SupplierComponent implements OnInit {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Supplier deleted successfully' });
       },
       error: (err: any) => {
-        console.error('Error deleting Supplier:', err);
+        //console.error('Error deleting Supplier:', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: (err.error || '') + ' Failed to delete Supplier' });
       }
     });
@@ -124,7 +124,7 @@ export class SupplierComponent implements OnInit {
           this.closeModal();
         },
         error: (err) => {
-          console.error('Error updating supplier:', err);
+          //console.error('Error updating supplier:', err);
           this.messageService.add({ severity: 'error', summary: 'Error', detail: (err.error || '') + ' Error updating supplier' });
         }
       });
@@ -139,7 +139,7 @@ export class SupplierComponent implements OnInit {
           this.loadSuppliers();
         },
         error: (err) => {
-          console.error('Error adding supplier:', err);
+          //console.error('Error adding supplier:', err);
           this.messageService.add({ severity: 'error', summary: 'Error', detail: (err.error || '') + ' Error adding supplier' });
         }
       });

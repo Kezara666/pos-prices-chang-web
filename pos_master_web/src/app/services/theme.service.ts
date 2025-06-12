@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ThemeService {
   toggleDarkMode() {
     const element = document.querySelector('html');
-    element?.classList.toggle('my-app-dark');
+    element?.classList.toggle('app-dark');
     // Save preference to localStorage
     //localStorage.setItem('darkMode', element?.classList.contains('app-dark') ? 'true' : 'false');
   }

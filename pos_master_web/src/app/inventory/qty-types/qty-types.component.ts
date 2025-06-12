@@ -102,7 +102,7 @@ export class QtyTypesComponent implements OnInit {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Quantity Type deleted successfully' });
       },
       error: (err: any) => {
-        console.error('Error deleting Quantity Type:', err);
+        //console.error('Error deleting Quantity Type:', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: (err.error || '') + ' Failed to delete Quantity Type' });
       }
     });
@@ -139,7 +139,7 @@ export class QtyTypesComponent implements OnInit {
           this.closeModal();
         },
         error: (err) => {
-          console.error('Error updating quantity type:', err);
+          //console.error('Error updating quantity type:', err);
           this.messageService.add({ severity: 'error', summary: 'Error', detail: (err.error || '') + ' Error updating quantity type' });
         }
       });
@@ -158,7 +158,7 @@ export class QtyTypesComponent implements OnInit {
           this.loadQtyTypes();
         },
         error: (err) => {
-          console.error('Error adding quantity type:', err);
+          //console.error('Error adding quantity type:', err);
           this.messageService.add({ severity: 'error', summary: 'Error', detail: (err.error || '') + ' Error adding quantity type' });
         }
       });

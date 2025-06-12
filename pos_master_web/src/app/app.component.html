@@ -1,6 +1,5 @@
-
-
 <p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
+
 <!-- Toggle Button -->
 <div [ngClass]="{ 'loading-container': loadingSpinnerService.loading$ | async, 'hide': false  }">
   <div class="m-2">
@@ -18,7 +17,7 @@
   </p-speeddial>
 </div>
 
-<div class="fixed z-50 flex items-center space-x-4 bg-transparent theme-toggle bottom-1 right-2">
+<div class="fixed z-[9999] flex items-center space-x-4 bg-transparent theme-toggle bottom-1 right-2">
   <p-toggleButton [(ngModel)]="isDarkTheme" (onChange)="toggleTheme()" onIcon="pi pi-moon"
     offIcon="pi pi-sun"></p-toggleButton>
 </div>
@@ -27,6 +26,3 @@
 <div class="fixed inset-0 z-50 flex items-center justify-center" *ngIf="loadingSpinnerService.loading$ | async">
   <div class="loader"></div>
 </div>
-
-
-
