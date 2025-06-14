@@ -1,0 +1,59 @@
+<p-toast></p-toast>
+
+
+
+<p-floatlabel variant="in">
+  <input #barCodeInput (input)="filterProductsByBarCodeOrQR(barCodeInput.value)"
+    class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+    pInputText id="barCode" name="barCode" />
+  <label for="barCode" class="font-medium text-gray-700">Bar Code</label>
+</p-floatlabel>
+
+
+
+<!-- Product Dropdown -->
+<div class="md:col-span-3">
+  <label class="block mb-2 text-sm font-medium text-gray-700">Search Product by Name</label>
+  <p-dropdown [options]="filteredProducts" [(ngModel)]="selectedProduct" [filter]="true" [showClear]="true"
+    optionLabel="name" (onFilter)="filterProducts($event)" placeholder="Select a product" class="w-full"
+    (ngModelChange)="addItemToOrder($event)">
+  </p-dropdown>
+</div>
+
+<div class="mt-10">
+
+  <div class="card">
+    <p-table [value]="orderItems" [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template #header>
+        <tr>
+          <th>Product ID</th>
+          <th>Product Price</th>
+          <th>Qty Type</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-order>
+        <tr>
+          <td>{{ order.product.name }}</td>
+          <td>{{ order.product.currentPrice }}</td>
+          <td>{{ order.product.qtyType.name }}</td>
+          <td>{{ order.qty }}</td>
+          <td>{{ order.qntPrice }}</td>
+          <td><button pButton type="button" icon="pi pi-times" (click)="saveDraft()"
+              class="p-button-danger"></button></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex flex-wrap items-center justify-start gap-3 mt-6">
+    <button pButton type="button" label="Save Order" icon="pi pi-check" (click)="saveOrder()"
+      class="p-button-success"></button>
+    <button pButton type="button" label="Save as Draft" icon="pi pi-save" (click)="saveDraft()"
+      class="p-button-info"></button>
+  </div>
+</div>

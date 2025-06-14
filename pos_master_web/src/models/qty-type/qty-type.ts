@@ -3,6 +3,7 @@ export interface QtyType {
   name: string;
   primaryWeightTo: number;
   mainQtyId: number;
+  mainQty?: QtyType;
 }
 
 export class CreateQtyTypeDto implements QtyType {

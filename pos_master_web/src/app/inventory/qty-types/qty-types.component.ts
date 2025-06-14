@@ -42,7 +42,7 @@ export class QtyTypesComponent implements OnInit {
     private qtyTypesService: QtyTypesService,
     private messageService: MessageService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadQtyTypes();
@@ -51,12 +51,14 @@ export class QtyTypesComponent implements OnInit {
 
   loadQtyTypes() {
     this.qtyTypesService.getQtyTypes().subscribe((response: QtyType[]) => {
-      this.qtyTypes = response.map((item: QtyType) => ({
-        id: item.id,
-        name: item.name,
-        primaryWeightTo: item.primaryWeightTo,
-        mainQtyId: item.mainQtyId,
-      }));
+      console.log('Editing quantity type:', response),
+        this.qtyTypes = response.map((item: QtyType) => ({
+
+          id: item.id,
+          name: item.name,
+          primaryWeightTo: item.primaryWeightTo,
+          mainQtyId: item.mainQty?.id ?? 0, // Ensure mainQtyId is set
+        }));
       this.cdr.detectChanges();
     });
   }
@@ -72,9 +74,14 @@ export class QtyTypesComponent implements OnInit {
   }
 
   editQtyType(qtyType: QtyType): void {
-    this.currentQtyType = { ...qtyType };
+
+    this.currentQtyType = {
+      ...qtyType,
+      mainQtyId: qtyType.mainQtyId ?? qtyType.mainQty?.id ?? 0, // Ensure mainQtyId is set, // handles both object or number
+    };
     this.isEditMode = true;
     this.displayModal = true;
+    console.log('Editing quantity type:', this.currentQtyType);
   }
 
   confirmDeleteQtyType(qtyType: QtyType): void {
@@ -186,4 +193,10 @@ export class QtyTypesComponent implements OnInit {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     saveAs(data, `${fileName}_export_${new Date().getTime()}${EXCEL_EXTENSION}`);
   }
+
+  getMajorWeightName(qtyType: QtyType): string {
+  const found = this.qtyTypes.find(item => item.id === qtyType.mainQtyId);
+  return found ? found.name : '';
+}
+
 }

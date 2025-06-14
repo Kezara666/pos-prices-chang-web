@@ -34,7 +34,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AppLayout } from './dashboard/layout/component/app.layout';
 import { AppFooter } from './dashboard/layout/component/app.footer';
 import { LayoutService } from './dashboard/layout/service/layout.service';
-
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PurchaseOrderComponent } from './sale-management/purchase-order/purchase-order.component';
+import { QRCodeModule } from 'angularx-qrcode';
+import { NgxBarcode6Module } from 'ngx-barcode6';
+ 
 @NgModule({
   declarations: [
     QtyTypesComponent,
@@ -52,10 +56,14 @@ import { LayoutService } from './dashboard/layout/service/layout.service';
     AppMenu,
     DashboardComponent,
     AppLayout,
-    AppFooter
+    AppFooter,
+    PurchaseOrderComponent
   ],
   imports: [
     Select,
+    QRCodeModule,
+    NgxBarcode6Module,
+    ConfirmDialogModule,
     CommonModule, RouterModule, RippleModule,
     SelectButtonModule,
     FormsModule,
@@ -82,6 +90,6 @@ import { LayoutService } from './dashboard/layout/service/layout.service';
 
 
   ],
-  providers: [MessageService, ConfirmationService,LayoutService],
+  providers: [MessageService, ConfirmationService,LayoutService,],
 })
 export class AppModule { }

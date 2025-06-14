@@ -30,6 +30,16 @@ export class AppMenu {
                     { label: 'Quantity', icon: 'pi pi-fw pi-sort-amount-up', routerLink: ['/dashboard/qty'] },
                     { label: 'Quantity Types', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/qty-type'] }
                 ]
+            },
+            {
+                label: 'Salse Management',
+                items: [
+                    { label: 'Purchase Order', icon: 'pi pi-fw pi-money-bill', routerLink: ['/dashboard/purchase-order'] },
+                    { label: 'Prices', icon: 'pi pi-fw pi-tag', routerLink: ['/dashboard/prices'] },
+                    { label: 'Supplier', icon: 'pi pi-fw pi-truck', routerLink: ['/dashboard/supplier'] },
+                    { label: 'Quantity', icon: 'pi pi-fw pi-sort-amount-up', routerLink: ['/dashboard/qty'] },
+                    { label: 'Quantity Types', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/qty-type'] }
+                ]
             }
         ];
     }

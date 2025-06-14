@@ -7,6 +7,7 @@ import { ProductPriceComponent } from "./inventory/product-price/product-price.c
 import { ProductComponent } from "./inventory/product/product.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { AppLayout } from "./dashboard/layout/component/app.layout";
+import { PurchaseOrderComponent } from "./sale-management/purchase-order/purchase-order.component";
 
 
 export const routes: Routes = [
@@ -21,6 +22,7 @@ export const routes: Routes = [
       { path: 'supplier', component: SupplierComponent }, // /dashboard/supplier
       { path: 'qty', component: QtyComponent }, // /dashboard/qty
       { path: 'qty-type', component: QtyTypesComponent }, // /dashboard/qty-type
+      { path: 'purchase-order', component: PurchaseOrderComponent },
     ],
   },
   // { path: 'auth', component: LoginComponent }, // /auth for login

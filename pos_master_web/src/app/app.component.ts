@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, RouterOutlet } from '@angular/router';
 import { AppModule } from './app.module';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 //import { SidebarComponent } from './sidebar/sidebar.component';
 import { MenubarModule } from 'primeng/menubar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -37,7 +37,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ToggleButtonModule, FormsModule,
     ColorPickerModule,
     SelectButtonModule, RouterModule, StyleClassModule],
-  providers: [MessageService, LoginService],
+  providers: [MessageService, LoginService,ConfirmationService,],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

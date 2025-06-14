@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductPriceService } from './product-price.service';
-import { ProductPrice, Product } from '../../../models/product-price/product-price.model';
+import { ProductPrice, } from '../../../models/product-price/product-price.model';
 import { MessageService } from 'primeng/api';
+import { Product } from '../product/product.model';
+import { ProductService } from '../product/product.service';
 
 @Component({
   selector: 'app-product-price',
@@ -19,8 +21,9 @@ export class ProductPriceComponent implements OnInit {
 
   constructor(
     private productPriceService: ProductPriceService,
-    private messageService: MessageService
-  ) {}
+    private messageService: MessageService,
+    private productService: ProductService
+  ) { }
 
   ngOnInit(): void {
     this.loadProductPrices();
@@ -30,18 +33,15 @@ export class ProductPriceComponent implements OnInit {
   loadProductPrices() {
     this.productPriceService.getAll().subscribe({
       next: (data) => this.productPrices = data,
-      error: () => this.messageService.add({severity:'error', summary:'Failed to load product prices'})
+      error: () => this.messageService.add({ severity: 'error', summary: 'Failed to load product prices' })
     });
   }
 
   loadProducts() {
-    // TODO: Replace with actual ProductService call
-    // this.productService.getAll().subscribe(data => this.products = data);
-    // For now, mock:
-    this.products = [
-      { id: 1, name: 'Product A' },
-      { id: 2, name: 'Product B' }
-    ];
+    this.productService.getProducts().subscribe({
+      next: (data) => (this.products = data),
+      error: (e) => this.messageService.add({ severity: 'error', summary: 'fetch failed' + e.toString() })
+    });
   }
 
   showAddModal() {
@@ -52,8 +52,12 @@ export class ProductPriceComponent implements OnInit {
 
   editProductPrice(pp: ProductPrice) {
     this.isEditMode = true;
-    this.currentProductPrice = { ...pp, productId: pp.product.id };
+    this.currentProductPrice = {
+      ...pp,
+      productId: pp.product?.id
+    };
     this.displayModal = true;
+    //console.log('Editing product price:', this.currentProductPrice);
   }
 
   saveProductPrice() {
@@ -63,11 +67,11 @@ export class ProductPriceComponent implements OnInit {
         productId: this.currentProductPrice.productId
       }).subscribe({
         next: () => {
-          this.messageService.add({severity:'success', summary:'Product price updated'});
+          this.messageService.add({ severity: 'success', summary: 'Product price updated' });
           this.displayModal = false;
           this.loadProductPrices();
         },
-        error: () => this.messageService.add({severity:'error', summary:'Update failed'})
+        error: () => this.messageService.add({ severity: 'error', summary: 'Update failed' })
       });
     } else {
       this.productPriceService.create({
@@ -75,11 +79,11 @@ export class ProductPriceComponent implements OnInit {
         productId: this.currentProductPrice.productId
       }).subscribe({
         next: () => {
-          this.messageService.add({severity:'success', summary:'Product price added'});
+          this.messageService.add({ severity: 'success', summary: 'Product price added' });
           this.displayModal = false;
           this.loadProductPrices();
         },
-        error: () => this.messageService.add({severity:'error', summary:'Create failed'})
+        error: () => this.messageService.add({ severity: 'error', summary: 'Create failed' })
       });
     }
   }
@@ -100,10 +104,10 @@ export class ProductPriceComponent implements OnInit {
     if (this.deleteId !== null) {
       this.productPriceService.delete(this.deleteId).subscribe({
         next: () => {
-          this.messageService.add({severity:'success', summary:'Deleted'});
+          this.messageService.add({ severity: 'success', summary: 'Deleted' });
           this.loadProductPrices();
         },
-        error: () => this.messageService.add({severity:'error', summary:'Delete failed'})
+        error: () => this.messageService.add({ severity: 'error', summary: 'Delete failed' })
       });
       this.deleteId = null;
       this.messageService.clear('confirm');

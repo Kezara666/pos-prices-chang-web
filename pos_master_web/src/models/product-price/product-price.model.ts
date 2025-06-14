@@ -1,8 +1,4 @@
-export interface Product {
-  id: number;
-  name: string;
-  // Add other fields as needed
-}
+import { Product } from "../../app/inventory/product/product.model";
 
 export interface ProductPrice {
   id: number;
@@ -13,3 +9,5 @@ export interface ProductPrice {
   createdAt?: string;
   updatedAt?: string;
 }
+
+

@@ -27,24 +27,24 @@
                 </div>
                 <tr class="bg-[var(--p-primary-50)] text-[var(--p-primary-900)]">
                     <th class="p-3 font-semibold text-left">Product</th>
-                    <th class="p-3 font-semibold text-left">Wholesale Price</th>
-                    <th class="p-3 font-semibold text-left">Brought Price</th>
-                    <th class="p-3 font-semibold text-left">Primary Sale Price</th>
+                    <th class="p-3 font-semibold text-left">Wholesale Price (Rs.)</th>
+                    <th class="p-3 font-semibold text-left">Brought Price (Rs.)</th>
+                    <th class="p-3 font-semibold text-left">Primary Sale Price (Rs.)</th>
                     <th class="p-3 font-semibold text-left">Actions</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-pp>
-                <tr class="hover:bg-[var(--p-primary-50)] transition-colors duration-200">
+                <tr class="hover:bg-[var(--surface-ground)] transition-colors duration-200">
                     <td class="p-3">{{ pp.product?.name }}</td>
-                    <td class="p-3">{{ pp.wholeSalePrice | currency }}</td>
-                    <td class="p-3">{{ pp.broughtPrice | currency }}</td>
-                    <td class="p-3">{{ pp.primarySalePrice | currency }}</td>
+                    <td class="p-3">{{ pp.wholeSalePrice  | number:'1.2-2' }}</td>
+                    <td class="p-3">{{ pp.broughtPrice | number:'1.2-2' }}</td>
+                    <td class="p-3">{{ pp.primarySalePrice | number:'1.2-2' }}</td>
                     <td class="p-3">
                         <div class="flex gap-2">
                             <p-button type="button" icon="pi pi-pencil" label="Edit" (click)="editProductPrice(pp)"
-                                      class="p-button-sm p-button-warning hover:bg-[var(--p-primary-200)] transition-colors duration-200"></p-button>
-                            <p-button type="button" icon="pi pi-trash" label="Delete" (click)="confirmDeleteProductPrice(pp)"
-                                      class="transition-colors duration-200 p-button-sm p-button-danger hover:bg-red-100"></p-button>
+                                      class="transition-colors duration-200 "></p-button>
+                            <p-button type="button" severity="danger" icon="pi pi-trash" label="Delete" (click)="confirmDeleteProductPrice(pp)"
+                                      class="transition-colors duration-200 "></p-button>
                         </div>
                     </td>
                 </tr>
@@ -64,14 +64,6 @@
                                   [(ngModel)]="currentProductPrice.productId" name="product"
                                   class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"></p-select>
                     </div>
-                    <!-- Wholesale Price -->
-                    <div>
-                        <p-floatlabel variant="in">
-                            <input class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                                   pInputText id="wholeSalePrice" name="wholeSalePrice" type="number" [(ngModel)]="currentProductPrice.wholeSalePrice" autocomplete="off" required />
-                            <label for="wholeSalePrice" class="font-medium text-gray-700">Wholesale Price</label>
-                        </p-floatlabel>
-                    </div>
                     <!-- Brought Price -->
                     <div>
                         <p-floatlabel variant="in">
@@ -80,6 +72,15 @@
                             <label for="broughtPrice" class="font-medium text-gray-700">Brought Price</label>
                         </p-floatlabel>
                     </div>
+                    <!-- Wholesale Price -->
+                    <div>
+                        <p-floatlabel variant="in">
+                            <input class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+                                   pInputText id="wholeSalePrice" name="wholeSalePrice" type="number" [(ngModel)]="currentProductPrice.wholeSalePrice" autocomplete="off" required />
+                            <label for="wholeSalePrice" class="font-medium text-gray-700">Wholesale Price</label>
+                        </p-floatlabel>
+                    </div>
+                    
                     <!-- Primary Sale Price -->
                     <div>
                         <p-floatlabel variant="in">

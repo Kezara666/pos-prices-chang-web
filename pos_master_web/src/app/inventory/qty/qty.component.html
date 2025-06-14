@@ -1,5 +1,90 @@
-<!-- <p-dropdown [filter]="true" [appendTo]="'body'" id="id" [options]="productList" optionLabel="name" optionValue="id"
-    name="qtyType" placeholder="Select Product"></p-dropdown>
+<!-- Heading and Add Button -->
+<div class="flex items-center justify-center px-4 layout-main sm:px-6 lg:px-8">
+  <div
+    class="relative flex items-center justify-between gap-4 py-4 px-6 mt-4 bg-gradient-to-r from-[var(--p-primary-900)] to-[var(--p-primary-700)] border border-[var(--p-primary-500)] min-w-[24rem] rounded-2xl shadow-lg backdrop-filter backdrop-blur-md bg-opacity-20 transition-all duration-300 hover:shadow-xl">
+    <div
+      class="m-2 text-xl font-bold tracking-wide text-transparent text-white uppercase sm:text-2xl bg-clip-text bg-gradient-to-r from-white to-gray-200">
+      Quantity Management
+    </div>
+    <div>
+      <p-button type="button" icon="pi pi-plus" (click)="showAddModal()"
+        class="transition-transform duration-200 hover:scale-105 " label="Add Quantity"></p-button>
+    </div>
+  </div>
+</div>
 
-<p-dropdown [filter]="true" [appendTo]="'body'" id="id" [options]="qtyType" optionLabel="name" optionValue="id"
-    name="qtyType" placeholder="Select Qty Type"></p-dropdown> -->
+<!-- Quantities Table -->
+<div
+  class="mt-8 mx-4 sm:mx-6 lg:mx-8 border-2 border-[var(--p-primary-500)] rounded-2xl shadow-md bg-[var(--surface-card)] bg-opacity-90">
+  <div class="p-4 sm:p-6">
+    <p-table #dt [value]="quantities" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
+      [globalFilterFields]="['productName','qtyTypeName','qty']" [scrollable]="true"
+      [scrollDirection]="'both'" [scrollHeight]="'50rem'" [tableStyle]="{ 'min-width': '40rem' }">
+      <ng-template pTemplate="header">
+        <div
+          class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-b from-[var(--surface-ground)] to-[var(--surface-card)] py-4 px-4 rounded-t-xl">
+          <input pInputText type="text"
+            class="w-full sm:w-96 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+            placeholder="Search quantities..." />
+        </div>
+        <tr class="bg-[var(--p-primary-50)] text-[var(--p-primary-900)]">
+          <th class="p-3 font-semibold text-left">Product</th>
+          <th class="p-3 font-semibold text-left">Qty Type</th>
+          <th class="p-3 font-semibold text-left">Quantity</th>
+          <th class="p-3 font-semibold text-left">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-qty>
+        <tr class="hover:bg-[var(--surface-ground)] transition-colors duration-200">
+          <td class="p-3" >{{ qty.product.name}}</td>
+          <td class="p-3">{{ qty.qtyType.name }}</td>
+          <td class="p-3" >{{ qty.qty}}</td>
+          <td class="p-3">
+            <div class="flex gap-2">
+              <p-button type="button" icon="pi pi-pencil" label="Edit" (click)="editQuantity(qty)"
+                class="transition-colors duration-200"></p-button>
+              <p-button label="Danger" severity="danger" type="button" icon="pi pi-trash" label="Delete"
+                (click)="confirmDeleteQuantity(qty)" class="transition-colors duration-200 "></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!-- Add/Edit Quantity Dialog -->
+    <p-dialog header="{{ isEditMode ? 'Edit Quantity' : 'Add Quantity' }}" [(visible)]="displayModal"
+      [style]="{ width: '28rem' }" [breakpoints]="{ '1199px': '80vw', '575px': '95vw' }" [maximizable]="true"
+      class="bg-[var(--surface-card)] rounded-xl shadow-xl">
+      <form #qtyForm="ngForm" class="">
+        <div class="space-y-5">
+          <div>
+            <label for="productId" class="block mb-2 font-medium text-gray-700">Product</label>
+            <p-select [options]="productList" optionLabel="name" placeholder="Select Product"
+              [(ngModel)]="currentQuantity.productId" name="productId" optionValue="id"
+              class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200" required />
+          </div>
+          <div>
+            <label for="qtyTypeId" class="block mb-2 font-medium text-gray-700">Qty Type</label>
+            <p-select [options]="qtyType" optionLabel="name" placeholder="Select Qty Type"
+              [(ngModel)]="currentQuantity.qtyTypeId" name="qtyTypeId" optionValue="id"
+              class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200" required />
+          </div>
+          <div>
+            <label for="qty" class="block mb-2 font-medium text-gray-700">Quantity</label>
+            <input pInputText type="number" id="qty" name="qty" placeholder="Enter Quantity"
+              class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+              [(ngModel)]="currentQuantity.qty" required />
+          </div>
+        </div>
+      </form>
+      <!-- Footer -->
+      <footer class="flex justify-end gap-3 mt-6 p-4 bg-[var(--surface-card)] rounded-b-xl">
+        <p-button type="button" icon="pi pi-times" (click)="displayModal=false" label="Cancel"
+          class="transition-colors duration-200"></p-button>
+        <p-button type="button" icon="pi pi-save" (click)="saveQuantity()" 
+          class="transition-colors duration-200 p-button-success"></p-button>
+      </footer>
+    </p-dialog>
+  </div>
+</div>
+
