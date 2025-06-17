@@ -3,7 +3,7 @@ import { ProductService } from '../product/product.service';
 import { QtyTypesService } from '../qty-types/qty-types.service';
 import { QtyService } from './qty.service';
 import { Product } from '../product/product.model';
-import { Qty } from '../../../models/qqty/qty.dto';
+import { Qty } from '../../../models/qty/qty.dto';
 import { QtyType } from '../../../models/qty-type/qty-type';
 import { CreateQtyDto } from '../../../models/create-qty.dto';
 

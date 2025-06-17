@@ -1,0 +1,27 @@
+.receipt {
+    width: 300px;
+    margin: auto;
+    font-family: 'Courier New', monospace;
+    border: 1px dashed gray;
+    padding: 10px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 4px;
+    border-bottom: 1px dotted gray;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.totals-right {
+    text-align: right;
+    margin-right: 10px;
+}

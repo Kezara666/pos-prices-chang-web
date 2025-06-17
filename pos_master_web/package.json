@@ -24,6 +24,7 @@
     "@angular/router": "^18.2.0",
     "@angular/ssr": "^18.2.4",
     "@primeng/themes": "^18.0.2",
+    "@zxing/ngx-scanner": "^19.0.0",
     "angularx-qrcode": "^18.0.2",
     "express": "^4.18.2",
     "file-saver": "^2.0.5",

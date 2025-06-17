@@ -1,0 +1,41 @@
+<div class="receipt" #receiptContent>
+    <h3 class="text-center">{{nameOfShop}}</h3>
+    <div class="my-1 text-center">
+        <p>Date: {{ today | date: 'longDate'}}</p>
+        <p>Time: {{ now }}</p>
+    </div>
+
+
+    <hr />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Item Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of puchaseOrderService.order.itemsSelled">
+                <td>{{ item.product?.name }}</td>
+                <td>{{ item.qty }} {{ item.qtyType?.name }}</td>
+                <td>{{ item.qntPrice |number: '1.2-2' }}</td>
+                <td>{{ item.qty * item.qntPrice | number: '1.2-2' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr />
+    <div class="totals-right">
+        <p>Total: {{ puchaseOrderService.order.total |number: '1.2-2' }}</p>
+        <p>Discount: {{ puchaseOrderService.order.discount | number: '1.2-2'}}</p>
+        <p><strong>Net Total: {{ puchaseOrderService.order.netTotal | number: '1.2-2' }}</strong></p>
+    </div>
+    <div class="mt-3 text-center">
+        <p>*** GOOD DAY COME BACK ***</p>
+    </div>
+</div>
+
+<button (click)="print()" class="mt-3 btn btn-primary">🖨️ Print Receipt</button>

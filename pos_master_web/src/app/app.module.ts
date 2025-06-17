@@ -38,7 +38,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PurchaseOrderComponent } from './sale-management/purchase-order/purchase-order.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgxBarcode6Module } from 'ngx-barcode6';
- 
+import { InvoiceComponent } from './sale-management/invoice/invoice.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+
 @NgModule({
   declarations: [
     QtyTypesComponent,
@@ -57,9 +59,10 @@ import { NgxBarcode6Module } from 'ngx-barcode6';
     DashboardComponent,
     AppLayout,
     AppFooter,
-    PurchaseOrderComponent
+    PurchaseOrderComponent,
+    InvoiceComponent
   ],
-  imports: [
+  imports:[
     Select,
     QRCodeModule,
     NgxBarcode6Module,
@@ -86,6 +89,7 @@ import { NgxBarcode6Module } from 'ngx-barcode6';
     AutoCompleteModule,
     SelectButtonModule, // Add this line
     ButtonModule,
+     ZXingScannerModule
 // Add this line
 
 
