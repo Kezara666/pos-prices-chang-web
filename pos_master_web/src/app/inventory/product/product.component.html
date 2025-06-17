@@ -17,7 +17,7 @@
 
 <!-- Products Table -->
 <div
-  class="mt-8 mx-4 sm:mx-6 lg:mx-8 border-2 border-[var(--p-primary-500)] rounded-2xl shadow-md bg-[var(--surface-card)] bg-opacity-90">
+  class="mt-8 mx-4 sm:mx-1 lg:mx-8 border-2 border-[var(--p-primary-500)] rounded-2xl shadow-md bg-[var(--surface-card)] bg-opacity-90">
   <div class="p-4 sm:p-6">
     <p-table #dt [value]="products" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
       [globalFilterFields]="['name','category','subcategory','currentPrice','warranty']" [scrollable]="true"
