@@ -1,0 +1,55 @@
+/* Base styles (apply to both, or set defaults) */
+.desktop-view,
+.mobile-view {
+  /* You might have some common padding or margin here */
+}
+
+/* Hide mobile view by default */
+.mobile-view {
+  display: none;
+}
+
+/* Desktop Styles (default for larger screens) */
+.desktop-view {
+  display: block; /* Ensure it's visible by default */
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) { /* Adjust this breakpoint as needed (e.g., 640px, 992px) */
+  /* Hide the desktop table on smaller screens */
+  .desktop-view {
+    display: none;
+  }
+
+  /* Show the mobile list view on smaller screens */
+  .mobile-view {
+    display: block;
+  }
+
+  /* Styling for individual product cards in mobile view */
+  .product-card {
+    background-color: var(--surface-card); /* Using your PrimeNG variable */
+    border: 1px solid var(--surface-border); /* Subtle border */
+    border-radius: 0.75rem; /* Rounded corners */
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  }
+
+  .product-card h3 {
+    margin-bottom: 0.5rem;
+  }
+
+  .product-card p {
+    line-height: 1.4;
+  }
+
+  .product-card .flex.justify-end {
+    margin-top: 1rem; /* Space between content and buttons */
+  }
+
+  /* Adjust button size for mobile if necessary */
+  .product-card p-button {
+    /* PrimeNG buttons often handle responsiveness well, but you can override if needed */
+  }
+}

@@ -15,13 +15,13 @@
   </div>
 </div>
 
-<!-- Products Table -->
 <div
-  class="mt-8 mx-4 sm:mx-1 lg:mx-8 border-2 border-[var(--p-primary-500)] rounded-2xl shadow-md bg-[var(--surface-card)] bg-opacity-90">
+  class="mt-8 mx-4 sm:mx-1 lg:mx-8 border-2 border-[var(--p-primary-500)] rounded-2xl shadow-md bg-[var(--surface-card)] bg-opacity-90 desktop-view">
   <div class="p-4 sm:p-6">
+
     <p-table #dt [value]="products" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
       [globalFilterFields]="['name','category','subcategory','currentPrice','warranty']" [scrollable]="true"
-      [scrollDirection]="'both'" [scrollHeight]="'50rem'" [tableStyle]="{ 'min-width': '60rem' }">
+      [scrollDirection]="'both'" [scrollHeight]="'50rem'" [tableStyle]="{ 'min-width': '60rem' }" class="desktop-table">
       <ng-template pTemplate="header">
         <div
           class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-b from-[var(--surface-ground)] to-[var(--surface-card)] py-4 px-4 rounded-t-xl">
@@ -52,189 +52,241 @@
               <p-button type="button" icon="pi pi-pencil" label="Edit" (click)="editProduct(product)"
                 class="transition-colors duration-200"></p-button>
               <p-button label="Danger" severity="danger" type="button" icon="pi pi-trash" label="Delete"
-                (click)="confirmDeleteProduct(product)" class="transition-colors duration-200 "></p-button>
+                (click)="confirmDeleteProduct(product)" class="transition-colors duration-200"></p-button>
             </div>
           </td>
         </tr>
       </ng-template>
     </p-table>
+  </div>
+</div>
 
-    <!-- Add/Edit Product Dialog -->
-    <p-dialog header="{{ isEditMode ? 'Edit Product' : 'Add Product' }}" [(visible)]="displayModal"
-      [style]="{ width: '32rem' }" [breakpoints]="{ '1199px': '80vw', '575px': '95vw' }" [maximizable]="true"
-      class="bg-[var(--surface-card)] rounded-xl shadow-xl">
-      <form #productForm="ngForm" class="">
-        <div class="space-y-5">
-          <div>
-            <p-floatlabel variant="in">
-              <input
-                class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                pInputText id="name" name="name" [(ngModel)]="currentProduct.name" autocomplete="off" required />
-              <label for="name" class="font-medium text-gray-700">Name</label>
-            </p-floatlabel>
-          </div>
-          <div>
-            <p-floatlabel variant="in">
-              <input
-                class="w-full p-3 rounded-lg border border-gray-300 focus ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                pInputText id="description" name="description" [(ngModel)]="currentProduct.description" />
-              <label for="description" class="font-medium text-gray-700">Description</label>
-            </p-floatlabel>
-          </div>
-          <div class="grid">
-            <p-floatlabel variant="in">
-              <input
-                class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                pInputText id="barCode" name="barCode" [(ngModel)]="currentProduct.barCode" [ngClass]="{ 'border-red-500': isBarcodeTaken }" (input)="checkBarcodeUniqueness($event)"/>
-              <label for="barCode" class="font-medium text-gray-700">Bar Code</label>
-            </p-floatlabel>
-          </div>
-          <div>
-            <p-floatlabel variant="in">
-              <input
-                class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                pInputText id="qrCode" name="qrCode" [(ngModel)]="currentProduct.qrCode" />
-              <label for="qrCode" class="font-medium text-gray-700">QR Code</label>
-            </p-floatlabel>
-          </div>
-          <div>
-            <p-floatlabel variant="in">
-              <input
-                class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                pInputText id="category" name="category" [(ngModel)]="currentProduct.category" required />
-              <label for="category" class="font-medium text-gray-700">Category</label>
-            </p-floatlabel>
-          </div>
-          <div>
-            <p-floatlabel variant="in">
-              <input
-                class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                pInputText id="subcategory" name="subcategory" [(ngModel)]="currentProduct.subcategory" />
-              <label for="subcategory" class="font-medium text-gray-700">Subcategory</label>
-            </p-floatlabel>
-          </div>
+<div class="mx-4 mt-8 mobile-view">
+  <div class="p-4">
+    <div
+      class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-b from-[var(--surface-ground)] to-[var(--surface-card)] py-4 px-4 rounded-t-xl">
+      <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+        class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+        placeholder="Search products..." />
+    </div>
 
+    <div *ngFor="let product of products"
+         class="product-card bg-[var(--surface-card)] shadow-md rounded-lg p-4 mb-4 hover:scale-105">
+      <div class="flex flex-col mb-3 sm:flex-row sm:justify-between sm:items-center">
+        <h3 class="text-xl font-bold text-[var(--p-primary-400)] mb-1 sm:mb-0">{{ product.name }}</h3>
+        <span class="text-2xl font-extrabold text-[var(--p-primary-400)]">${{ product.currentPrice | number:'1.2-2' }}</span>
+      </div>
+
+      <div class="grid grid-cols-1 gap-2 mb-4 text-sm text-[var(--p-text-color)] sm:grid-cols-2">
+        <div class="flex items-center">
+          <i class="pi pi-tag text-[var(--p-primary-200)] mr-2"></i>
+          <span class="font-medium">Category:</span>
+          <span class="ml-1">{{ product.category || 'N/A' }}</span>
+        </div>
+        <div class="flex items-center">
+          <i class="pi pi-sitemap text-[var(--p-primary-600)] mr-2"></i>
+          <span class="font-medium">Subcategory:</span>
+          <span class="ml-1">{{ product.subcategory || 'N/A' }}</span>
+        </div>
+        <div class="flex items-center">
+            <i class="pi pi-shield text-[var(--p-primary-600)] mr-2"></i>
+            <span class="font-medium">Warranty:</span>
+            <span class="ml-1">{{ product.warranty || 'No Warranty' }}</span>
+        </div>
+        </div>
+
+      <div class="flex flex-col items-stretch justify-end gap-2 sm:flex-row sm:items-center">
+        <p-button type="button" icon="pi pi-pencil" label="Edit" (click)="editProduct(product)"
+          styleClass="p-button-sm p-button-secondary w-full sm:w-auto"
+          [style]="{'background': 'var(--p-primary-600)', 'color': 'white', 'border-color': 'var(--p-primary-800)'}"></p-button>
+        <p-button type="button" icon="pi pi-trash" label="Delete" (click)="confirmDeleteProduct(product)"
+          severity="danger" styleClass="p-button-sm w-full sm:w-auto"></p-button>
+      </div>
+    </div>
+    <div *ngIf="products.length === 0" class="py-8 text-center text-gray-500">
+        No products found.
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Product Dialog -->
+<p-dialog header="{{ isEditMode ? 'Edit Product' : 'Add Product' }}" [(visible)]="displayModal"
+  [style]="{ width: '32rem' }" [breakpoints]="{ '1199px': '80vw', '575px': '95vw' }" [maximizable]="true"
+  class="bg-[var(--surface-card)] rounded-xl shadow-xl">
+  <form #productForm="ngForm" class="">
+    <div class="space-y-5">
+      <div>
+        <p-floatlabel variant="in">
+          <input
+            class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+            pInputText id="name" name="name" [(ngModel)]="currentProduct.name" autocomplete="off" required />
+          <label for="name" class="font-medium text-[var(--p-text-color)]">Name</label>
+        </p-floatlabel>
+      </div>
+      <div>
+        <p-floatlabel variant="in">
+          <input
+            class="w-full p-3 rounded-lg border border-gray-300 focus ring-2 focus:ring-[var(--p-primary-200)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+            pInputText id="description" name="description" [(ngModel)]="currentProduct.description" />
+          <label for="description" class="font-medium text-[var(--p-text-color)]">Description</label>
+        </p-floatlabel>
+      </div>
+      <div class="grid">
+        <p-floatlabel variant="in">
+          <input
+            class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-200)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+            pInputText id="barCode" name="barCode" [(ngModel)]="currentProduct.barCode"
+            [ngClass]="{ 'border-red-500': isBarcodeTaken }" (input)="checkBarcodeUniqueness($event)" />
+          <label for="barCode" class="font-medium text-[var(--p-text-color)]">Bar Code</label>
+        </p-floatlabel>
+      </div>
+      <div>
+        <p-floatlabel variant="in">
+          <input
+            class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+            pInputText id="qrCode" name="qrCode" [(ngModel)]="currentProduct.qrCode" />
+          <label for="qrCode" class="font-medium text-[var(--p-text-color)]">QR Code</label>
+        </p-floatlabel>
+      </div>
+      <div>
+        <p-floatlabel variant="in">
+          <input
+            class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+            pInputText id="category" name="category" [(ngModel)]="currentProduct.category" required />
+          <label for="category" class="font-medium text-[var(--p-text-color)]">Category</label>
+        </p-floatlabel>
+      </div>
+      <div>
+        <p-floatlabel variant="in">
+          <input
+            class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+            pInputText id="subcategory" name="subcategory" [(ngModel)]="currentProduct.subcategory" />
+          <label for="subcategory" class="font-medium text-[var(--p-text-color)]">Subcategory</label>
+        </p-floatlabel>
+      </div>
+
+      <p-floatlabel variant="in">
+        <input
+          class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+          pInputText id="warranty" name="warranty" type="number" [(ngModel)]="currentProduct.warranty" />
+        <label for="warranty" class="font-medium text-[var(--p-text-color)]">Warranty (Days)</label>
+      </p-floatlabel>
+
+      <!-- #region Price Related -->
+      <div *ngIf="!isEditMode" class="space-y-5">
+
+        <!-- Brought Price -->
+        <div>
           <p-floatlabel variant="in">
             <input
               class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-              pInputText id="warranty" name="warranty" type="number" [(ngModel)]="currentProduct.warranty"/>
-            <label for="warranty" class="font-medium text-gray-700">Warranty (Days)</label>
+              pInputText id="broughtPrice" name="broughtPrice" type="number"
+              [(ngModel)]="currentProductPrice.broughtPrice" autocomplete="off" required />
+            <label for="broughtPrice" class="font-medium text-[var(--p-text-color)]">Brought Price</label>
           </p-floatlabel>
-
-          <!-- #region Price Related -->
-          <div *ngIf="!isEditMode" class="space-y-5">
-            
-            <!-- Brought Price -->
-            <div>
-              <p-floatlabel variant="in">
-                <input
-                  class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                  pInputText id="broughtPrice" name="broughtPrice" type="number"
-                  [(ngModel)]="currentProductPrice.broughtPrice" autocomplete="off" required />
-                <label for="broughtPrice" class="font-medium text-gray-700">Brought Price</label>
-              </p-floatlabel>
-            </div>
-            <!-- wholeSalePrice -->
-            <div>
-              <p-floatlabel variant="in">
-                <input
-                  class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                  pInputText id="wholeSalePrice" name="wholeSalePrice" type="number"
-                  [(ngModel)]="currentProductPrice.wholeSalePrice" autocomplete="off" required />
-                <label for="wholeSalePrice" class="font-medium text-gray-700">Wholesale Price</label>
-              </p-floatlabel>
-            </div>
-
-            <!-- Primary Sale Price -->
-            <div>
-              <p-floatlabel variant="in">
-                <input
-                  class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                  pInputText id="primarySalePrice" name="primarySalePrice" type="number"
-                  [(ngModel)]="currentProductPrice.primarySalePrice" autocomplete="off" required />
-                <label for="primarySalePrice" class="font-medium text-gray-700">Primary Sale Price</label>
-              </p-floatlabel>
-            </div>
-            <div>
-            </div>
-          </div>
-
-
-          <div *ngIf="isEditMode">
-            <label for="currentPrice" class="block mb-2 font-medium text-gray-700">Current Price</label>
-            <p-select [options]="productRelatedPrices" optionLabel="primarySalePrice" optionValue="id"
-              placeholder="Select Price" [(ngModel)]="currentProduct.productPriceId" name="currentProduct.primarySalePrice" 
-              (onChange)="changeCurrentPrice($event)"
-              class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200">
-              <!-- Dropdown items -->
-              <ng-template let-price pTemplate="item">
-                <div>
-                  <div>Primary Price: Rs. {{ price.primarySalePrice | number: '1.2-2' }}</div>
-                  <div class="text-sm text-gray-600">Wholesale: Rs. {{ price.wholeSalePrice | number: '1.2-2' }}</div>
-                  <div class="text-sm text-gray-600">Brought: Rs. {{ price.broughtPrice | number: '1.2-2' }}</div>
-                </div>
-              </ng-template>
-
-              <!-- Selected item -->
-              <ng-template let-price pTemplate="selectedItem">
-                Rs. {{ price.primarySalePrice | number: '1.2-2' }}
-              </ng-template>
-            </p-select>
-          </div>
-
-
-          <!-- #region Price Related -->
-          <div>
-            <label for="supplierId" class="block mb-2 font-medium text-gray-700">Supplier</label>
-            <p-select [options]="suppliers" optionLabel="name" placeholder="Select Supplier"
-              [(ngModel)]="currentProduct.supplierId" name="supplierId" optionValue="id"
-              class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200" />
-          </div>
-          <!-- #region QTy And QTYType Start-->
-          <div *ngIf="!isEditMode">
-            <div>
-              <label for="qtyTypeId" class="block mb-2 font-medium text-gray-700">Qty Type</label>
-              <p-select [options]="qtyTypes" optionLabel="name" placeholder="Select Qty Type"
-                [(ngModel)]="currentProduct.qtyTypeId" name="qtyTypeId" optionValue="id"
-                class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200" />
-            </div>
-
-            <div>
-              <label for="quantity" class="block mb-2 font-medium text-gray-700">Quantity</label>
-              <input pInputText type="number" id="quantity" name="quantity" placeholder="Enter Quantity" [(ngModel)]="currentProduct.qty" required 
-                class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                 />
-            </div>
-            <!-- #region QTy And QTYType END -->
-          </div>
         </div>
-      </form>
-      <!-- Footer -->
-      <footer class="flex justify-end gap-3 mt-6 p-4 bg-[var(--surface-card)] rounded-b-xl">
-        <p-button type="button" icon="pi pi-times" (click)="closeModal()" label="Cancel"
-          class="transition-colors duration-200"></p-button>
-        <p-button type="button" icon="pi pi-save" (click)="saveProduct()" label="{{ isEditMode ? 'Update' : 'Add' }}"
-          class="transition-colors duration-200"></p-button>
+        <!-- wholeSalePrice -->
+        <div>
+          <p-floatlabel variant="in">
+            <input
+              class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+              pInputText id="wholeSalePrice" name="wholeSalePrice" type="number"
+              [(ngModel)]="currentProductPrice.wholeSalePrice" autocomplete="off" required />
+            <label for="wholeSalePrice" class="font-medium text-[var(--p-text-color)]">Wholesale Price</label>
+          </p-floatlabel>
+        </div>
 
-        <p-button (click)="showDialogQRAndBarCode()" label="Show QR/BarCode" />
-      </footer>
-    </p-dialog>
-  </div>
+        <!-- Primary Sale Price -->
+        <div>
+          <p-floatlabel variant="in">
+            <input
+              class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+              pInputText id="primarySalePrice" name="primarySalePrice" type="number"
+              [(ngModel)]="currentProductPrice.primarySalePrice" autocomplete="off" required />
+            <label for="primarySalePrice" class="font-medium text-[var(--p-text-color)]">Primary Sale Price</label>
+          </p-floatlabel>
+        </div>
+        <div>
+        </div>
+      </div>
 
-  <!-- #region show QR Section -->
-  <div class="flex justify-center card">
+
+      <div *ngIf="isEditMode">
+        <label for="currentPrice" class="block mb-2 font-medium text-[var(--p-text-color)]">Current Price</label>
+        <p-select [options]="productRelatedPrices" optionLabel="primarySalePrice" optionValue="id"
+          placeholder="Select Price" [(ngModel)]="currentProduct.productPriceId" name="currentProduct.primarySalePrice"
+          (onChange)="changeCurrentPrice($event)"
+          class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200">
+          <!-- Dropdown items -->
+          <ng-template let-price pTemplate="item">
+            <div>
+              <div>Primary Price: Rs. {{ price.primarySalePrice | number: '1.2-2' }}</div>
+              <div class="text-sm text-gray-600">Wholesale: Rs. {{ price.wholeSalePrice | number: '1.2-2' }}</div>
+              <div class="text-sm text-gray-600">Brought: Rs. {{ price.broughtPrice | number: '1.2-2' }}</div>
+            </div>
+          </ng-template>
+
+          <!-- Selected item -->
+          <ng-template let-price pTemplate="selectedItem">
+            Rs. {{ price.primarySalePrice | number: '1.2-2' }}
+          </ng-template>
+        </p-select>
+      </div>
+
+
+      <!-- #region Price Related -->
+      <div>
+        <label for="supplierId" class="block mb-2 font-medium text-[var(--p-text-color)]">Supplier</label>
+        <p-select [options]="suppliers" optionLabel="name" placeholder="Select Supplier"
+          [(ngModel)]="currentProduct.supplierId" name="supplierId" optionValue="id"
+          class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200" />
+      </div>
+      <!-- #region QTy And QTYType Start-->
+      <div *ngIf="!isEditMode">
+        <div>
+          <label for="qtyTypeId" class="block mb-2 font-medium text-[var(--p-text-color)]">Qty Type</label>
+          <p-select [options]="qtyTypes" optionLabel="name" placeholder="Select Qty Type"
+            [(ngModel)]="currentProduct.qtyTypeId" name="qtyTypeId" optionValue="id"
+            class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200" />
+        </div>
+
+        <div>
+          <label for="quantity" class="block mb-2 font-medium text-[var(--p-text-color)]">Quantity</label>
+          <input pInputText type="number" id="quantity" name="quantity" placeholder="Enter Quantity"
+            [(ngModel)]="currentProduct.qty" required
+            class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200" />
+        </div>
+        <!-- #region QTy And QTYType END -->
+      </div>
+    </div>
+  </form>
+  <!-- Footer -->
+  <footer class="flex justify-end gap-3 mt-6 p-4 bg-[var(--surface-card)] rounded-b-xl">
+    <p-button type="button" icon="pi pi-times" (click)="closeModal()" label="Cancel"
+      class="transition-colors duration-200"></p-button>
+    <p-button type="button" icon="pi pi-save" (click)="saveProduct()" label="{{ isEditMode ? 'Update' : 'Add' }}"
+      class="transition-colors duration-200"></p-button>
+
+    <p-button (click)="showDialogQRAndBarCode()" label="Show QR/BarCode" />
+  </footer>
+</p-dialog>
+
+<!-- #region show QR Section -->
+<div class="flex justify-center">
   <p-dialog header="Qr and BarCode Details." [(visible)]="qrAndBarcodeVisible" [style]="{ width: '25rem' }">
     <div class="flex items-center gap-4 mb-4">
       <div class="flex items-center gap-2" #barcode>
         <ngx-barcode6 [bc-value]="currentProduct.barCode ?? ''" [bc-display-value]="true"></ngx-barcode6>
-        <button pButton type="button" icon="pi pi-download" class="p-button-text p-button-sm" (click)="downloadBarcode()"></button>
+        <button pButton type="button" icon="pi pi-download" class="p-button-text p-button-sm"
+          (click)="downloadBarcode()"></button>
       </div>
     </div>
 
     <div class="flex items-center gap-4 mb-8">
       <div class="flex items-center gap-2" #qrcode>
         <qrcode [qrdata]="currentProduct.qrCode ?? ''"></qrcode>
-        <button pButton type="button" icon="pi pi-download" class="p-button-text p-button-sm" (click)="downloadQRCode()"></button>
+        <button pButton type="button" icon="pi pi-download" class="p-button-text p-button-sm"
+          (click)="downloadQRCode()"></button>
       </div>
     </div>
 
@@ -245,7 +297,6 @@
 </div>
 
 
-</div>
 
 <!-- Delete Confirmation Toast -->
 <div class="flex justify-center m-5 bg-green-100 shadow-md rounded-xl">

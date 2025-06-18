@@ -43,6 +43,7 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { OldPurchaseOrdersComponent } from './sale-management/old-purchase-orders/old-purchase-orders.component';
 import { StatManagementComponent } from './stat-management/stat-management/stat-management.component';
 import { ChartModule } from 'primeng/chart';
+import { CardModule } from 'primeng/card';
 @NgModule({
   declarations: [
     QtyTypesComponent,
@@ -67,6 +68,7 @@ import { ChartModule } from 'primeng/chart';
     StatManagementComponent
   ],
   imports:[
+    CardModule,
     ChartModule,
     Select,
     QRCodeModule,
