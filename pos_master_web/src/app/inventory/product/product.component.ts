@@ -151,51 +151,65 @@ export class ProductComponent implements OnInit {
   }
 
   //#region ValidateSaveProduct
-  validateSaveProduct() {
+  validateSaveProduct(): boolean {
+    //add whole retail price validations
     const missingFields: string[] = [];
     if (!this.currentProduct.name) missingFields.push('Name');
     if (!this.currentProduct.category) missingFields.push('Category');
+    if (!this.currentProduct.currentPrice) missingFields.push('Prices');
     if (!this.currentProduct.supplierId) missingFields.push('Supplier');
     if (!this.currentProduct.qtyTypeId) missingFields.push('Quantity Type');
     if (missingFields.length > 0) {
       const message = `Please fill the following fields: ${missingFields.join(', ')}`;
-      this.showToast(message, 'error');
-      return;
+      this.showToast(message, 'error', 10000);
+      return false;
     }
+    else {
+      return true
+    }
+  }
+
+  //#region EditProduct API
+  editProductAPICall(product: Product) {
+    this.productService.updateProduct(product.id.toString(), product).subscribe({
+      next: () => {
+        this.loadProducts();
+        this.showToast('Product updated successfully', 'success');
+      },
+      error: (e) => {
+        this.showToast('Failed to update product', 'error')
+        console.error('Error updating product:', e);
+      }
+    });
+  }
+
+  AddProductAPICAll(newProduct: Product) {
+    this.productService.addProduct(newProduct).subscribe({
+      next: (product: Product) => {
+        this.showToast('Product added successfully', 'success');
+        this.currentProduct = product;
+        //#region call save Product Price
+        this.saveProductPrice({
+          ...this.currentProductPrice,
+          product: product
+        });
+
+        this.loadProducts();
+        this.displayModal = false;
+      },
+      error: () => this.showToast('Failed to add product', 'error')
+    });
   }
 
   //#region Save Prouduct
   saveProduct() {
     //validations
-    this.validateSaveProduct()
-    if (this.isEditMode && this.currentProduct.id) {
-      this.productService.updateProduct(this.currentProduct.id.toString(), this.currentProduct).subscribe({
-        next: () => {
-          this.displayModal = false;
-          this.loadProducts();
-          this.showToast('Product updated successfully', 'success');
-
-        },
-        error: (e) => {
-          this.showToast('Failed to update product', 'error')
-          console.error('Error updating product:', e);
-        }
-      });
-    } else {
-      this.productService.addProduct(this.currentProduct).subscribe({
-        next: (product: Product) => {
-          this.showToast('Product added successfully', 'success');
-          this.currentProduct = product;
-          this.saveProductPrice({
-            ...this.currentProductPrice,
-            product: product
-          });
-
-          this.loadProducts();
-          this.displayModal = false;
-        },
-        error: () => this.showToast('Failed to add product', 'error')
-      });
+    if (this.validateSaveProduct()) {
+      if (this.isEditMode && this.currentProduct.id) {
+        this.editProduct(this.currentProduct);
+      } else {
+        this.AddProductAPICAll(this.currentProduct);
+      }
     }
   }
 
@@ -210,7 +224,7 @@ export class ProductComponent implements OnInit {
         next: () => {
           this.showToast('Quantity saved successfully', 'success');
           this.quantity = 0; // Reset quantity after saving
-
+          this.emptyProductPrice()
         },
         error: () => this.showToast('Failed to save quantity', 'error')
       });
@@ -220,18 +234,19 @@ export class ProductComponent implements OnInit {
   }
 
   //#region SAVE PRODUCT PRICE
-  private saveProductPrice(product: ProductPrice) {
+  private saveProductPrice(productPrice: ProductPrice) {
     //if(product)
-    this.productPriceService.create(product).subscribe({
-      next: () => {
-        this.showToast('Product price added successfully', 'success');
-        this.saveProduct()
+    this.productPriceService.create(productPrice).subscribe({
+      next: (productPrice: ProductPrice) => {
+        this.showToast('Product price added successfully' + productPrice.product.name, 'success');
+        this.editProductAPICall(productPrice.product);
         // this.emptyProductPrice();
         this.saveQty({
-          productId: product.product.id!,
-          qtyTypeId: product.product.qtyType?.id!,
+          productId: productPrice.product.id!,
+          qtyTypeId: productPrice.product.qtyType?.id!,
           qty: this.quantity
         })
+
       },
       error: () => this.showToast('Failed to add product price', 'error')
     });
@@ -282,8 +297,8 @@ export class ProductComponent implements OnInit {
     this.visible = false;
   }
 
-  showToast(message: string, severity: 'success' | 'error' ) {
-    this.messageService.add({ severity, summary: message, life: 3000 });
+  showToast(message: string, severity: 'success' | 'error', life?: number) {
+    this.messageService.add({ severity, summary: message, life: life ?? 3000 });
   }
 
   //#region Get Empty Product
