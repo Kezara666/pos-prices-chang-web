@@ -39,4 +39,8 @@ export class QtyService {
   deleteQuantity(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+  
+  updateQtyReduce(productId: number, amount: number) {
+  return this.http.patch(`${environment.backendUrl}/qtys/${productId}/decrease/${amount}`, {});
+}
 }

@@ -8,6 +8,9 @@ export interface ItemSellDto {
   qtyType?:QtyType;
   qty: number;
   qntPrice: number;
+  status?: number;
+  pendingdAmount?: number;
+  completedItemSell?: boolean;
 }
 
 export interface InvoiceDto {
@@ -16,4 +19,9 @@ export interface InvoiceDto {
   discount: number;
   netTotal: number;
   itemsSelled: ItemSellDto[];
+  pendingdAmount?: number;
+  completedItemSell?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+
 }

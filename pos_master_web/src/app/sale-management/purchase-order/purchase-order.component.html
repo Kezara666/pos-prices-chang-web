@@ -38,6 +38,7 @@
           <th>Qty Type</th>
           <th>Quantity</th>
           <th>Unit Price</th>
+          <th>Pending Price</th>
           <th>Total</th>
           <th>Actions</th>
         </tr>
@@ -51,6 +52,9 @@
             <input type="number" pInputText [(ngModel)]="order.qty" min="0" />
           </td>
           <td>{{ order.qntPrice }}</td>
+          <td>
+            <input type="number" pInputText [(ngModel)]="order.pendingdAmount" min="0" />
+          </td>
           <td>{{ order.qty * order.qntPrice | number: '1.2-2' }}</td>
           <td>
             <button pButton type="button" icon="pi pi-times" (click)="removeItem(order)"
@@ -69,7 +73,7 @@
   </div>
 </div>
 
-<p-dialog header="Invoice" [(visible)]="visible" [style]="{ width: '25rem' }" [maximizable]="true">
+<p-dialog header="Invoice  --kiosk-printing" [(visible)]="visible" [style]="{ width: '25rem' }" [maximizable]="true">
   <app-invoice></app-invoice>
 </p-dialog>
 

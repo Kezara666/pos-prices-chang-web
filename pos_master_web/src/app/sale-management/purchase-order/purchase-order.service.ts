@@ -11,7 +11,9 @@ export class PurchaseOrderService {
     total: 0,
     discount: 0,
     netTotal: 0,
-    itemsSelled: []
+    itemsSelled: [],
+    pendingdAmount: 0,
+
   }
 
   constructor() { }

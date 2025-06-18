@@ -7,6 +7,7 @@ import { InvoiceDto, ItemSellDto, } from '../../../models/purchase-order/purchas
 import { PurchaseOrderService } from './purchase-order.service';
 import { BrowserMultiFormatReader, Result } from '@zxing/library';
 import { BarcodeFormat } from '@zxing/library';
+import { QtyService } from '../../inventory/qty/qty.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { BarcodeFormat } from '@zxing/library';
 export class PurchaseOrderComponent implements OnInit {
 
 
-  constructor(private messageService: MessageService, private productService: ProductService, private invoiceService: InvoiceService, public puchaseOrderService: PurchaseOrderService) { }
+  constructor(private messageService: MessageService, private productService: ProductService, private invoiceService: InvoiceService, public puchaseOrderService: PurchaseOrderService, private qtyService: QtyService) { }
 
   products: Product[] = [];
 
@@ -28,7 +29,7 @@ export class PurchaseOrderComponent implements OnInit {
   showScanner: boolean = false;
   scannedCode: string = '';
   availableDevices: MediaDeviceInfo[] = [];
-   selectedDevice: MediaDeviceInfo | undefined = undefined; // Changed from null to undefined
+  selectedDevice: MediaDeviceInfo | undefined = undefined; // Changed from null to undefined
 
   visible: boolean = false;
   private codeReader = new BrowserMultiFormatReader();
@@ -99,7 +100,11 @@ export class PurchaseOrderComponent implements OnInit {
           product: this.selectedProduct,
           qtyTypeId: 1,
           qty: this.quantity,
-          qntPrice: this.selectedProduct.currentPrice
+          qntPrice: this.selectedProduct.currentPrice,
+          status: 1,
+          pendingdAmount: 0,
+          completedItemSell: true
+
         });
       }
     }
@@ -132,19 +137,14 @@ export class PurchaseOrderComponent implements OnInit {
       return;
     }
 
-    const invoice: InvoiceDto = {
-      total: 0,
-      discount: 0,
-      netTotal: 0,
-      itemsSelled: this.puchaseOrderService.order.itemsSelled
-    };
-
-    this.invoiceService.createInvoice(invoice).subscribe({
+    this.invoiceService.createInvoice(this.puchaseOrderService.order).subscribe({
       next: () => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order saved successfully!' });
         this.puchaseOrderService.order.itemsSelled = [];
+        this.reduceQntofProduct(this.puchaseOrderService.order);
       },
-      error: () => {
+      error: (e) => {
+        console.log(e)
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to save order' });
       }
     });
@@ -222,5 +222,22 @@ export class PurchaseOrderComponent implements OnInit {
     this.selectedDevice = event.value;
   }
 
+  reduceQntofProduct(invoice: InvoiceDto) {
+    invoice.itemsSelled.forEach(item => {
+      const amount = item.qty; // amount to reduce
+      this.qtyService.updateQtyReduce(item.productId, amount).subscribe({
+        next: () => {
+          console.log('Quantity reduced for:', item.product?.name, '-', amount);
+        },
+        error: () => {
+          console.error('Failed to reduce quantity for:', item.product?.name);
+        }
+      });
+    });
+  }
+
+
 }
+
+
 

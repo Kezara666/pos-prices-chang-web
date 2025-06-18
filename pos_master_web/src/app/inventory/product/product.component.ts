@@ -64,6 +64,8 @@ export class ProductComponent implements OnInit {
     this.loadSuppliers();
     this.loadProductsPrices();
   }
+
+  //#region Load Product Price
   loadProductsPrices() {
     this.productPriceService.getAll().subscribe({
       next: (data) => {
@@ -73,6 +75,7 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  //#region Filter Prices only for Selected Product
   filterPricessByProductId(productId: number) {
     if (!productId) {
       this.productRelatedPrices = [];
@@ -82,11 +85,13 @@ export class ProductComponent implements OnInit {
     console.log('Filtered Prices:', this.productRelatedPrices);
   }
 
+  //#region Change Product Price Dropdown
   changeCurrentPrice(event: SelectChangeEvent) {
     console.log('Selected Price:', event.value);
     this.currentProduct.currentPrice = this.productPrices.find(price => price.id === event.value)?.primarySalePrice || 0;
   }
 
+  //#region Load QtyTypes
   loadQtyTypes() {
     this.qtyTypesService.getQtyTypes().subscribe((response: QtyType[]) => {
       this.qtyTypes = response.map((item: QtyType) => ({
@@ -98,6 +103,7 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  //#region load Suppliers
   loadSuppliers() {
     this.supplierService.getSuppliers().subscribe((response: ISupplierDto[]) => {
       this.suppliers = response.map((item: ISupplierDto) => ({
@@ -109,6 +115,7 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  //#region Load Product
   loadProducts() {
     this.productService.getProducts().subscribe({
       next: (data) => (this.products = data),
@@ -116,12 +123,14 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  //#region Show Add Modal
   showAddModal() {
     this.isEditMode = false;
     this.currentProduct = this.getEmptyProduct();
     this.displayModal = true;
   }
 
+  //#region Edit Product
   editProduct(product: Product) {
     this.isEditMode = true;
     this.currentProduct = {
@@ -136,11 +145,30 @@ export class ProductComponent implements OnInit {
     console.log('Editing product:', this.currentProduct);
   }
 
+  //#region Close Modal
   closeModal() {
     this.displayModal = false;
   }
 
+  //#region ValidateSaveProduct
+  validateSaveProduct() {
+    const missingFields: string[] = [];
+    if (!this.currentProduct.name) missingFields.push('Name');
+    if (!this.currentProduct.category) missingFields.push('Category');
+    if (!this.currentProduct.currentPrice) missingFields.push('Current Price');
+    if (!this.currentProduct.supplierId) missingFields.push('Supplier');
+    if (!this.currentProduct.qtyTypeId) missingFields.push('Quantity Type');
+    if (missingFields.length > 0) {
+      const message = `Please fill the following fields: ${missingFields.join(', ')}`;
+      this.showToast(message, 'error');
+      return;
+    }
+  }
+
+  //#region Save Prouduct
   saveProduct() {
+    //validations
+    this.validateSaveProduct()
     if (this.isEditMode && this.currentProduct.id) {
       this.productService.updateProduct(this.currentProduct.id.toString(), this.currentProduct).subscribe({
         next: () => {
@@ -171,6 +199,8 @@ export class ProductComponent implements OnInit {
       });
     }
   }
+
+  //#region Save Qty
   saveQty(qty: CreateQtyDto) {
     if (this.currentProduct.id) {
       this.qtyService.createQuantity({
@@ -181,6 +211,7 @@ export class ProductComponent implements OnInit {
         next: () => {
           this.showToast('Quantity saved successfully', 'success');
           this.quantity = 0; // Reset quantity after saving
+
         },
         error: () => this.showToast('Failed to save quantity', 'error')
       });
@@ -189,12 +220,13 @@ export class ProductComponent implements OnInit {
     }
   }
 
-
+  //#region SAVE PRODUCT PRICE
   private saveProductPrice(product: ProductPrice) {
+    //if(product)
     this.productPriceService.create(product).subscribe({
       next: () => {
         this.showToast('Product price added successfully', 'success');
-        this.emptyProductPrice();
+        // this.emptyProductPrice();
         this.saveQty({
           productId: product.product.id!,
           qtyTypeId: product.product.qtyType?.id!,
@@ -205,6 +237,7 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  //#region EMPTY PRODUCT PRICE
   emptyProductPrice() {
     this.currentProductPrice = {
       id: 0,
@@ -217,6 +250,7 @@ export class ProductComponent implements OnInit {
     };
   }
 
+  //#region Delete Product Confirm Dialog
   confirmDeleteProduct(product: Product) {
     this.deleteId = product.id!;
     this.messageService.clear('confirm');
@@ -242,10 +276,17 @@ export class ProductComponent implements OnInit {
     }
   }
 
+
+  onRejectDelete() {
+    this.messageService.clear('confirm');
+    this.visible = false;
+  }
+
   showToast(message: string, severity: 'success' | 'error') {
     this.messageService.add({ severity, summary: message, life: 3000 });
   }
 
+  //#region Get Empty Product
   getEmptyProduct(): Product {
     return {
       id: 0,
@@ -261,19 +302,14 @@ export class ProductComponent implements OnInit {
       qtyTypeId: 0
     };
   }
+  //#region Table Filters
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 
-  onRejectDelete() {
-    this.messageService.clear('confirm');
-    this.visible = false;
-  }
-
-
   isBarcodeTaken: boolean = false;
 
-  //should improve 
+  //#region Check BarCode Unquieness
   checkBarcodeUniqueness(event: Event) {
 
     const exists = this.products.some(p =>
@@ -284,12 +320,12 @@ export class ProductComponent implements OnInit {
       exists ? 'Barcode already exists' : 'Barcode is unique',
       exists ? 'error' : 'success'
     );
-    if(exists) {
+    if (exists) {
       (event.target as HTMLInputElement).value = ''; // Clear the input if barcode is taken
     }
   }
 
-  // Barcode download
+  //#region Dowenload Barcode
   downloadBarcode() {
     const svg = this.barcodeElement.nativeElement.querySelector('svg');
     if (!svg) return;
@@ -313,7 +349,6 @@ export class ProductComponent implements OnInit {
       if (!blob) return;
       const url = URL.createObjectURL(blob);
       this.triggerDownload(url, `${this.currentProduct.name}.qrcode.svg`);
-
     });
   }
 
@@ -322,7 +357,6 @@ export class ProductComponent implements OnInit {
     link.href = url;
     link.download = filename;
     link.click();
-
     URL.revokeObjectURL(url);
   }
 
