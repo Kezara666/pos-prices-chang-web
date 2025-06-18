@@ -156,7 +156,6 @@ export class ProductComponent implements OnInit {
     const missingFields: string[] = [];
     if (!this.currentProduct.name) missingFields.push('Name');
     if (!this.currentProduct.category) missingFields.push('Category');
-    if (!this.currentProduct.currentPrice) missingFields.push('Prices');
     if (!this.currentProduct.supplierId) missingFields.push('Supplier');
     if (!this.currentProduct.qtyTypeId) missingFields.push('Quantity Type');
     if (missingFields.length > 0) {
@@ -239,6 +238,8 @@ export class ProductComponent implements OnInit {
     this.productPriceService.create(productPrice).subscribe({
       next: (productPrice: ProductPrice) => {
         this.showToast('Product price added successfully' + productPrice.product.name, 'success');
+        productPrice.product.productPriceId = productPrice.id;
+        productPrice.product.currentPrice = productPrice.primarySalePrice;
         this.editProductAPICall(productPrice.product);
         // this.emptyProductPrice();
         this.saveQty({

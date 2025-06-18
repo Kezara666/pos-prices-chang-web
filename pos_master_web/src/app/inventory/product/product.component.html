@@ -123,15 +123,7 @@
 
           <!-- #region Price Related -->
           <div *ngIf="!isEditMode" class="space-y-5">
-            <div>
-              <p-floatlabel variant="in">
-                <input
-                  class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                  pInputText id="wholeSalePrice" name="wholeSalePrice" type="number"
-                  [(ngModel)]="currentProductPrice.wholeSalePrice" autocomplete="off" required />
-                <label for="wholeSalePrice" class="font-medium text-gray-700">Wholesale Price</label>
-              </p-floatlabel>
-            </div>
+            
             <!-- Brought Price -->
             <div>
               <p-floatlabel variant="in">
@@ -140,6 +132,16 @@
                   pInputText id="broughtPrice" name="broughtPrice" type="number"
                   [(ngModel)]="currentProductPrice.broughtPrice" autocomplete="off" required />
                 <label for="broughtPrice" class="font-medium text-gray-700">Brought Price</label>
+              </p-floatlabel>
+            </div>
+            <!-- wholeSalePrice -->
+            <div>
+              <p-floatlabel variant="in">
+                <input
+                  class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+                  pInputText id="wholeSalePrice" name="wholeSalePrice" type="number"
+                  [(ngModel)]="currentProductPrice.wholeSalePrice" autocomplete="off" required />
+                <label for="wholeSalePrice" class="font-medium text-gray-700">Wholesale Price</label>
               </p-floatlabel>
             </div>
 
