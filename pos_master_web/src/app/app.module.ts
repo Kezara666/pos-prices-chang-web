@@ -40,7 +40,9 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { NgxBarcode6Module } from 'ngx-barcode6';
 import { InvoiceComponent } from './sale-management/invoice/invoice.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-
+import { OldPurchaseOrdersComponent } from './sale-management/old-purchase-orders/old-purchase-orders.component';
+import { StatManagementComponent } from './stat-management/stat-management/stat-management.component';
+import { ChartModule } from 'primeng/chart';
 @NgModule({
   declarations: [
     QtyTypesComponent,
@@ -60,9 +62,12 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
     AppLayout,
     AppFooter,
     PurchaseOrderComponent,
-    InvoiceComponent
+    InvoiceComponent,
+    OldPurchaseOrdersComponent,
+    StatManagementComponent
   ],
   imports:[
+    ChartModule,
     Select,
     QRCodeModule,
     NgxBarcode6Module,

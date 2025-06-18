@@ -17,5 +17,6 @@ export interface Product {
   supplier?: ISupplierDto;
   createdAt?: string;
   updatedAt?: string;
-  productPriceId?: number; 
+  productPriceId?: number;
+  qty:number 
 }

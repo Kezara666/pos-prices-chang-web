@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment.prod';
 export class ProductService {
   private baseUrl = `${environment.backendUrl}/products`; // Adjust as per your backend
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.baseUrl);
@@ -31,5 +31,11 @@ export class ProductService {
 
   deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  setProductCurrentPrice(productId: number, productPriceId: number): Observable<void> {
+    return this.http.patch<void>(`${this.baseUrl}/${productId}/set-current-price`, {
+      productPriceId,
+    });
   }
 }

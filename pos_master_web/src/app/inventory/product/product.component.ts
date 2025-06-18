@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from './product.service';
 import { Product } from './product.model';
 import { MessageService } from 'primeng/api';
@@ -32,7 +32,6 @@ export class ProductComponent implements OnInit {
   deleteId: number | null = null;
   @ViewChild('dt') dt: Table | undefined;
   visible: boolean = false;
-  quantity: number = 0;
   qrAndBarcodeVisible: boolean = false;
   @ViewChild('barcode') barcodeElement!: ElementRef;
   @ViewChild('qrcode') qrCodeElement!: ElementRef;
@@ -55,10 +54,15 @@ export class ProductComponent implements OnInit {
     private qtyTypesService: QtyTypesService,
     private supplierService: SupplierService,
     private productPriceService: ProductPriceService,
-    private qtyService: QtyService
+    private qtyService: QtyService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
+    this.loadAllEntities()
+  }
+
+  loadAllEntities() {
     this.loadProducts();
     this.loadQtyTypes();
     this.loadSuppliers();
@@ -81,8 +85,29 @@ export class ProductComponent implements OnInit {
       this.productRelatedPrices = [];
       return;
     }
-    this.productRelatedPrices = this.productPrices.filter(price => price.product.id === productId);
+
+    // Filter prices by product ID
+    this.productRelatedPrices = this.productPrices.filter(
+      price => price.product.id === productId || price.product?.id === productId
+    );
+
     console.log('Filtered Prices:', this.productRelatedPrices);
+
+    // Ensure types match before setting value
+    const currentPriceId = this.currentProduct.productPriceId;
+    // Optional: Auto-select existing productPriceId if it exists in filtered list
+    if (currentPriceId && this.productRelatedPrices.some(p => p.id === currentPriceId)) {
+      // Force Angular to re-bind value if needed
+      this.currentProduct.productPriceId = currentPriceId;
+    } else if (this.productRelatedPrices.length > 0) {
+      // Optionally select first item as fallback
+      this.currentProduct.productPriceId = this.productRelatedPrices[0].id;
+    } else {
+      this.currentProduct.productPriceId = null!;
+    }
+
+    // Trigger change detection manually
+    this.cd.markForCheck();
   }
 
   //#region Change Product Price Dropdown
@@ -132,17 +157,19 @@ export class ProductComponent implements OnInit {
 
   //#region Edit Product
   editProduct(product: Product) {
-    this.isEditMode = true;
+
     this.currentProduct = {
-      ...product
-      ,
+      ...product,
       supplierId: product.supplier?.id || 0, // Handle optional supplier
       qtyTypeId: product.qtyType?.id || 0,
       productPriceId: product.productPriceId || 0 // Handle optional product price
     };
     this.filterPricessByProductId(this.currentProduct.id!);
+    //this.cd.markForCheck();
     this.displayModal = true;
+    this.isEditMode = true;
     console.log('Editing product:', this.currentProduct);
+
   }
 
   //#region Close Modal
@@ -205,7 +232,7 @@ export class ProductComponent implements OnInit {
     //validations
     if (this.validateSaveProduct()) {
       if (this.isEditMode && this.currentProduct.id) {
-        this.editProduct(this.currentProduct);
+        this.editProductAPICall(this.currentProduct)
       } else {
         this.AddProductAPICAll(this.currentProduct);
       }
@@ -222,7 +249,7 @@ export class ProductComponent implements OnInit {
       }).subscribe({
         next: () => {
           this.showToast('Quantity saved successfully', 'success');
-          this.quantity = 0; // Reset quantity after saving
+          this.currentProduct.qty
           this.emptyProductPrice()
         },
         error: () => this.showToast('Failed to save quantity', 'error')
@@ -245,7 +272,7 @@ export class ProductComponent implements OnInit {
         this.saveQty({
           productId: productPrice.product.id!,
           qtyTypeId: productPrice.product.qtyType?.id!,
-          qty: this.quantity
+          qty: this.currentProduct.qty
         })
 
       },
@@ -315,7 +342,8 @@ export class ProductComponent implements OnInit {
       currentPrice: 0,
       warranty: 0,
       supplierId: 0,
-      qtyTypeId: 0
+      qtyTypeId: 0,
+      qty:0
     };
   }
   //#region Table Filters

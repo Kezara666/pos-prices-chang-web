@@ -1,0 +1,29 @@
+<div class="card">
+  <p-table [value]="purchaseOrders" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Order ID</th>
+        <th>Customer ID</th>
+        <th>Total Amount</th>
+        <th>Order Date</th>
+        <th>Items</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-invoice>
+      <tr>
+        <td>{{ invoice.id || '-' }}</td>
+        <td>{{ invoice.customerId || '-' }}</td>
+        <td>{{ invoice.total | currency }}</td>
+        <td>{{ invoice.createdAt | date: 'medium' }}</td>
+        <td>
+          <ul style="padding-left: 1rem;">
+            <li *ngFor="let item of invoice.itemsSelled">
+              {{ item.product?.name }} ({{ item.qty }} {{ item.qtyType?.name }})
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

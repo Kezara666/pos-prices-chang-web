@@ -14,7 +14,8 @@
 
 <!-- Barcode/QR Scanner -->
 <div *ngIf="showScanner" class="mt-2">
-  <zxing-scanner (scanSuccess)="onScanSuccess($event)" [device]="selectedDevice" [formats]="allowedFormats"></zxing-scanner>
+  <zxing-scanner (scanSuccess)="onScanSuccess($event)" [device]="selectedDevice"
+    [formats]="allowedFormats"></zxing-scanner>
   <p-dropdown [options]="availableDevices" [(ngModel)]="selectedDevice" optionLabel="label" placeholder="Select Camera"
     class="w-full mt-2" (onChange)="onDeviceChange($event)"></p-dropdown>
 </div>
@@ -25,6 +26,17 @@
   <p-dropdown [options]="filteredProducts" [(ngModel)]="selectedProduct" [filter]="true" [showClear]="true"
     optionLabel="name" (onFilter)="filterProducts($event)" placeholder="Select a product" class="w-full"
     (onChange)="addItemToOrder($event)">
+
+    <!-- Custom template to show "name (qty)" -->
+    <ng-template let-product pTemplate="item">
+      <span>{{ product.name }} (Qty: {{ product.qty }})</span>
+    </ng-template>
+
+    <!-- Optional: Template for selected item if you want same format on selection -->
+    <ng-template let-product pTemplate="selectedItem">
+      <span>{{ product.name }} (Qty: {{ product.qty }})</span>
+    </ng-template>
+
   </p-dropdown>
 </div>
 
@@ -49,7 +61,7 @@
           <td>{{ order.product.currentPrice }}</td>
           <td>{{ order.product.qtyType.name }}</td>
           <td>
-            <input type="number" pInputText [(ngModel)]="order.qty" min="0" />
+            <input type="number" pInputText [(ngModel)]="order.qty" min="0" (input)="onQtyChange(order)" />
           </td>
           <td>{{ order.qntPrice }}</td>
           <td>

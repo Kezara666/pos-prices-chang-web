@@ -43,6 +43,10 @@ export class QtyComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        this.loadAllEntiy()
+    }
+
+    loadAllEntiy() {
         this.loadProducts();
         this.loadQtyTypes();
         this.loadQuantities();
@@ -105,10 +109,7 @@ export class QtyComponent implements OnInit {
             // Update existing quantity
             this.qtyService.updateQuantity(this.currentQuantity.id, this.currentQuantity).subscribe({
                 next: (updated) => {
-                    const idx = this.quantities.findIndex(q => q.id === updated.id);
-                    if (idx !== -1) this.quantities[idx] = updated;
-                    this.showToast('Quantity updated successfully', 'success');
-                    this.displayModal = false;
+                    this.loadAllEntiy()
                 },
                 error: () => this.showToast('Failed to update quantity', 'error')
             });
@@ -116,9 +117,7 @@ export class QtyComponent implements OnInit {
             // Add new quantity
             this.qtyService.createQuantity(this.currentQuantity as CreateQtyDto).subscribe({
                 next: (created) => {
-                    this.quantities.push(created);
-                    this.showToast('Quantity added successfully', 'success');
-                    this.displayModal = false;
+                    this.loadAllEntiy()
                 },
                 error: () => this.showToast('Failed to add quantity', 'error')
             });

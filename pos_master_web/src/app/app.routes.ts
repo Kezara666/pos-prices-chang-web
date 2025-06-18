@@ -8,6 +8,8 @@ import { ProductComponent } from "./inventory/product/product.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { AppLayout } from "./dashboard/layout/component/app.layout";
 import { PurchaseOrderComponent } from "./sale-management/purchase-order/purchase-order.component";
+import { OldPurchaseOrdersComponent } from "./sale-management/old-purchase-orders/old-purchase-orders.component";
+import { StatManagementComponent } from "./stat-management/stat-management/stat-management.component";
 
 
 export const routes: Routes = [
@@ -23,6 +25,8 @@ export const routes: Routes = [
       { path: 'qty', component: QtyComponent }, // /dashboard/qty
       { path: 'qty-type', component: QtyTypesComponent }, // /dashboard/qty-type
       { path: 'purchase-order', component: PurchaseOrderComponent },
+      { path: 'old-purchase-order', component: OldPurchaseOrdersComponent },
+      { path: 'stat', component: StatManagementComponent }, // /dashboard/logout
     ],
   },
   // { path: 'auth', component: LoginComponent }, // /auth for login

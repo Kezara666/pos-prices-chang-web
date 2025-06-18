@@ -31,7 +31,9 @@
           <th class="p-3 font-semibold text-left">Product</th>
           <th class="p-3 font-semibold text-left">Qty Type</th>
           <th class="p-3 font-semibold text-left">Quantity</th>
+          <th class="p-3 font-semibold text-left">CreatedAt</th>
           <th class="p-3 font-semibold text-left">Actions</th>
+          
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-qty>
@@ -39,6 +41,7 @@
           <td class="p-3" >{{ qty.product.name}}</td>
           <td class="p-3">{{ qty.qtyType.name }}</td>
           <td class="p-3" >{{ qty.qty}}</td>
+          <td class="p-3">{{ qty.createdAt ? (qty.createdAt | date:'mediumDate') : 'N/A' }}</td>
           <td class="p-3">
             <div class="flex gap-2">
               <p-button type="button" icon="pi pi-pencil" label="Edit" (click)="editQuantity(qty)"

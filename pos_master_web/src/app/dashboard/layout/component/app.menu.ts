@@ -19,7 +19,7 @@ export class AppMenu {
         this.model = [
             {
                 label: 'Home',
-                items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] }]
+                items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard/stat'] }]
             },
             {
                 label: 'Inventory',
@@ -29,13 +29,14 @@ export class AppMenu {
                     { label: 'Supplier', icon: 'pi pi-fw pi-truck', routerLink: ['/dashboard/supplier'] },
                     { label: 'Quantity', icon: 'pi pi-fw pi-sort-amount-up', routerLink: ['/dashboard/qty'] },
                     { label: 'Quantity Types', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/qty-type'] }
+                    
                 ]
             },
             {
                 label: 'Salse Management',
                 items: [
                     { label: 'Purchase Order', icon: 'pi pi-fw pi-money-bill', routerLink: ['/dashboard/purchase-order'] },
-                    { label: 'Prices', icon: 'pi pi-fw pi-tag', routerLink: ['/dashboard/prices'] },
+                    { label: 'Purchase History', icon: 'pi pi-fw pi-sort-alpha-down', routerLink: ['/dashboard/old-purchase-order'] },
                     { label: 'Supplier', icon: 'pi pi-fw pi-truck', routerLink: ['/dashboard/supplier'] },
                     { label: 'Quantity', icon: 'pi pi-fw pi-sort-amount-up', routerLink: ['/dashboard/qty'] },
                     { label: 'Quantity Types', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/qty-type'] }

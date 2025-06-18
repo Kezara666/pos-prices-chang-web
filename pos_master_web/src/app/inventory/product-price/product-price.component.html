@@ -2,28 +2,34 @@
 
 <!-- Heading and Add Button -->
 <div class="flex items-center justify-center px-4 layout-main sm:px-6 lg:px-8">
-    <div class="relative flex items-center justify-between gap-4 py-4 px-6 mt-4 bg-gradient-to-r from-[var(--p-primary-900)] to-[var(--p-primary-700)] border border-[var(--p-primary-500)] min-w-[24rem] rounded-2xl shadow-lg backdrop-filter backdrop-blur-md bg-opacity-20 transition-all duration-300 hover:shadow-xl">
-        <div class="m-2 text-xl font-bold tracking-wide text-transparent text-white uppercase sm:text-2xl bg-clip-text bg-gradient-to-r from-white to-gray-200">
+    <div
+        class="relative flex items-center justify-between gap-4 py-4 px-6 mt-4 bg-gradient-to-r from-[var(--p-primary-900)] to-[var(--p-primary-700)] border border-[var(--p-primary-500)] min-w-[24rem] rounded-2xl shadow-lg backdrop-filter backdrop-blur-md bg-opacity-20 transition-all duration-300 hover:shadow-xl">
+        <div
+            class="m-2 text-xl font-bold tracking-wide text-transparent text-white uppercase sm:text-2xl bg-clip-text bg-gradient-to-r from-white to-gray-200">
             Product Price Management
         </div>
         <div>
-            <p-button type="button" icon="pi pi-plus" (click)="showAddModal()" class="transition-transform duration-200 hover:scale-105" label="Add Product"></p-button>
+            <p-button type="button" icon="pi pi-plus" (click)="showAddModal()"
+                class="transition-transform duration-200 hover:scale-105" label="Add Product"></p-button>
         </div>
     </div>
 </div>
 
 <!-- Product Prices Table -->
-<div class="mt-8 mx-4 sm:mx-6 lg:mx-8 border-2 border-[var(--p-primary-500)] rounded-2xl shadow-md bg-[var(--surface-card)] bg-opacity-90">
+<div
+    class="mt-8 mx-4 sm:mx-6 lg:mx-8 border-2 border-[var(--p-primary-500)] rounded-2xl shadow-md bg-[var(--surface-card)] bg-opacity-90">
     <div class="p-4 sm:p-6">
         <p-table #dt [value]="productPrices" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
-                 [globalFilterFields]="['product.name', 'wholeSalePrice', 'broughtPrice', 'primarySalePrice']" [scrollable]="true"
-                 [scrollDirection]="'both'" [scrollHeight]="'50rem'" [tableStyle]="{ 'min-width': '60rem' }">
+            [globalFilterFields]="['product.name', 'wholeSalePrice', 'broughtPrice', 'primarySalePrice']"
+            [scrollable]="true" [scrollDirection]="'both'" [scrollHeight]="'50rem'"
+            [tableStyle]="{ 'min-width': '60rem' }">
             <ng-template pTemplate="header">
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-b from-[var(--surface-ground)] to-[var(--surface-card)] py-4 px-4 rounded-t-xl">
+                <div
+                    class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-b from-[var(--surface-ground)] to-[var(--surface-card)] py-4 px-4 rounded-t-xl">
                     <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"
-                           class="w-full sm:w-96 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                           placeholder="Search product prices..." />
-                    
+                        class="w-full sm:w-96 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+                        placeholder="Search products Prices..." />
+
                 </div>
                 <tr class="bg-[var(--p-primary-50)] text-[var(--p-primary-900)]">
                     <th class="p-3 font-semibold text-left">Product</th>
@@ -36,15 +42,16 @@
             <ng-template pTemplate="body" let-pp>
                 <tr class="hover:bg-[var(--surface-ground)] transition-colors duration-200">
                     <td class="p-3">{{ pp.product?.name }}</td>
-                    <td class="p-3">{{ pp.wholeSalePrice  | number:'1.2-2' }}</td>
+                    <td class="p-3">{{ pp.wholeSalePrice | number:'1.2-2' }}</td>
                     <td class="p-3">{{ pp.broughtPrice | number:'1.2-2' }}</td>
                     <td class="p-3">{{ pp.primarySalePrice | number:'1.2-2' }}</td>
                     <td class="p-3">
                         <div class="flex gap-2">
                             <p-button type="button" icon="pi pi-pencil" label="Edit" (click)="editProductPrice(pp)"
-                                      class="transition-colors duration-200 "></p-button>
-                            <p-button type="button" severity="danger" icon="pi pi-trash" label="Delete" (click)="confirmDeleteProductPrice(pp)"
-                                      class="transition-colors duration-200 "></p-button>
+                                class="transition-colors duration-200 "></p-button>
+                            <p-button type="button" severity="danger" icon="pi pi-trash" label="Delete"
+                                (click)="confirmDeleteProductPrice(pp)"
+                                class="transition-colors duration-200 "></p-button>
                         </div>
                     </td>
                 </tr>
@@ -53,39 +60,45 @@
 
         <!-- Add/Edit Product Price Dialog -->
         <p-dialog header="{{ isEditMode ? 'Edit Product Price' : 'Add Product Price' }}" [(visible)]="displayModal"
-                  [style]="{ width: '32rem' }" [breakpoints]="{ '1199px': '80vw', '575px': '95vw' }" [maximizable]="true"
-                  class="bg-[var(--surface-card)] rounded-xl shadow-xl">
+            [style]="{ width: '32rem' }" [breakpoints]="{ '1199px': '80vw', '575px': '95vw' }" [maximizable]="true"
+            class="bg-[var(--surface-card)] rounded-xl shadow-xl">
             <form #productPriceForm="ngForm" class="p-4 sm:p-6">
                 <div class="space-y-5">
                     <!-- Product Select -->
                     <div>
                         <label for="product" class="block mb-2 font-medium text-gray-700">Product</label>
                         <p-select [options]="products" optionLabel="name" optionValue="id" placeholder="Select Product"
-                                  [(ngModel)]="currentProductPrice.productId" name="product"
-                                  class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"></p-select>
+                            [(ngModel)]="currentProductPrice.productId" name="product"
+                            class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"></p-select>
                     </div>
                     <!-- Brought Price -->
                     <div>
                         <p-floatlabel variant="in">
-                            <input class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                                   pInputText id="broughtPrice" name="broughtPrice" type="number" [(ngModel)]="currentProductPrice.broughtPrice" autocomplete="off" required />
+                            <input
+                                class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+                                pInputText id="broughtPrice" name="broughtPrice" type="number"
+                                [(ngModel)]="currentProductPrice.broughtPrice" autocomplete="off" required />
                             <label for="broughtPrice" class="font-medium text-gray-700">Brought Price</label>
                         </p-floatlabel>
                     </div>
                     <!-- Wholesale Price -->
                     <div>
                         <p-floatlabel variant="in">
-                            <input class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                                   pInputText id="wholeSalePrice" name="wholeSalePrice" type="number" [(ngModel)]="currentProductPrice.wholeSalePrice" autocomplete="off" required />
+                            <input
+                                class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+                                pInputText id="wholeSalePrice" name="wholeSalePrice" type="number"
+                                [(ngModel)]="currentProductPrice.wholeSalePrice" autocomplete="off" required />
                             <label for="wholeSalePrice" class="font-medium text-gray-700">Wholesale Price</label>
                         </p-floatlabel>
                     </div>
-                    
+
                     <!-- Primary Sale Price -->
                     <div>
                         <p-floatlabel variant="in">
-                            <input class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                                   pInputText id="primarySalePrice" name="primarySalePrice" type="number" [(ngModel)]="currentProductPrice.primarySalePrice" autocomplete="off" required />
+                            <input
+                                class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+                                pInputText id="primarySalePrice" name="primarySalePrice" type="number"
+                                [(ngModel)]="currentProductPrice.primarySalePrice" autocomplete="off" required />
                             <label for="primarySalePrice" class="font-medium text-gray-700">Primary Sale Price</label>
                         </p-floatlabel>
                     </div>
@@ -94,9 +107,10 @@
             <!-- Footer -->
             <footer class="flex justify-end gap-3 mt-6 p-4 bg-[var(--surface-card)] rounded-b-xl">
                 <p-button type="button" icon="pi pi-times" (click)="closeModal()" label="Cancel"
-                          class="transition-colors duration-200 p-button-outlined hover:bg-gray-100"></p-button>
-                <p-button type="button" icon="pi pi-save" (click)="saveProductPrice()" label="{{ isEditMode ? 'Update' : 'Add' }}"
-                          class=" hover:bg-[var(--p-primary-600)] p-button-outlined transition-colors duration-200"></p-button>
+                    class="transition-colors duration-200 p-button-outlined hover:bg-gray-100"></p-button>
+                <p-button type="button" icon="pi pi-save" (click)="saveProductPrice()"
+                    label="{{ isEditMode ? 'Update' : 'Add' }}"
+                    class=" hover:bg-[var(--p-primary-600)] p-button-outlined transition-colors duration-200"></p-button>
             </footer>
         </p-dialog>
     </div>
@@ -113,9 +127,9 @@
                 <div class="my-4 text-lg font-medium text-gray-800">{{ message.summary }}</div>
                 <div class="flex gap-3">
                     <p-button severity="danger" size="small" label="Yes" (click)="onConfirmDelete()"
-                              class="transition-colors duration-200 hover:bg-red-600"></p-button>
+                        class="transition-colors duration-200 hover:bg-red-600"></p-button>
                     <p-button severity="secondary" size="small" label="No" (click)="onRejectDelete()"
-                              class="transition-colors duration-200 hover:bg-gray-100"></p-button>
+                        class="transition-colors duration-200 hover:bg-gray-100"></p-button>
                 </div>
             </div>
         </ng-template>

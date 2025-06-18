@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProductPriceService } from './product-price.service';
 import { ProductPrice, } from '../../../models/product-price/product-price.model';
 import { MessageService } from 'primeng/api';
 import { Product } from '../product/product.model';
 import { ProductService } from '../product/product.service';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-product-price',
@@ -18,6 +19,7 @@ export class ProductPriceComponent implements OnInit {
   isEditMode = false;
   currentProductPrice: any = {};
   deleteId: number | null = null;
+  @ViewChild('dt') dt: Table | undefined;
 
   constructor(
     private productPriceService: ProductPriceService,
@@ -70,6 +72,7 @@ export class ProductPriceComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Product price updated' });
           this.displayModal = false;
           this.loadProductPrices();
+          this.updateProductPrimaryPrice(this.currentProductPrice.productId, this.currentProductPrice.id)
         },
         error: () => this.messageService.add({ severity: 'error', summary: 'Update failed' })
       });
@@ -86,6 +89,13 @@ export class ProductPriceComponent implements OnInit {
         error: () => this.messageService.add({ severity: 'error', summary: 'Create failed' })
       });
     }
+  }
+
+  updateProductPrimaryPrice(productId:number, primaryPriceId: number) {
+    this.productService.setProductCurrentPrice(productId,primaryPriceId).subscribe({
+      next: () => console.log('Product price updated'),
+      error: (err) => console.error('Failed to update price:', err),
+    });
   }
 
   confirmDeleteProductPrice(pp: ProductPrice) {
@@ -125,7 +135,7 @@ export class ProductPriceComponent implements OnInit {
 
   // Filtering for table
   applyFilterGlobal($event: any, stringVal: string) {
-    // Implement as needed for your table/filtering library
+    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 
   exportExcel() {

@@ -118,7 +118,7 @@
             <input
               class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
               pInputText id="warranty" name="warranty" type="number" [(ngModel)]="currentProduct.warranty"/>
-            <label for="warranty" class="font-medium text-gray-700">Warranty (months)</label>
+            <label for="warranty" class="font-medium text-gray-700">Warranty (Days)</label>
           </p-floatlabel>
 
           <!-- #region Price Related -->
@@ -163,8 +163,8 @@
           <div *ngIf="isEditMode">
             <label for="currentPrice" class="block mb-2 font-medium text-gray-700">Current Price</label>
             <p-select [options]="productRelatedPrices" optionLabel="primarySalePrice" optionValue="id"
-              placeholder="Select Price" [(ngModel)]="currentProduct.productPriceId" name="primarySalePrice"
-              (onChange)="changeCurrentPrice($event)" [filter]="true"
+              placeholder="Select Price" [(ngModel)]="currentProduct.productPriceId" name="currentProduct.primarySalePrice" 
+              (onChange)="changeCurrentPrice($event)"
               class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200">
               <!-- Dropdown items -->
               <ng-template let-price pTemplate="item">
@@ -201,9 +201,9 @@
 
             <div>
               <label for="quantity" class="block mb-2 font-medium text-gray-700">Quantity</label>
-              <input pInputText type="number" id="quantity" name="quantity" placeholder="Enter Quantity"
+              <input pInputText type="number" id="quantity" name="quantity" placeholder="Enter Quantity" [(ngModel)]="currentProduct.qty" required 
                 class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-                [(ngModel)]="quantity" />
+                 />
             </div>
             <!-- #region QTy And QTYType END -->
           </div>
