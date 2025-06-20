@@ -8,6 +8,7 @@ import { PurchaseOrderService } from './purchase-order.service';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import { BarcodeFormat } from '@zxing/library';
 import { QtyService } from '../../inventory/qty/qty.service';
+import { LoginService } from '../../login/login.service';
 
 @Component({
   selector: 'app-purchase-order',
@@ -22,7 +23,9 @@ export class PurchaseOrderComponent implements OnInit {
     private invoiceService: InvoiceService,
     public puchaseOrderService: PurchaseOrderService,
     private qtyService: QtyService,
-    private changeDetectorRef: ChangeDetectorRef) { }
+    private changeDetectorRef: ChangeDetectorRef,
+    private loginService:LoginService
+  ) { }
 
   products: Product[] = [];
   selectedProduct?: Product;
@@ -65,7 +68,10 @@ export class PurchaseOrderComponent implements OnInit {
       qntPrice: this.selectedProduct!.currentPrice,
       status: 1,
       pendingdAmount: 0,
-      completedItemSell: true
+      completedItemSell: true,
+      shopId: this.loginService.shopId ?? 0,
+      createdById: this.loginService.userId ?? 0,
+      updatedById: this.loginService.userId ?? 0
     }
   }
   //#endregion Order Item Creation

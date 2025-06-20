@@ -5,9 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
 import { Qty } from '../../../models/qty/qty.dto';
 import { CreateQtyDto } from '../../../models/create-qty.dto';
-import { log } from 'console';
-import { LoginService } from '../../login.service';
-
+import { LoginService } from '../../login/login.service';
 @Injectable({
   providedIn: 'root'
 })

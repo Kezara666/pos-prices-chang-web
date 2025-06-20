@@ -1,29 +1,55 @@
-
-<div class="flex justify-center p-10 card">
-  <p-dialog  [(visible)]="visible" styleClass="!border-0 !bg-black">
-    <ng-template #headless>
-      <div class="flex flex-col gap-6 px-8 py-8 rounded-2xl"
-        style="border-radius: 12px; background-image: radial-gradient(circle at left top, var(--p-primary-400), var(--p-primary-700))">
-
-        <div class="flex items-center justify-center">
-          <i class="text-6xl pi pi-lock" style="font-size: 2rem;"></i> <!-- Default Icon -->
-        </div>
-
-        <div class="inline-flex flex-col gap-2">
-          <label for="username" class="font-semibold text-primary-50">Username</label>
-          <input pInputText id="username" class="!bg-white/20 !border-0 !p-4 !text-primary-50 w-80" [(ngModel)]="userName"/>
-        </div>
-        <div class="inline-flex flex-col gap-2">
-          <label for="password" class="font-semibold text-primary-50">Password</label>
-          <input pInputText id="password" class="!bg-white/20 !border-0 !p-4 !text-primary-50 w-80" type="password" [(ngModel)]="password"/>
-        </div>
-        <div class="flex items-center gap-4">
-          <p-button label="Sign-In" (click)="SignIn()" [text]="true"
-            styleClass="!p-4 w-full !text-white !border !border-white hover:!bg-white hover:!text-black"
-            class="w-full" />
-
-        </div>
+<div class="flex items-center justify-center min-h-screen p-4 bg-gradient-to-br from-[var(--p-primary-800)]-500 via-purple-500 to-pink-500">
+  <div class="w-full max-w-md p-8 transition-all duration-300 transform shadow-xl rounded-2xl ">
+    <h2 class="mb-6 text-3xl font-bold text-center text-[var(--p-primary-800)]">Welcome Back</h2>
+    <div class="space-y-6">
+      <div>
+        <label for="username" class="block text-sm font-medium text-[var(--text-color-100)]">Username</label>
+        <input 
+          id="username" 
+          type="text" 
+          [(ngModel)]="userName" 
+          style="width: 100%; padding: 0.75rem 1rem; margin-top: 0.25rem; transition-duration: var(--element-transition-duration); border: 1px solid var(--surface-border); border-radius: var(--content-border-radius); background: var(--surface-hover); outline: none;"
+          name="username"
+          class="w-full px-4 py-3 mt-1 transition duration-200 ease-in-out border border-[var(--p-primary-800)] rounded-lg focus:ring-2 focus:ring-[var(--p-primary-800)]-500 focus:border-transparent"
+          placeholder="Enter your username"
+          required
+        >
       </div>
-    </ng-template>
-  </p-dialog>
+      <div>
+        <label for="password" class="block text-sm font-medium text-[var(--text-color-100)]">Password</label>
+        <input 
+          id="password" 
+          type="password" 
+          [(ngModel)]="password" 
+          name="password"
+          class="w-full px-4 py-3 mt-1 transition duration-200 ease-in-out border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--p-primary-800)]-500 focus:border-transparent"
+          placeholder="Enter your password"
+          required
+          style="width: 100%; padding: 0.75rem 1rem; margin-top: 0.25rem; transition-duration: var(--element-transition-duration); border: 1px solid var(--surface-border); border-radius: var(--content-border-radius); background: var(--surface-hover); outline: none;"
+        >
+      </div>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input 
+            id="remember-me" 
+            type="checkbox" 
+            class="w-4 h-4 text-black text-[var(--p-primary-800)]-600 border-gray-300 rounded focus:ring-[var(--p-primary-800)]-500"
+          >
+          <label for="remember-me" class="block ml-2 text-sm [var(--text-color-100)]">Remember me</label>
+        </div>
+        <a href="#" class="text-sm text-[var(--p-primary-800)]-600 hover:text-[var(--p-primary-800)]-800">Forgot Password?</a>
+      </div>
+      <button 
+        (click)="SignIn()"
+        type="button" 
+        class="w-full py-3 text-white transition duration-200 ease-in-out transform bg-[var(--p-primary-600)] rounded-2xl hover:bg-[var(--p-primary-800)] hover:-translate-y-1 hover:shadow-lg"
+      >
+        Sign In
+      </button>
+    </div>
+    <p class="mt-6 text-sm text-center text-gray-600">
+      Don't have an account? 
+      <a href="#" class="font-medium text-[var(--p-primary-800)]-600 hover:text-[var(--p-primary-800)]-800">Sign up</a>
+    </p>
+  </div>
 </div>

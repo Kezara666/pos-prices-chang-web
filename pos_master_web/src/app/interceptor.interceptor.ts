@@ -3,16 +3,19 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { catchError, finalize, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoadingSpinnerService } from '../loading-spinner.service';
+import { AuthService } from './authservice';
 import { LoginService } from './login/login.service';
+
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
-  constructor(private loadingSpinnerService: LoadingSpinnerService, private loginService: LoginService, private router: Router) { }
+  constructor(private loadingSpinnerService: LoadingSpinnerService, private loginService: LoginService, private router: Router, private authService:AuthService) { }
 
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if (!(this.loginService.loggedUsed())) {
+    if (!(this.loginService.isAuthenticated)) {
+      console.log(this.loginService.isAuthenticated)
       this.router.navigate(['/login']);
     }
 

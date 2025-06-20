@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateProductWithDependenciesDto, Product } from './product.model';
 import { environment } from '../../../environments/environment.prod';
-import { LoginService } from '../../login.service';
+import { LoginService } from '../../login/login.service';
 
 @Injectable({
   providedIn: 'root'

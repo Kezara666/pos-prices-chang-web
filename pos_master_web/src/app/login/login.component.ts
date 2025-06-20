@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
+
+import { MessageService } from 'primeng/api';
 import { LoginService } from './login.service';
+import { IUser } from '../../models/user/create-user.dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,21 +13,26 @@ import { LoginService } from './login.service';
 export class LoginComponent {
   password: string = '';
   userName: string = '';
-  constructor(private loginService: LoginService) { }
+  constructor(private loginService: LoginService, private messageService: MessageService,private router: Router) { }
   visible: boolean = true;
-
+ 
   showDialog() {
     this.visible = true;
   }
 
-  SignIn() {
-    if (this.password == 'admin' && this.userName == 'admin') {
-      this.loginService.setTrue()
-      this.visible = false;
-    }
-    else {
-      this.loginService.setFalse
-    }
 
+  SignIn() {
+    this.loginService.login(this.userName, this.password).subscribe({
+      next: (user:IUser) => {
+        this.loginService.setUser(user)
+        this.visible = false;
+        this.messageService.add({ severity: 'success', summary: 'Login Success' });
+        this.router.navigate(['/dashboard/stat']);
+      },
+      error: (err: any) => {
+        this.loginService.setFalse;
+        this.messageService.add({ severity: 'error', summary: 'Failed to load product prices' })
+      },
+    });
   }
 }

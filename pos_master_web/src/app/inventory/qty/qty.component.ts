@@ -6,8 +6,7 @@ import { Product } from '../product/product.model';
 import { Qty } from '../../../models/qty/qty.dto';
 import { QtyType } from '../../../models/qty-type/qty-type';
 import { CreateQtyDto, UpdateQtyDto } from '../../../models/create-qty.dto';
-import { LoginService } from '../../login.service';
-
+import { LoginService } from '../../login/login.service';
 
 @Component({
     selector: 'app-qty',

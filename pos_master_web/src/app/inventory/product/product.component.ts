@@ -9,11 +9,9 @@ import { ISupplierDto } from '../../../models/supplier/supplier.dto';
 import { ProductPrice } from '../../../models/product-price/product-price.model';
 import { ProductPriceService } from '../product-price/product-price.service';
 import { QtyService } from '../qty/qty.service';
-import { CreateQtyDto } from '../../../models/create-qty.dto';
 import { QtyType } from '../../../models/qty-type/qty-type';
 import { SelectChangeEvent } from 'primeng/select';
-import { LoginService } from '../../login.service';
-import { CreateProductPriceDto } from '../../../models/create-product-price.dto';
+import { LoginService } from '../../login/login.service';
 
 @Component({
   selector: 'app-product',

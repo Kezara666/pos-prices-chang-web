@@ -10,6 +10,7 @@ import { AppLayout } from "./dashboard/layout/component/app.layout";
 import { PurchaseOrderComponent } from "./sale-management/purchase-order/purchase-order.component";
 import { OldPurchaseOrdersComponent } from "./sale-management/old-purchase-orders/old-purchase-orders.component";
 import { StatManagementComponent } from "./stat-management/stat-management/stat-management.component";
+import { LoginComponent } from "./login/login.component";
 
 
 export const routes: Routes = [
@@ -30,6 +31,7 @@ export const routes: Routes = [
     ],
   },
   // { path: 'auth', component: LoginComponent }, // /auth for login
+  { path: 'login', component: LoginComponent }, // /logout for logout
   { path: 'add-item', redirectTo: 'auth', pathMatch: 'full' }, // Redirect /add-item to /auth
   { path: '', redirectTo: 'auth', pathMatch: 'full' }, // Default route
   { path: '**', redirectTo: 'auth', pathMatch: 'full' }, // Wildcard route

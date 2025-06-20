@@ -3,6 +3,7 @@ import { InvoiceDto, ItemSellDto } from '../../../models/purchase-order/purchase
 import { Qty } from '../../../models/qty/qty.dto';
 import { QtyService } from '../../inventory/qty/qty.service';
 import { Product } from '../../inventory/product/product.model';
+import { LoginService } from '../../login/login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +12,22 @@ export class PurchaseOrderService {
   quantities: Qty[] = [];
 
 
-  order: InvoiceDto = {
-    customerId: undefined,
-    total: 0,
-    discount: 0,
-    netTotal: 0,
-    itemsSelled: [],
-    pendingdAmount: 0,
+  order!: InvoiceDto;
 
-  }
-
-  constructor(private qtyService: QtyService) {
+  constructor(private qtyService: QtyService, private loginService: LoginService) {
+    this.order = {
+      customerId: undefined,
+      total: 0,
+      discount: 0,
+      netTotal: 0,
+      itemsSelled: [],
+      pendingdAmount: 0,
+      shopId: loginService.shopId,
+      createdById: loginService.userId,
+      updatedById: loginService.userId
+    }
     this.loadQuantities()
+
   }
 
   loadQuantities() {
@@ -47,6 +52,9 @@ export class PurchaseOrderService {
       netTotal: 0,
       itemsSelled: [],
       pendingdAmount: 0,
+      shopId: this.loginService.shopId,
+      createdById: this.loginService.userId,
+      updatedById: this.loginService.userId
 
     }
   }

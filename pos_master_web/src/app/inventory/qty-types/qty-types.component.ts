@@ -6,7 +6,8 @@ import { Table } from 'primeng/table';
 import * as XLSX from 'xlsx';
 import { saveAs } from "file-saver";
 import { QtyType, CreateQtyTypeDto } from '../../../models/qty-type/qty-type';
-import { LoginService } from '../../login.service';
+import { LoginService } from '../../login/login.service';
+
 
 @Component({
   selector: 'app-qty-types',

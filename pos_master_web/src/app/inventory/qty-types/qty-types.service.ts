@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { QtyType } from '../../../models/qty-type/qty-type';
 import { environment } from '../../../environments/environment.prod';
-import { LoginService } from '../../login.service';
+import { LoginService } from '../../login/login.service';
 
 
 @Injectable({

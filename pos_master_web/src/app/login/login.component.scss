@@ -1,0 +1,34 @@
+/* Smooth gradient animation using background position */
+.bg-gradient-to-br {
+  background-image: linear-gradient(
+    to bottom right,
+    var(--p-primary-200, #c7d2fe),
+    var(--p-primary-500, #4f46e5),
+    var(--p-primary-700, #7c3aed),
+    var(--p-primary-900, #a855f7),
+    var(--p-primary-200, #c7d2fe),
+    var(--p-primary-500, #4f46e5)
+  );
+  background-size: 200% 200%;
+  animation: smoothGradient 12s ease-in-out infinite;
+}
+
+@keyframes smoothGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+input:focus {
+  outline: none;
+}
+
+button:hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

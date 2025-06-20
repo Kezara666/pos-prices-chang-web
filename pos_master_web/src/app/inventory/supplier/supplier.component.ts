@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 import { saveAs } from "file-saver";
 import { ISupplierDto } from '../../../models/supplier/supplier.dto';
 import { CreateSupplierDto } from '../../../models/supplier/create-supplier.dto';
-import { LoginService } from '../../login.service';
+import { LoginService } from '../../login/login.service';
 
 @Component({
   selector: 'app-supplier',
