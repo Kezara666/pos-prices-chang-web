@@ -1,24 +1,23 @@
 <p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" class="custom-toast"></p-toast>
 
 <!-- Heading and Add Button -->
-<div class="flex items-center justify-center px-4 layout-main sm:px-6 lg:px-8">
+<div class="flex items-center justify-start ">
   <div
-    class="relative flex items-center justify-between gap-4 py-4 px-6 mt-4 bg-gradient-to-r from-[var(--p-primary-900)] to-[var(--p-primary-700)] border border-[var(--p-primary-500)] min-w-[24rem] rounded-2xl shadow-lg backdrop-filter backdrop-blur-md bg-opacity-20 transition-all duration-300 hover:shadow-xl">
+    class="relative flex items-center justify-start gap-10 px-6 py-6 mt-4 bg-gradient-to-r from-[var(--surface-overlay)] to-[var(--surface-overlay)] rounded shadow-lg backdrop-filter backdrop-blur-md bg-opacity-20 transition-all duration-300 hover:shadow-xl rounded-2xl border border-[var(--surface-border)]">
     <div
-      class="m-2 text-xl font-bold tracking-wide text-transparent text-white uppercase sm:text-2xl bg-clip-text bg-gradient-to-r from-white to-gray-200">
+      class="absoulute m-2 text-xl font-bold tracking-wide text-[var(--text-color-100)] uppercase sm:text-2xl bg-clip-text bg-gradient-to-r from-white to-gray-200  ">
       Product Management
     </div>
     <div>
       <p-button type="button" icon="pi pi-plus" (click)="showAddModal()"
-        class="transition-transform duration-200 hover:scale-105 " label="Add Product"></p-button>
+        class="transition-transform duration-200 hover:scale-105 " label="Add Product" ></p-button>
     </div>
   </div>
 </div>
 
 <div
-  class="mt-8 mx-4 sm:mx-1 lg:mx-8 border-2 border-[var(--p-primary-500)] rounded-2xl shadow-md bg-[var(--surface-card)] bg-opacity-90 desktop-view">
-  <div class="p-4 sm:p-6">
-
+  class="mt-8 rounded-2xl shadow-md bg-[var(--surface-card)] bg-opacity-90 desktop-view border border-[var(--surface-border)]">
+  <div class=" sm:p-6">
     <p-table #dt [value]="products" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
       [globalFilterFields]="['name','category','subcategory','currentPrice','warranty']" [scrollable]="true"
       [scrollDirection]="'both'" [scrollHeight]="'50rem'" [tableStyle]="{ 'min-width': '60rem' }" class="desktop-table">
@@ -61,10 +60,10 @@
   </div>
 </div>
 
-<div class="mx-4 mt-8 mobile-view">
-  <div class="p-4">
+<div class="mx-1 mt-8 mobile-view">
+  <div class="">
     <div
-      class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-b from-[var(--surface-ground)] to-[var(--surface-card)] py-4 px-4 rounded-t-xl">
+      class="flex flex-col sm:flex-row m-3 items-center justify-between gap-4 bg-gradient-to-b from-[var(--surface-ground)] to-[var(--surface-card)] py-4 px-4 rounded-t-2xl">
       <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"
         class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
         placeholder="Search products..." />

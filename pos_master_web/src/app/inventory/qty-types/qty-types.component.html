@@ -4,10 +4,10 @@
 </div>
 
 <!-- Heading and Add Button -->
-<div class="flex items-center justify-center">
+<div class="flex items-center">
   <div
-    class="relative flex items-center justify-center gap-5 py-4 mt-2 bg-[var(--p-primary-900)] border border-[var(--p-primary-color)] min-w-96 rounded-xl backdrop-filter backdrop-blur-sm bg-opacity-10">
-    <div class="text-lg text-center text-white uppercase md:text-xl bg-clip-text">
+    class="relative flex items-center justify-start gap-10 px-6 py-6 mt-4 bg-gradient-to-r from-[var(--surface-overlay)] to-[var(--surface-overlay)] rounded shadow-lg backdrop-filter backdrop-blur-md bg-opacity-20 transition-all duration-300 hover:shadow-xl rounded-2xl border border-[var(--surface-border)]">
+    <div class="absoulute m-2 text-xl font-bold tracking-wide text-[var(--text-color-100)] uppercase sm:text-2xl bg-clip-text bg-gradient-to-r from-white to-gray-200  ">
       Quantity Type Management
     </div>
     <div>
@@ -17,8 +17,8 @@
 </div>
 
 <!-- Qty Types Table -->
-<div class="mt-10 border-2 border-[var(--p-primary-color)] rounded-xl">
-  <div class="p-1">
+<div class="mt-8 rounded-2xl shadow-md bg-[var(--surface-card)] bg-opacity-90 desktop-view border border-[var(--surface-border)]">
+  <div class="p-6">
     <p-table #dt [value]="qtyTypes" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10,20]"
       [globalFilterFields]="['id','name','primaryWeightTo']" [scrollable]="true" [scrollDirection]="'both'"
       [scrollHeight]="'50rem'" [tableStyle]="{ 'min-width': '50rem' }">

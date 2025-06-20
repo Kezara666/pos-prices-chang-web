@@ -2,6 +2,7 @@ import { Product } from "../../app/inventory/product/product.model";
 import { QtyType } from "../qty-type/qty-type";
 
 export interface ItemSellDto {
+  id?:number,
   productId: number;
   product?:Product;
   qtyTypeId: number;
@@ -14,6 +15,7 @@ export interface ItemSellDto {
 }
 
 export interface InvoiceDto {
+  id?:number,
   customerId?: number;
   total: number;
   discount: number;

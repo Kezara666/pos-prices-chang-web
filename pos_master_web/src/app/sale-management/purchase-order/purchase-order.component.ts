@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Product } from '../../inventory/product/product.model';
 import { MessageService } from 'primeng/api';
 import { ProductService } from '../../inventory/product/product.service';
@@ -37,6 +37,8 @@ export class PurchaseOrderComponent implements OnInit {
   allowedFormats = [BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128, BarcodeFormat.DATA_MATRIX /*, ...*/];
   multipleMatches: Product[] = []; // Add this line
   displayProductSelection: boolean = false; // Add this line
+
+  
 
   //#region Quantity Management
   /**

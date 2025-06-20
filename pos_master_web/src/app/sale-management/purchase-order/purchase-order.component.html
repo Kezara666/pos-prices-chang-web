@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 
 <!-- Barcode Input and Scanner Toggle -->
-<div class="flex flex-col gap-2">
+<div class="flex gap-2">
   <p-floatlabel variant="in">
     <input #barCodeInput (input)="filterProductsByBarCodeOrQR(barCodeInput.value)"
       class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
@@ -93,7 +93,7 @@
 <div class="flex flex-wrap items-center justify-start gap-3 mt-6">
   <button pButton type="button" label="Show Bill" icon="pi pi-bill" (click)="showDialog()"
     class="p-button-secondary"></button>
-  <button pButton type="button" label="Save Order" icon="pi pi-check" (click)="saveOrder()"
+  <button pButton type="button" #saveOrderButton label="Save Order" icon="pi pi-check" (click)="saveOrder()"
     class="p-button-success"></button>
   <button pButton type="button" label="Save as Draft" icon="pi pi-save" (click)="saveDraft()"
     class="p-button-info"></button>

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
- // Import or create a PurchaseOrderService
 import { InvoiceService } from '../purchase-order/invoice.service';
 import { InvoiceDto } from '../../../models/purchase-order/purchase-order.dto';
 
@@ -9,23 +8,37 @@ import { InvoiceDto } from '../../../models/purchase-order/purchase-order.dto';
   styleUrls: ['./old-purchase-orders.component.scss']
 })
 export class OldPurchaseOrdersComponent implements OnInit {
-  purchaseOrders: InvoiceDto[] = []; 
+  purchaseOrders: InvoiceDto[] = [];
+  displayInvoiceDetailsDialog: boolean = false;
+  selectedInvoice: InvoiceDto | null = null;
 
-  constructor(private invoiceService:InvoiceService) { }
+  constructor(private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
     this.loadPurchaseOrders();
   }
 
   loadPurchaseOrders(): void {
-    this.invoiceService.getInvoices().subscribe( // Assuming you have a getInvoices method in your servicePurchaseOrders method in your service
+    this.invoiceService.getInvoices().subscribe(
       (data) => {
         this.purchaseOrders = data;
-        console.log(data)
+        console.log(data);
       },
       (error) => {
         console.error('Failed to load purchase orders', error);
       }
     );
+  }
+
+  // This method will be called when a table row is clicked
+  showInvoiceDetails(invoice: InvoiceDto): void {
+    this.selectedInvoice = invoice;
+    this.displayInvoiceDetailsDialog = true;
+  }
+
+  // This method will be called to close the dialog
+  hideInvoiceDetails(): void {
+    this.displayInvoiceDetailsDialog = false;
+    this.selectedInvoice = null;
   }
 }
