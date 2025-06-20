@@ -1,46 +1,48 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import { environment } from '../../../environments/environment.prod';
+import { Qty } from '../../../models/qty/qty.dto';
 import { CreateQtyDto } from '../../../models/create-qty.dto';
+import { log } from 'console';
+import { LoginService } from '../../login.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QtyService {
-  private apiUrl = `${environment.backendUrl}/qtys`; // Adjust base URL as needed
+  private apiUrl = `${environment.backendUrl}/qties`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient , private loginService: LoginService) {}
 
-  // You can add methods to interact with your backend API here
-  // For example:
-
-  // Create a new quantity entry
-  createQuantity(data: CreateQtyDto): Observable<any> {
-    return this.http.post(this.apiUrl, data);
+  getAllQuantities(): Observable<Qty[]> {
+    return this.http.get<Qty[]>(`${this.apiUrl}/shop/${this.loginService.shopId}`);
   }
 
-  // Get all quantities
-  getAllQuantities(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getQuantity(id: number): Observable<Qty> {
+    return this.http.get<Qty>(`${this.apiUrl}/${id}`);
   }
 
-  // Get a specific quantity by ID
-  getQuantityById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  createQuantity(dto: CreateQtyDto): Observable<Qty> {
+    const payload = {
+      ...dto,
+      shopId: this.loginService.shopId, // Or fetch dynamically
+      createdById: this.loginService.userId, // From auth/session
+      updatedById: this.loginService.userId
+    };
+    return this.http.post<Qty>(this.apiUrl, payload);
   }
 
-  // Update an existing quantity
-  updateQuantity(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, data);
+  updateQuantity(id: number, dto: Partial<CreateQtyDto>): Observable<Qty> {
+    const payload = {
+      ...dto,
+      updatedById: this.loginService.userId // From auth/session
+    };
+    return this.http.patch<Qty>(`${this.apiUrl}/${id}`, payload);
   }
 
-  // Delete a quantity
-  deleteQuantity(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  deleteQuantity(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
-  
-  updateQtyReduce(productId: number, amount: number) {
-  return this.http.patch(`${environment.backendUrl}/qtys/${productId}/decrease/${amount}`, {});
-}
 }

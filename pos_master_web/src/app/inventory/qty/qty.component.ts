@@ -5,7 +5,8 @@ import { QtyService } from './qty.service';
 import { Product } from '../product/product.model';
 import { Qty } from '../../../models/qty/qty.dto';
 import { QtyType } from '../../../models/qty-type/qty-type';
-import { CreateQtyDto } from '../../../models/create-qty.dto';
+import { CreateQtyDto, UpdateQtyDto } from '../../../models/create-qty.dto';
+import { LoginService } from '../../login.service';
 
 
 @Component({
@@ -30,6 +31,9 @@ export class QtyComponent implements OnInit {
         productId: 0,
         qtyTypeId: 0,
         qty: 0,
+        shopId: 0,
+        createdById: 0,
+        updatedById: 0,
     };
 
     // For deletion
@@ -39,6 +43,7 @@ export class QtyComponent implements OnInit {
         private productService: ProductService,
         private qtyTypesService: QtyTypesService,
         private qtyService: QtyService,
+        private loginService: LoginService
         // private messageService: MessageService // Uncomment if using PrimeNG messages
     ) { }
 
@@ -84,6 +89,9 @@ export class QtyComponent implements OnInit {
             productId: 0,
             qtyTypeId: 0,
             qty: 0,
+            shopId: this.loginService.shopId,
+            createdById: this.loginService.userId,
+            updatedById: this.loginService.userId,
         };
         this.displayModal = true;
     }
@@ -107,7 +115,14 @@ export class QtyComponent implements OnInit {
     saveQuantity() {
         if (this.isEditMode) {
             // Update existing quantity
-            this.qtyService.updateQuantity(this.currentQuantity.id, this.currentQuantity).subscribe({
+            const updateQty = new UpdateQtyDto()
+            updateQty.productId = this.currentQuantity.product?.id
+            updateQty.qtyTypeId = this.currentQuantity.qtyType?.id
+            updateQty.qty = this.currentQuantity.qty;
+            updateQty.shopId = this.loginService.shopId;
+            updateQty.updatedById = this.loginService.userId;
+
+            this.qtyService.updateQuantity(this.currentQuantity.id, updateQty).subscribe({
                 next: (updated) => {
                     this.loadAllEntiy()
                 },

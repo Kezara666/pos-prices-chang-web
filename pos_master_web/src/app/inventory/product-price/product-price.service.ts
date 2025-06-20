@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProductPrice } from '../../../models/product-price/product-price.model';
 import { environment } from '../../../environments/environment.prod';
+import { CreateProductPriceDto } from '../../../models/create-product-price.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ProductPriceService {
     return this.http.get<ProductPrice>(`${this.apiUrl}/${id}`);
   }
 
-  create(data: any): Observable<ProductPrice> {
+  create(data: CreateProductPriceDto): Observable<ProductPrice> {
     return this.http.post<ProductPrice>(this.apiUrl, data);
   }
 

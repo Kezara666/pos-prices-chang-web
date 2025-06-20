@@ -3,17 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ISupplierDto } from '../../../models/supplier/supplier.dto';
 import { environment } from '../../../environments/environment.prod';
+import { LoginService } from '../../login.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SupplierService {
-  private apiUrl = `${environment.backendUrl}/supplier`; // Adjust as needed
 
-  constructor(private http: HttpClient) {}
+  private apiUrl = `${environment.backendUrl}/suppliers`; // Adjust as needed
+
+  constructor(private http: HttpClient,private loginService:LoginService) {}
 
   getSuppliers(): Observable<ISupplierDto[]> {
-    return this.http.get<ISupplierDto[]>(this.apiUrl);
+    return this.http.get<ISupplierDto[]>(this.apiUrl+"/shop/"+`${this.loginService.shopId}`);
   }
 
   getSupplier(id: number): Observable<ISupplierDto> {
@@ -25,7 +27,7 @@ export class SupplierService {
   }
 
   updateSupplier(id: number, supplier: ISupplierDto): Observable<ISupplierDto> {
-    return this.http.put<ISupplierDto>(`${this.apiUrl}/${id}`, supplier);
+    return this.http.patch<ISupplierDto>(`${this.apiUrl}/${id}`, supplier);
   }
 
   deleteSupplier(id: number): Observable<void> {

@@ -1,26 +1,49 @@
 {
-  // For more information, visit: https://go.microsoft.com/fwlink/?LinkId=733558
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "ng serve", // Added a label for clarity, matches preLaunchTask in launch.json
       "type": "npm",
       "script": "start",
       "isBackground": true,
       "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
+        "owner": "typescript", // Still okay, or remove if not strictly needed for this matcher
+        // This 'pattern' is for real-time error matching. Angular CLI often uses its own formatting.
+        // A more robust pattern might capture Angular CLI specific errors, but often simple '$tsc' is fine
+        // for general TypeScript errors that CLI reports.
+        "pattern": [
+          {
+            "regexp": "ERROR in (.*)", // Basic pattern to catch Angular build errors
+            "file": 1
+          },
+          {
+            "regexp": ".*", // Generic catch-all for other messages
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
         "background": {
           "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
+          // Updated: Match common Angular CLI "begins" messages
+          "beginsPattern": ".*(?:Starting development server|Compiling|webpack: Compiling|Waiting for all jobs to complete).*",
+          // Updated: Match the definitive "ends" message for a successful build
+          "endsPattern": ".*Compiled successfully.*"
         }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "build"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
       }
     },
+    // You can keep the 'test' task, but its problemMatcher also needs adjustment if you use it for debugging tests
     {
+      "label": "ng test",
       "type": "npm",
       "script": "test",
       "isBackground": true,
@@ -29,13 +52,14 @@
         "pattern": "$tsc",
         "background": {
           "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
+          "beginsPattern": ".*Jasmine started.*", // Adjust based on your test runner's output
+          "endsPattern": ".*Executed \\d+ of \\d+ SUCCESS.*" // Adjust based on your test runner's success message
         }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "test"
       }
     }
   ]

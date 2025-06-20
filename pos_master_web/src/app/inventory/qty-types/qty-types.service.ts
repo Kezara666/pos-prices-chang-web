@@ -3,19 +3,21 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { QtyType } from '../../../models/qty-type/qty-type';
 import { environment } from '../../../environments/environment.prod';
+import { LoginService } from '../../login.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class QtyTypesService {
-    private apiUrl = `${environment.backendUrl}/qty-types`; // Adjust this URL to match your backend endpoint
+  private apiUrl = `${environment.backendUrl}/qty-types`; // Adjust this URL to match your backend endpoint
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private loginService:LoginService) { }
 
   getQtyTypes(): Observable<QtyType[]> {
-    return this.http.get<QtyType[]>(this.apiUrl);
+    return this.http.get<QtyType[]>(`${this.apiUrl}/shop/${this.loginService.shopId}`);
   }
+
 
   getQtyTypeById(id: number): Observable<QtyType> {
     return this.http.get<QtyType>(`${this.apiUrl}/${id}`);
@@ -26,7 +28,7 @@ export class QtyTypesService {
   }
 
   updateQtyType(id: number, qtyType: QtyType): Observable<QtyType> {
-    return this.http.put<QtyType>(`${this.apiUrl}/${id}`, qtyType);
+    return this.http.patch<QtyType>(`${this.apiUrl}/${id}`, qtyType);
   }
 
   deleteQtyType(id: number): Observable<void> {

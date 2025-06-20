@@ -7,6 +7,7 @@ import * as XLSX from 'xlsx';
 import { saveAs } from "file-saver";
 import { ISupplierDto } from '../../../models/supplier/supplier.dto';
 import { CreateSupplierDto } from '../../../models/supplier/create-supplier.dto';
+import { LoginService } from '../../login.service';
 
 @Component({
   selector: 'app-supplier',
@@ -24,13 +25,17 @@ export class SupplierComponent implements OnInit {
     id: 0,
     name: '',
     createdAt: undefined,
-    updatedAt: undefined
+    updatedAt: undefined,
+    shopId: 0,
+    createdById: 0
   };
   selectedSupplierFromTable: ISupplierDto = {
     id: 0,
     name: '',
     createdAt: undefined,
-    updatedAt: undefined
+    updatedAt: undefined,
+    shopId: 0,
+    createdById: 0
   };
 
   isEditMode: boolean = false;
@@ -38,7 +43,8 @@ export class SupplierComponent implements OnInit {
 
   constructor(
     private supplierService: SupplierService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private loginService:LoginService
   ) {}
 
   ngOnInit(): void {
@@ -48,10 +54,8 @@ export class SupplierComponent implements OnInit {
   loadSuppliers() {
     this.supplierService.getSuppliers().subscribe((response: ISupplierDto[]) => {
       this.suppliers = response.map((item: ISupplierDto) => ({
-        id: item.id,
-        name: item.name,
-        createdAt: item.createdAt,
-        updatedAt: item.updatedAt
+        ...item,
+        shopId : item.shop?.id ?? 0
       }));
     });
   }
@@ -103,7 +107,9 @@ export class SupplierComponent implements OnInit {
       id: 0,
       name: '',
       createdAt: undefined,
-      updatedAt: undefined
+      updatedAt: undefined,
+      shopId: 0,
+      createdById: 0
     };
     this.isEditMode = false;
     this.displayModal = true;
@@ -116,6 +122,7 @@ export class SupplierComponent implements OnInit {
     }
 
     if (this.isEditMode && this.currentSupplier.id && this.currentSupplier.id !== 0) {
+      
       // Update
       this.supplierService.updateSupplier(this.currentSupplier.id, this.currentSupplier).subscribe({
         next: () => {
@@ -130,7 +137,7 @@ export class SupplierComponent implements OnInit {
       });
     } else {
       // Add
-      const newSupplier: CreateSupplierDto = { name: this.currentSupplier.name };
+      const newSupplier: CreateSupplierDto = { name: this.currentSupplier.name, shopId: this.loginService.shopId, createdById: this.loginService.userId};
       this.supplierService.createSupplier(newSupplier).subscribe({
         next: (addedSupplier: ISupplierDto) => {
           this.suppliers.push(addedSupplier);

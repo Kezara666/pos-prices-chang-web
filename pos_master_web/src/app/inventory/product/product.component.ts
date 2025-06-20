@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from './product.service';
-import { Product } from './product.model';
+import { CreateProductWithDependenciesDto, Product } from './product.model';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { QtyTypesService } from '../qty-types/qty-types.service';
@@ -12,6 +12,8 @@ import { QtyService } from '../qty/qty.service';
 import { CreateQtyDto } from '../../../models/create-qty.dto';
 import { QtyType } from '../../../models/qty-type/qty-type';
 import { SelectChangeEvent } from 'primeng/select';
+import { LoginService } from '../../login.service';
+import { CreateProductPriceDto } from '../../../models/create-product-price.dto';
 
 @Component({
   selector: 'app-product',
@@ -38,15 +40,7 @@ export class ProductComponent implements OnInit {
   showDialogQRAndBarCode() {
     this.qrAndBarcodeVisible = true;
   }
-  currentProductPrice: ProductPrice = {
-    id: 0,
-    wholeSalePrice: 0,
-    broughtPrice: 0,
-    primarySalePrice: 0,
-    product: this.currentProduct as Product,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
+  currentProductPrice!: ProductPrice
 
   constructor(
     private productService: ProductService,
@@ -55,10 +49,25 @@ export class ProductComponent implements OnInit {
     private supplierService: SupplierService,
     private productPriceService: ProductPriceService,
     private qtyService: QtyService,
-    private cd: ChangeDetectorRef
-  ) { }
+    private cd: ChangeDetectorRef,
+    private loginService: LoginService
+  ) {
+    this.currentProductPrice = {
+      id: 0,
+      wholeSalePrice: 0,
+      broughtPrice: 0,
+      primarySalePrice: 0,
+      product: this.currentProduct as Product,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      shopId: loginService.shopId,
+      createdById: loginService.userId,
+      updatedById: loginService.userId
+    };
+  }
 
   ngOnInit(): void {
+
     this.loadAllEntities()
   }
 
@@ -123,7 +132,14 @@ export class ProductComponent implements OnInit {
         id: item.id,
         name: item.name,
         primaryWeightTo: item.primaryWeightTo,
-        mainQtyId: item.mainQtyId,
+        mainQtyId: item.mainQty?.id ?? 0,
+        mainQty: item.mainQty,
+        shop: item.shop,
+        createdById: item.createdById,
+        updatedById: item.updatedById,
+        updatedBy: item.updatedBy,
+        shopId: item.shop?.id ?? 0
+
       }));
     });
   }
@@ -135,7 +151,9 @@ export class ProductComponent implements OnInit {
         id: item.id,
         name: item.name,
         createdAt: item.createdAt,
-        updatedAt: item.updatedAt
+        updatedAt: item.updatedAt,
+        shopId: item.shopId,
+        createdById: item.createdById
       }));
     });
   }
@@ -143,7 +161,10 @@ export class ProductComponent implements OnInit {
   //#region Load Product
   loadProducts() {
     this.productService.getProducts().subscribe({
-      next: (data) => (this.products = data),
+      next: (data) => {
+        this.products = data
+        console.log(data)
+      },
       error: () => this.showToast('Failed to load products', 'error')
     });
   }
@@ -157,7 +178,6 @@ export class ProductComponent implements OnInit {
 
   //#region Edit Product
   editProduct(product: Product) {
-
     this.currentProduct = {
       ...product,
       supplierId: product.supplier?.id || 0, // Handle optional supplier
@@ -209,23 +229,53 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  AddProductAPICAll(newProduct: Product) {
-    this.productService.addProduct(newProduct).subscribe({
-      next: (product: Product) => {
-        this.showToast('Product added successfully', 'success');
-        this.currentProduct = product;
-        //#region call save Product Price
-        this.saveProductPrice({
-          ...this.currentProductPrice,
-          product: product
-        });
-
+  AddProductAPICAll() {
+    const productDto: CreateProductWithDependenciesDto = {
+      name: this.currentProduct.name,
+      description: this.currentProduct.description,
+      category: this.currentProduct.category,
+      subcategory: this.currentProduct.subcategory,
+      currentPrice: this.currentProductPrice.primarySalePrice,
+      warranty: this.currentProduct.warranty,
+      supplierId: this.currentProduct.supplierId,
+      qtyTypeId: this.currentProduct.qtyTypeId,
+      qty: this.currentProduct.qty,
+      shopId: this.loginService.shopId,
+      createdById: this.loginService.userId,
+      updatedById: this.loginService.userId,
+      // Include price data
+      productPrice: {
+        wholeSalePrice: this.currentProductPrice.wholeSalePrice,
+        broughtPrice: this.currentProductPrice.broughtPrice,
+        primarySalePrice: this.currentProductPrice.primarySalePrice,
+        shopId: this.loginService.shopId,
+        createdById: this.loginService.userId,
+        updatedById: this.loginService.userId
+      },
+      // Include quantity data
+      qtyData: {
+        qty: this.currentProduct.qty,
+        qtyTypeId: this.currentProduct.qtyTypeId,
+        shopId: this.loginService.shopId,
+        createdById: this.loginService.userId,
+        updatedById: this.loginService.userId
+      }
+    };
+    this.productService.createProductWithDependencies(productDto).subscribe({
+      next: (response) => {
+        this.showToast('Product and its dependencies added successfully', 'success');
         this.loadProducts();
         this.displayModal = false;
+        this.emptyProductPrice(); // Reset form state
+        this.currentProduct = this.getEmptyProduct(); // Reset product form
       },
-      error: () => this.showToast('Failed to add product', 'error')
+      error: (e) => {
+        this.showToast('Failed to add product with dependencies', 'error');
+        console.error('Error creating product with dependencies:', e);
+      }
     });
   }
+
 
   //#region Save Prouduct
   saveProduct() {
@@ -234,51 +284,14 @@ export class ProductComponent implements OnInit {
       if (this.isEditMode && this.currentProduct.id) {
         this.editProductAPICall(this.currentProduct)
       } else {
-        this.AddProductAPICAll(this.currentProduct);
+        this.currentProduct.createdById = this.loginService.userId
+        this.currentProduct.updatedById = this.loginService.userId
+        this.currentProduct.shopId = this.loginService.shopId
+        this.AddProductAPICAll();
       }
     }
   }
 
-  //#region Save Qty
-  saveQty(qty: CreateQtyDto) {
-    if (this.currentProduct.id) {
-      this.qtyService.createQuantity({
-        productId: qty.productId, // ID of the associated product
-        qtyTypeId: qty.qtyTypeId, // ID of the associated QtyType
-        qty: qty.qty
-      }).subscribe({
-        next: () => {
-          this.showToast('Quantity saved successfully', 'success');
-          this.currentProduct.qty
-          this.emptyProductPrice()
-        },
-        error: () => this.showToast('Failed to save quantity', 'error')
-      });
-    } else {
-      this.showToast('Please select a product first', 'error');
-    }
-  }
-
-  //#region SAVE PRODUCT PRICE
-  private saveProductPrice(productPrice: ProductPrice) {
-    //if(product)
-    this.productPriceService.create(productPrice).subscribe({
-      next: (productPrice: ProductPrice) => {
-        this.showToast('Product price added successfully' + productPrice.product.name, 'success');
-        productPrice.product.productPriceId = productPrice.id;
-        productPrice.product.currentPrice = productPrice.primarySalePrice;
-        this.editProductAPICall(productPrice.product);
-        // this.emptyProductPrice();
-        this.saveQty({
-          productId: productPrice.product.id!,
-          qtyTypeId: productPrice.product.qtyType?.id!,
-          qty: this.currentProduct.qty
-        })
-
-      },
-      error: () => this.showToast('Failed to add product price', 'error')
-    });
-  }
 
   //#region EMPTY PRODUCT PRICE
   emptyProductPrice() {
@@ -290,6 +303,9 @@ export class ProductComponent implements OnInit {
       product: this.currentProduct as Product,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      updatedById: this.loginService.userId,
+      createdById: this.loginService.userId,
+      shopId: this.loginService.shopId
     };
   }
 
@@ -319,14 +335,13 @@ export class ProductComponent implements OnInit {
     }
   }
 
-
   onRejectDelete() {
     this.messageService.clear('confirm');
     this.visible = false;
   }
 
   showToast(message: string, severity: 'success' | 'error', life?: number) {
-    this.messageService.add({ severity, summary: message, life: life ?? 3000 });
+    this.messageService.add({ severity, summary: message, life: life ?? 10000 });
   }
 
   //#region Get Empty Product
@@ -343,7 +358,10 @@ export class ProductComponent implements OnInit {
       warranty: 0,
       supplierId: 0,
       qtyTypeId: 0,
-      qty:0
+      qty: 0,
+      shopId: 0,
+      createdById: 0,
+      updatedById: 0
     };
   }
   //#region Table Filters

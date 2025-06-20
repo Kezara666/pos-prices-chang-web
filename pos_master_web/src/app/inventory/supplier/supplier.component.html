@@ -37,6 +37,7 @@
           <th>Name</th>
           <th>Created</th>
           <th>Updated</th>
+          <th>Updated By</th>
           <th>Actions</th>
         </tr>
       </ng-template>
@@ -46,6 +47,7 @@
           <td>{{ supplier.name }}</td>
           <td>{{ supplier.createdAt | date:'short' }}</td>
           <td>{{ supplier.updatedAt | date:'short' }}</td>
+          <td>{{ supplier.updatedBy.name }}</td>
           <td>
             <div class="flex gap-1">
               <p-button type="button" icon="pi pi-pencil" label="Edit" (click)="editSupplier(supplier)"></p-button>

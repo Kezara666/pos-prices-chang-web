@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from './product.model';
+import { CreateProductWithDependenciesDto, Product } from './product.model';
 import { environment } from '../../../environments/environment.prod';
+import { LoginService } from '../../login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,23 +11,24 @@ import { environment } from '../../../environments/environment.prod';
 export class ProductService {
   private baseUrl = `${environment.backendUrl}/products`; // Adjust as per your backend
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loginService: LoginService) { }
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.baseUrl);
+    return this.http.get<Product[]>(`${this.baseUrl}/shop/${this.loginService.shopId}`);
   }
 
   getProduct(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.baseUrl}/${id}`);
   }
 
-  addProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.baseUrl, product);
+  createProductWithDependencies(payload: CreateProductWithDependenciesDto): Observable<any> {
+    // Assuming your backend endpoint is something like /products/create-full
+    return this.http.post<any>(`${this.baseUrl}/create-full`, payload);
   }
 
   updateProduct(id: string, product: Product): Observable<Product> {
     console.log(`Updating product with ID: ${id}`, product);
-    return this.http.put<Product>(`${this.baseUrl}/${id}`, product);
+    return this.http.patch<Product>(`${this.baseUrl}/${id}`, product);
   }
 
   deleteProduct(id: number): Observable<void> {

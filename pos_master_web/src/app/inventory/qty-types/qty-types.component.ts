@@ -6,6 +6,7 @@ import { Table } from 'primeng/table';
 import * as XLSX from 'xlsx';
 import { saveAs } from "file-saver";
 import { QtyType, CreateQtyTypeDto } from '../../../models/qty-type/qty-type';
+import { LoginService } from '../../login.service';
 
 @Component({
   selector: 'app-qty-types',
@@ -23,13 +24,20 @@ export class QtyTypesComponent implements OnInit {
     id: 0,
     name: '',
     primaryWeightTo: 0,
-    mainQtyId: 0
+    mainQtyId: 0,
+    shopId: 0,
+    createdById: 0,
+    updatedById: 0
   };
   selectedQtyTypeFromTable: QtyType = {
     id: 0,
     name: '',
     primaryWeightTo: 0,
-    mainQtyId: 0
+    mainQtyId: 0,
+    shopId: 0,
+    createdById: 0,
+    updatedById: 0
+    
   };
 
   isEditMode: boolean = false;
@@ -41,7 +49,8 @@ export class QtyTypesComponent implements OnInit {
   constructor(
     private qtyTypesService: QtyTypesService,
     private messageService: MessageService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private loginService:LoginService
   ) { }
 
   ngOnInit(): void {
@@ -53,11 +62,17 @@ export class QtyTypesComponent implements OnInit {
     this.qtyTypesService.getQtyTypes().subscribe((response: QtyType[]) => {
       console.log('Editing quantity type:', response),
         this.qtyTypes = response.map((item: QtyType) => ({
-
           id: item.id,
           name: item.name,
           primaryWeightTo: item.primaryWeightTo,
-          mainQtyId: item.mainQty?.id ?? 0, // Ensure mainQtyId is set
+          mainQtyId: item.mainQty?.id ?? 0,
+          mainQty: item.mainQty,
+          shop: item.shop,
+          createdById: item.createdById,
+          updatedById: item.updatedById,
+          updatedBy: item.updatedBy,
+          shopId: item.shop?.id ?? 0
+
         }));
       this.cdr.detectChanges();
     });
@@ -78,6 +93,7 @@ export class QtyTypesComponent implements OnInit {
     this.currentQtyType = {
       ...qtyType,
       mainQtyId: qtyType.mainQtyId ?? qtyType.mainQty?.id ?? 0, // Ensure mainQtyId is set, // handles both object or number
+      updatedById:this.loginService.userId
     };
     this.isEditMode = true;
     this.displayModal = true;
@@ -125,7 +141,10 @@ export class QtyTypesComponent implements OnInit {
       id: 0,
       name: '',
       primaryWeightTo: 0,
-      mainQtyId: 0
+      mainQtyId: 0,
+      shopId: this.loginService.shopId,
+      createdById: this.loginService.userId,
+      updatedById: this.loginService.userId
     };
     this.isEditMode = false;
     this.displayModal = true;
@@ -155,7 +174,10 @@ export class QtyTypesComponent implements OnInit {
       const newQtyType: CreateQtyTypeDto = {
         name: this.currentQtyType.name,
         primaryWeightTo: this.currentQtyType.primaryWeightTo,
-        mainQtyId: this.currentQtyType.mainQtyId
+        mainQtyId: this.currentQtyType.mainQtyId,
+        createdById: this.loginService.userId,
+        updatedById: this.loginService.userId,
+        shopId: this.loginService.shopId,
       };
       this.qtyTypesService.createQtyType(newQtyType).subscribe({
         next: (addedQtyType: QtyType) => {
