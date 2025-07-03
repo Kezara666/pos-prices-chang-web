@@ -45,6 +45,7 @@ import { StatManagementComponent } from './stat-management/stat-management/stat-
 import { ChartModule } from 'primeng/chart';
 import { CardModule } from 'primeng/card';
 import { LoginComponent } from './login/login.component';
+
 @NgModule({
   declarations: [
     QtyTypesComponent,
@@ -98,11 +99,12 @@ import { LoginComponent } from './login/login.component';
     AutoCompleteModule,
     SelectButtonModule, // Add this line
     ButtonModule,
-     ZXingScannerModule
+     ZXingScannerModule,
+     
 // Add this line
 
 
   ],
-  providers: [MessageService, ConfirmationService,LayoutService,],
+  providers: [MessageService, ConfirmationService,LayoutService],
 })
 export class AppModule { }

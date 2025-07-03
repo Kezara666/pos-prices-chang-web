@@ -6,10 +6,11 @@ import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 import { AppInterceptor } from './interceptor.interceptor';
-
+import { CookieService } from 'ngx-cookie-service';
 export const appConfig: ApplicationConfig = {
     providers: [
         provideRouter(routes),
+        CookieService,
         provideHttpClient(withFetch()),
         provideAnimationsAsync(),
         providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '.app-dark' } } },

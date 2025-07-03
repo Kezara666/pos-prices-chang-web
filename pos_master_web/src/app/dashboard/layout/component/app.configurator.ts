@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-
+import { CookieService } from 'ngx-cookie-service';
 const presets = {
     Aura,
     Lara,
@@ -94,27 +94,29 @@ declare type SurfacesType = {
                 </div>
     `,
     animations: [
-    trigger('fadeInOut', [
-      state('visible', style({
-        opacity: 1,
-        display: 'block',  // make sure it's visible
-      })),
-      state('hidden', style({
-        opacity: 0,
-        display: 'none',   // hide when hidden
-      })),
-      transition('visible => hidden', [
-        animate('500ms ease-out')
-      ]),
-      transition('hidden => visible', [
-        animate('500ms ease-in')
-      ]),
-    ]),
-  ],
+        trigger('fadeInOut', [
+            state('visible', style({
+                opacity: 1,
+                display: 'block',  // make sure it's visible
+            })),
+            state('hidden', style({
+                opacity: 0,
+                display: 'none',   // hide when hidden
+            })),
+            transition('visible => hidden', [
+                animate('500ms ease-out')
+            ]),
+            transition('hidden => visible', [
+                animate('500ms ease-in')
+            ]),
+        ]),
+    ],
+
 
 })
 export class AppConfigurator {
     router = inject(Router);
+    cookieService = inject(CookieService);
     @Input() visible = false;
 
     config: PrimeNG = inject(PrimeNG);
@@ -136,7 +138,29 @@ export class AppConfigurator {
 
     ngOnInit() {
         if (isPlatformBrowser(this.platformId)) {
+            // Load config from cookie
+            const savedConfig = this.getCookie('layoutConfig');
+            if (savedConfig) {
+                this.layoutService.layoutConfig.set(savedConfig);
+            }
             this.onPresetChange(this.layoutService.layoutConfig().preset);
+            console.log('Initial layoutConfig:', this.layoutService.layoutConfig());
+        }
+    }
+
+    // Set cookie with JSON stringified config
+    setCookie(name: string, value: any, days: number = 365) {
+        this.cookieService.set(name, JSON.stringify(value), days, '/', undefined, true, 'Strict');
+    }
+
+    // Get cookie and parse JSON
+    getCookie(name: string): any {
+        const value = this.cookieService.get(name);
+        try {
+            return value ? JSON.parse(value) : null;
+        } catch (e) {
+            console.error(`Error parsing cookie ${name}:`, e);
+            return null;
         }
     }
 
@@ -440,7 +464,7 @@ export class AppConfigurator {
             this.layoutService.layoutConfig.update((state) => ({ ...state, surface: color.name }));
         }
         this.applyTheme(type, color);
-
+        this.setCookie('layoutConfig', this.layoutService.layoutConfig());
         event.stopPropagation();
     }
 
