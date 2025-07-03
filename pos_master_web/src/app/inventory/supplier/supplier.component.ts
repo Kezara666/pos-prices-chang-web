@@ -1,4 +1,3 @@
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SupplierService } from './supplier.service';
 import { MessageService } from 'primeng/api';
@@ -16,6 +15,8 @@ import { LoginService } from '../../login/login.service';
   providers: [MessageService],
 })
 export class SupplierComponent implements OnInit {
+
+  //#region Properties
   suppliers: ISupplierDto[] = [];
   displayModal: boolean = false;
   @ViewChild('dt') dt: Table | undefined;
@@ -29,6 +30,7 @@ export class SupplierComponent implements OnInit {
     shopId: 0,
     createdById: 0
   };
+
   selectedSupplierFromTable: ISupplierDto = {
     id: 0,
     name: '',
@@ -40,32 +42,42 @@ export class SupplierComponent implements OnInit {
 
   isEditMode: boolean = false;
   visible: boolean = false;
+  //#endregion
 
+  //#region Constructor
   constructor(
     private supplierService: SupplierService,
     private messageService: MessageService,
-    private loginService:LoginService
-  ) {}
+    private loginService: LoginService
+  ) { }
+  //#endregion
 
+  //#region Lifecycle Hooks
   ngOnInit(): void {
     this.loadSuppliers();
   }
+  //#endregion
 
+  //#region Data Loading
   loadSuppliers() {
     this.supplierService.getSuppliers().subscribe((response: ISupplierDto[]) => {
       this.suppliers = response.map((item: ISupplierDto) => ({
         ...item,
-        shopId : item.shop?.id ?? 0
+        shopId: item.shop?.id ?? 0
       }));
     });
   }
+  //#endregion
 
+  //#region Edit Supplier
   editSupplier(supplier: ISupplierDto): void {
     this.currentSupplier = { ...supplier };
     this.isEditMode = true;
     this.displayModal = true;
   }
+  //#endregion
 
+  //#region Delete Supplier
   confirmDeleteSupplier(supplier: ISupplierDto): void {
     this.showConfirmDelete(supplier.name ?? '');
     this.selectedSupplierFromTable = supplier;
@@ -101,7 +113,9 @@ export class SupplierComponent implements OnInit {
     this.messageService.clear('confirm');
     this.visible = false;
   }
+  //#endregion
 
+  //#region Add/Edit Modal
   showAddModal(): void {
     this.currentSupplier = {
       id: 0,
@@ -122,7 +136,6 @@ export class SupplierComponent implements OnInit {
     }
 
     if (this.isEditMode && this.currentSupplier.id && this.currentSupplier.id !== 0) {
-      
       // Update
       this.supplierService.updateSupplier(this.currentSupplier.id, this.currentSupplier).subscribe({
         next: () => {
@@ -137,7 +150,7 @@ export class SupplierComponent implements OnInit {
       });
     } else {
       // Add
-      const newSupplier: CreateSupplierDto = { name: this.currentSupplier.name, shopId: this.loginService.shopId, createdById: this.loginService.userId};
+      const newSupplier: CreateSupplierDto = { name: this.currentSupplier.name, shopId: this.loginService.shopId, createdById: this.loginService.userId };
       this.supplierService.createSupplier(newSupplier).subscribe({
         next: (addedSupplier: ISupplierDto) => {
           this.suppliers.push(addedSupplier);
@@ -156,11 +169,15 @@ export class SupplierComponent implements OnInit {
   closeModal(): void {
     this.displayModal = false;
   }
+  //#endregion
 
+  //#region Table Filter
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
+  //#endregion
 
+  //#region Export to Excel
   exportExcel() {
     const worksheet = XLSX.utils.json_to_sheet(this.suppliers);
     const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
@@ -171,7 +188,8 @@ export class SupplierComponent implements OnInit {
   saveAsExcelFile(buffer: any, fileName: string): void {
     const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const EXCEL_EXTENSION = '.xlsx';
-    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    const data: Blob = new Blob([buffer, { type: EXCEL_TYPE }]);
     saveAs(data, `${fileName}_export_${new Date().getTime()}${EXCEL_EXTENSION}`);
   }
+  //#endregion
 }
