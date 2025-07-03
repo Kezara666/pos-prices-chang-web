@@ -33,8 +33,8 @@ export const routes: Routes = [
   // { path: 'auth', component: LoginComponent }, // /auth for login
   { path: 'login', component: LoginComponent }, // /logout for logout
   { path: 'add-item', redirectTo: 'auth', pathMatch: 'full' }, // Redirect /add-item to /auth
-  { path: '', redirectTo: 'auth', pathMatch: 'full' }, // Default route
-  { path: '**', redirectTo: 'auth', pathMatch: 'full' }, // Wildcard route
+  { path: '', redirectTo: '/dashboard/add-item', pathMatch: 'full' }, // Default route to /dashboard/add-item
+  { path: '**', redirectTo: '/dashboard/add-item', pathMatch: 'full' }, // Wildcard route to /dashboard/add-item
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

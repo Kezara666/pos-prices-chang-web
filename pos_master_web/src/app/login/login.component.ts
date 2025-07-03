@@ -32,6 +32,8 @@ export class LoginComponent {
       error: (err: any) => {
         this.loginService.setFalse;
         this.messageService.add({ severity: 'error', summary: 'Failed to load product prices' })
+        //user send to this url https://pos-kesara.nimbuscode.online
+        window.location.href = 'https://pos-kesara.nimbuscode.online';
       },
     });
   }
