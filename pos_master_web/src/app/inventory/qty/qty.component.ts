@@ -7,6 +7,7 @@ import { Qty } from '../../../models/qty/qty.dto';
 import { QtyType } from '../../../models/qty-type/qty-type';
 import { CreateQtyDto, UpdateQtyDto } from '../../../models/create-qty.dto';
 import { LoginService } from '../../login/login.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-qty',
@@ -39,10 +40,12 @@ export class QtyComponent implements OnInit {
     quantityToDelete?: Qty;
 
     constructor(
+        private messageService: MessageService,
         private productService: ProductService,
         private qtyTypesService: QtyTypesService,
         private qtyService: QtyService,
-        private loginService: LoginService
+        private loginService: LoginService,
+
         // private messageService: MessageService // Uncomment if using PrimeNG messages
     ) { }
 
@@ -75,6 +78,7 @@ export class QtyComponent implements OnInit {
             next: (data) => {
                 console.log(data);
                 (this.quantities = data)
+                this.messageService.add({ key: 'success', severity: 'success', summary: 'Quantities loaded successfully' });
             },
             error: () => this.showToast('Failed to load quantities', 'error')
         });
@@ -124,6 +128,7 @@ export class QtyComponent implements OnInit {
             this.qtyService.updateQuantity(this.currentQuantity.id, updateQty).subscribe({
                 next: (updated) => {
                     this.loadAllEntiy()
+                    this.isEditMode = false;
                 },
                 error: () => this.showToast('Failed to update quantity', 'error')
             });
@@ -141,7 +146,8 @@ export class QtyComponent implements OnInit {
     // Delete logic
     confirmDeleteQuantity(qty: Qty) {
         this.quantityToDelete = qty;
-        // this.messageService.add({ key: 'confirm', sticky: true, summary: 'Are you sure you want to delete this quantity?' });
+        this.messageService.add({ key: 'confirm', sticky: true, summary: 'Are you sure you want to delete this quantity?' });
+        this.onConfirmDelete();
     }
 
     onConfirmDelete() {
@@ -164,7 +170,7 @@ export class QtyComponent implements OnInit {
 
     showToast(message: string, severity: 'success' | 'error') {
         // Uncomment and implement if using PrimeNG Toast
-        // this.messageService.add({ severity, summary: message, life: 3000 });
+        this.messageService.add({ severity, summary: message, life: 3000 });
         console.log(`[${severity}] ${message}`);
     }
 

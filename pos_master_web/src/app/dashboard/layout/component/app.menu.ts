@@ -37,9 +37,9 @@ export class AppMenu {
                 items: [
                     { label: 'Purchase Order', icon: 'pi pi-fw pi-money-bill', routerLink: ['/dashboard/purchase-order'] },
                     { label: 'Purchase History', icon: 'pi pi-fw pi-sort-alpha-down', routerLink: ['/dashboard/old-purchase-order'] },
-                    { label: 'Supplier', icon: 'pi pi-fw pi-truck', routerLink: ['/dashboard/supplier'] },
-                    { label: 'Quantity', icon: 'pi pi-fw pi-sort-amount-up', routerLink: ['/dashboard/qty'] },
-                    { label: 'Quantity Types', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/qty-type'] }
+                    { label: 'Stock Management', icon: 'pi pi-fw pi-truck', routerLink: ['/dashboard/stock'] },
+                    { label: 'Profit Management', icon: 'pi pi-fw pi-sort-amount-up', routerLink: ['/dashboard/profit'] },
+                    { label: 'Past Bill History', icon: 'pi pi-fw pi-list', routerLink: ['/dashboard/past-bill'] }
                 ]
             }
         ];

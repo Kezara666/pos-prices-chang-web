@@ -80,7 +80,8 @@ export class SupplierComponent implements OnInit {
   //#region Delete Supplier
   confirmDeleteSupplier(supplier: ISupplierDto): void {
     this.showConfirmDelete(supplier.name ?? '');
-    this.selectedSupplierFromTable = supplier;
+    this.selectedSupplierFromTable = {...supplier};
+    console.log('Selected Supplier for deletion:', this.selectedSupplierFromTable);
   }
 
   showConfirmDelete(name: string) {
@@ -92,12 +93,12 @@ export class SupplierComponent implements OnInit {
 
   onConfirmDelete() {
     this.messageService.clear('confirm');
-    this.completeDeleteSupplier(this.selectedSupplierFromTable);
+    this.completeDeleteSupplier();
     this.visible = false;
   }
 
-  completeDeleteSupplier(selectedSupplierFromTable: ISupplierDto) {
-    this.supplierService.deleteSupplier(selectedSupplierFromTable.id ?? 0).subscribe({
+  completeDeleteSupplier() {
+    this.supplierService.deleteSupplier(this.selectedSupplierFromTable.id ?? 9999).subscribe({
       next: () => {
         this.loadSuppliers();
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Supplier deleted successfully' });

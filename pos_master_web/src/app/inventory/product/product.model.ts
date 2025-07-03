@@ -1,3 +1,4 @@
+import { ProductPrice } from "../../../models/product-price/product-price.model";
 import { QtyType } from "../../../models/qty-type/qty-type";
 import { IShop } from "../../../models/shop/shop.dto";
 import { ISupplierDto } from "../../../models/supplier/supplier.dto";
@@ -20,6 +21,7 @@ export interface Product {
   createdAt?: string;
   updatedAt?: string;
   productPriceId?: number;
+  productPrice?: ProductPrice;
   qty: number
   shop?: IShop;
   shopId: number;

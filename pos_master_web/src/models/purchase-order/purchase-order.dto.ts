@@ -1,4 +1,5 @@
 import { Product } from "../../app/inventory/product/product.model";
+import { ProductPrice } from "../product-price/product-price.model";
 import { QtyType } from "../qty-type/qty-type";
 import { IShop } from "../shop/shop.dto";
 import { IUser } from "../user/create-user.dto";
@@ -7,6 +8,8 @@ export interface ItemSellDto {
   id?: number,
   productId: number;
   product?: Product;
+  productPriceId: number;
+  productPrice?: ProductPrice;
   qtyTypeId: number;
   qtyType?: QtyType;
   qty: number;

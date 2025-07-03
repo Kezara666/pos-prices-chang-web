@@ -62,6 +62,7 @@ export class PurchaseOrderComponent implements OnInit {
   getOrderSellItemFromSelectedProduct(): ItemSellDto {
     return {
       productId: this.selectedProduct!.id,
+      productPriceId: this.selectedProduct!.productPrice?.id ?? 0,
       product: this.selectedProduct,
       qtyTypeId: 1,
       qty: this.quantity,

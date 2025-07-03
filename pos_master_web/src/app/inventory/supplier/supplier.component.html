@@ -96,7 +96,7 @@
           <span class="font-bold">Dear User</span>
         </div>
         <div class="my-4 text-lg font-medium">{{ message.summary }}</div>
-        <p-button severity="danger" size="small" label="Yes" ></p-button>
+        <p-button severity="danger" size="small" label="Yes" (click)="onConfirmDelete()"></p-button>
       </div>
     </ng-template>
   </p-toast>
