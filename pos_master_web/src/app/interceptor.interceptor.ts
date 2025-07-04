@@ -27,6 +27,7 @@ export class AppInterceptor implements HttpInterceptor {
       catchError((error) => {
         // Optionally handle error
         this.loadingSpinnerService.hide();
+        this.router.navigate(['/login']);
         throw error;
       })
     );
