@@ -4,8 +4,6 @@ import { Injectable, signal } from "@angular/core";
   providedIn: 'root'
 })
 export class AuthService {
-  shopId = 2;
-  userId = 3;
   loggedUsed = signal(true);
 
   setTrue() {

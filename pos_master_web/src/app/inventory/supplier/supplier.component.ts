@@ -61,10 +61,8 @@ export class SupplierComponent implements OnInit {
   //#region Data Loading
   loadSuppliers() {
     this.supplierService.getSuppliers().subscribe((response: ISupplierDto[]) => {
-      this.suppliers = response.map((item: ISupplierDto) => ({
-        ...item,
-        shopId: item.shop?.id ?? 0
-      }));
+      this.suppliers = response;
+      console.log('Suppliers loaded:', this.suppliers);
     });
   }
   //#endregion
@@ -99,9 +97,9 @@ export class SupplierComponent implements OnInit {
 
   completeDeleteSupplier() {
     this.supplierService.deleteSupplier(this.selectedSupplierFromTable.id ?? 9999).subscribe({
-      next: () => {
-        this.loadSuppliers();
+      next: () => {        
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Supplier deleted successfully' });
+        this.loadSuppliers();
       },
       error: (err: any) => {
         //console.error('Error deleting Supplier:', err);
