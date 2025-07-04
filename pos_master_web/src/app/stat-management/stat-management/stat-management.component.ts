@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
+import { InvoiceDto } from '../../../models/purchase-order/purchase-order.dto';
+import { InvoiceService } from '../../sale-management/purchase-order/invoice.service';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-stat-management',
   templateUrl: './stat-management.component.html',
-  styleUrl:'./stat-management.component.scss'
+  styleUrl: './stat-management.component.scss'
 })
 export class StatManagementComponent {
+
+  totalSales: number = 0;
   // Line Chart
   basicData: any;
 
@@ -19,50 +24,112 @@ export class StatManagementComponent {
   // Options for consistent theming
   chartOptions: any;
 
-  constructor() {
-    this.initLineChart();
-    this.initBarChart();
-    this.initPieChart();
+  purchaseOrders: InvoiceDto[] = [];
+  displayInvoiceDetailsDialog: boolean = false;
+  selectedInvoice: InvoiceDto | null = null;
+  totalOrders: number = 0;
+
+
+  constructor(private invoiceService: InvoiceService, private cdRef: ChangeDetectorRef) {
+
     this.initChartOptions();
+    //this.initPieChart();
+
   }
 
-  initLineChart() {
+
+  ngAfterViewInit(): void {
+    this.loadPurchaseOrders();
+    setTimeout(() => {
+      if (this.purchaseOrders.length > 0) {
+        this.initPieChart();
+      }
+    }, 2000);
+  }
+
+
+
+  loadPurchaseOrders(): void {
+    this.invoiceService.getInvoices().subscribe(
+      (data) => {
+        this.purchaseOrders = data;
+        console.log(data);
+        this.totalSales = this.purchaseOrders.reduce((sum, order) => sum + order.netTotal, 0);
+        this.totalOrders = this.purchaseOrders.length;
+        this.initLineChartFromInvoices(this.purchaseOrders); // 👈 call here
+        this.initBarChartFromInvoices(this.purchaseOrders);
+        // Ensure the view updates with new data
+      },
+      (error) => {
+        console.error('Failed to load purchase orders', error);
+      }
+    );
+  }
+
+
+  initLineChartFromInvoices(invoices: InvoiceDto[]) {
+    const salesByDay = new Map<string, number>();
+
+    for (const invoice of invoices) {
+      if (invoice.createdAt) {
+        const day = dayjs(invoice.createdAt).format('DD'); // e.g. '2025-07-04'
+
+        const current = salesByDay.get(day) || 0;
+        salesByDay.set(day, current + invoice.netTotal);
+      }
+    }
+
+    // Sort by date
+    const sortedDates = Array.from(salesByDay.keys()).sort(); // ensures chronological order
+    const data = sortedDates.map(date => salesByDay.get(date) || 0);
+
     this.basicData = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels: sortedDates,
       datasets: [
         {
-          label: 'Sales',
-          data: [65, 59, 80, 81, 56, 55, 40],
+          label: 'Daily Sales (Net Total)',
+          data: data,
           fill: false,
           borderColor: getThemeColor('--p-primary-500'),
           backgroundColor: getThemeColor('--p-primary-500'),
-          tension: 0.4
-        },
-        {
-          label: 'Revenue',
-          data: [28, 48, 40, 19, 86, 27, 90],
-          fill: false,
-          borderColor: getThemeColor('--p-indigo-500'),
-          backgroundColor: getThemeColor('--p-indigo-500'),
           tension: 0.4
         }
       ]
     };
   }
 
-  initBarChart() {
+
+
+  initBarChartFromInvoices(invoices: InvoiceDto[]) {
+    const categoryMap = new Map<string, number>();
+
+    for (const invoice of invoices) {
+      for (const item of invoice.itemsSelled || []) {
+        const category = item.product?.category ?? 'Unknown';
+        const qty = item.qty ?? 0;
+
+        const current = categoryMap.get(category) || 0;
+        categoryMap.set(category, current + qty);
+      }
+    }
+    console.log(categoryMap);
+
+    const labels = Array.from(categoryMap.keys());
+    const data = Array.from(categoryMap.values());
+    // Initialize pie chart data
     this.barData = {
-      labels: ['Electronics', 'Clothing', 'Home', 'Books'],
+      labels: labels,
       datasets: [
         {
           label: 'Units Sold',
           backgroundColor: getThemeColor('--p-primary-500'),
           borderColor: getThemeColor('--p-primary-700'),
-          data: [300, 150, 100, 50]
+          data: data
         }
       ]
     };
   }
+
 
   initPieChart() {
     this.pieData = {
