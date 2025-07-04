@@ -73,7 +73,7 @@
          class="product-card bg-[var(--surface-card)] shadow-md rounded-lg p-4 mb-4 hover:scale-105">
       <div class="flex flex-col mb-3 sm:flex-row sm:justify-between sm:items-center">
         <h3 class="text-xl font-bold text-[var(--p-primary-400)] mb-1 sm:mb-0">{{ product.name }}</h3>
-        <span class="text-2xl font-extrabold text-[var(--p-primary-400)]">${{ product.currentPrice | number:'1.2-2' }}</span>
+        <span class="text-2xl font-extrabold text-[var(--p-primary-400)]">Rs.{{ product.currentPrice | number:'1.2-2' }}</span>
       </div>
 
       <div class="grid grid-cols-1 gap-2 mb-4 text-sm text-[var(--p-text-color)] sm:grid-cols-2">
