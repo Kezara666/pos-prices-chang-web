@@ -40,11 +40,7 @@ export class StatManagementComponent {
 
   ngAfterViewInit(): void {
     this.loadPurchaseOrders();
-    setTimeout(() => {
-      if (this.purchaseOrders.length > 0) {
-        this.initPieChart();
-      }
-    }, 2000);
+
   }
 
 
@@ -58,6 +54,7 @@ export class StatManagementComponent {
         this.totalOrders = this.purchaseOrders.length;
         this.initLineChartFromInvoices(this.purchaseOrders); // 👈 call here
         this.initBarChartFromInvoices(this.purchaseOrders);
+        this.initPieChart(this.purchaseOrders);
         // Ensure the view updates with new data
       },
       (error) => {
@@ -131,12 +128,27 @@ export class StatManagementComponent {
   }
 
 
-  initPieChart() {
+  initPieChart(invoices: InvoiceDto[]) {
+    const categoryMap = new Map<string, number>();
+
+    for (const invoice of invoices) {
+      for (const item of invoice.itemsSelled || []) {
+        const category = item.product?.category ?? 'Unknown';
+        const qty = item.qty ?? 0;
+
+        const current = categoryMap.get(category) || 0;
+        categoryMap.set(category, current + qty);
+      }
+    }
+    console.log(categoryMap);
+
+    const labels = Array.from(categoryMap.keys());
+    const data = Array.from(categoryMap.values());
     this.pieData = {
-      labels: ['Electronics', 'Clothing', 'Home', 'Books'],
+      labels: labels,
       datasets: [
         {
-          data: [300, 150, 100, 50],
+          data: data,
           backgroundColor: [
             getThemeColor('--p-primary-400'),
             getThemeColor('--p-primary-500'),
