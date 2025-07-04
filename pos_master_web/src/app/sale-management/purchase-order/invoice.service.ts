@@ -23,4 +23,8 @@ export class InvoiceService {
     return this.http.get<InvoiceDto[]>(this.apiUrl);
   }
 
+   printBill(invoice: InvoiceDto) {
+    return this.http.post(`${environment.localBillUrl}/invoice/bill`, invoice);
+  }
+
 }

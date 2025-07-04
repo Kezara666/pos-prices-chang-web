@@ -3,6 +3,7 @@ import { MessageService } from 'primeng/api';
 import { ProductService } from '../../inventory/product/product.service';
 import { InvoiceService } from '../purchase-order/invoice.service';
 import { PurchaseOrderService } from '../purchase-order/purchase-order.service';
+import { LoginService } from '../../login/login.service';
 
 @Component({
   selector: 'app-invoice',
@@ -16,12 +17,13 @@ export class InvoiceComponent implements OnInit {
     private messageService: MessageService,
     private productService: ProductService,
     private invoiceService: InvoiceService,
-    public puchaseOrderService: PurchaseOrderService
+    public puchaseOrderService: PurchaseOrderService,
+    private loginService: LoginService
   ) { }
 
   ngOnInit(): void { 
     const shopName = localStorage.getItem('shopName') || 'Default Shop';
-    this.nameOfShop = shopName;  
+    this.nameOfShop =  this.loginService.currentUser()?.shop?.name || shopName; // Use shop name from the current user or fallback to localStorage 
   }
 
   now = new Date().toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' });

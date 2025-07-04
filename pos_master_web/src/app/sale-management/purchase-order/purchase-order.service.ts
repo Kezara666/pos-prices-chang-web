@@ -4,6 +4,8 @@ import { Qty } from '../../../models/qty/qty.dto';
 import { QtyService } from '../../inventory/qty/qty.service';
 import { Product } from '../../inventory/product/product.model';
 import { LoginService } from '../../login/login.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class PurchaseOrderService {
 
   order!: InvoiceDto;
 
-  constructor(private qtyService: QtyService, private loginService: LoginService) {
+  constructor(private qtyService: QtyService, private loginService: LoginService, private http: HttpClient) {
     this.order = {
       customerId: undefined,
       total: 0,
@@ -58,4 +60,6 @@ export class PurchaseOrderService {
 
     }
   }
+
+ 
 }

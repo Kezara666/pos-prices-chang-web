@@ -1,3 +1,4 @@
+import { IShop } from "../shop/shop.dto";
 
 export interface IUser {
   id?:number;
@@ -7,4 +8,5 @@ export interface IUser {
   idNumber?: string;
   role?: string;
   shopId: number;
+  shop?:IShop;
 }

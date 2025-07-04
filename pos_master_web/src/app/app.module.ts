@@ -68,7 +68,8 @@ import { LoginComponent } from './login/login.component';
     InvoiceComponent,
     OldPurchaseOrdersComponent,
     StatManagementComponent,
-    LoginComponent
+    LoginComponent,
+    
   ],
   imports:[
     CardModule,

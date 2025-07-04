@@ -24,7 +24,7 @@ export class PurchaseOrderComponent implements OnInit {
     public puchaseOrderService: PurchaseOrderService,
     private qtyService: QtyService,
     private changeDetectorRef: ChangeDetectorRef,
-    private loginService:LoginService
+    private loginService: LoginService
   ) { }
 
   products: Product[] = [];
@@ -41,7 +41,7 @@ export class PurchaseOrderComponent implements OnInit {
   multipleMatches: Product[] = []; // Add this line
   displayProductSelection: boolean = false; // Add this line
 
-  
+
 
   //#region Quantity Management
   /**
@@ -199,13 +199,38 @@ export class PurchaseOrderComponent implements OnInit {
       next: () => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order saved successfully!' });
         this.puchaseOrderService.clearOrder();
-      },
-      error: (e) => {
-        console.log(e)
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to save order' });
+
+        //call localhost bill print service
+
       }
     });
   }
+
+  /**
+   * Prints the order.
+   */
+  printOrder() {
+    this.invoiceService.printBill(this.puchaseOrderService.order).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'info', summary: 'Print', detail: 'Bill printed successfully!' });
+      },
+      error: (err) => {
+        console.error('Print error:', err);
+        const errorMessage =
+          err?.error?.message || // NestJS-style message
+          err?.message ||        // Generic JS error
+          'Failed to print bill'; // Fallback message
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Print Error',
+          detail: `Failed to print bill: ${errorMessage}`
+        });
+      }
+    });
+  }
+
+
   //#endregion Order Management
 
   //#region Calculation
@@ -225,6 +250,7 @@ export class PurchaseOrderComponent implements OnInit {
    * Saves the order as a draft.
    */
   saveDraft() {
+    this.printOrder()
     if (!this.selectedProduct && this.quantity <= 0) {
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No items to save as draft' });
       return;
