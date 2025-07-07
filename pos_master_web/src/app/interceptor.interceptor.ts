@@ -9,12 +9,14 @@ import { LoginService } from './login/login.service';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
-  constructor(private loadingSpinnerService: LoadingSpinnerService, private loginService: LoginService, private router: Router, private authService:AuthService) { }
+  constructor(private loadingSpinnerService: LoadingSpinnerService, private loginService: LoginService, private router: Router, private authService: AuthService) { }
 
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-
-    if (!(this.loginService.isAuthenticated) || this.loginService.userId == 0) {
+    const isLoginUrl = request.url.includes('/users/login') || request.url.includes('/users/refresh-token');
+    const isLogin = !(this.loginService.isAuthenticated) || this.loginService.userId == 0;
+    
+    if (!isLoginUrl && isLogin) {
       console.log(this.loginService.isAuthenticated)
       console.log(this.loginService.currentUser)
       this.router.navigate(['/login']);
