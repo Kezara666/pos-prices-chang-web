@@ -14,8 +14,9 @@ export class AppInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if (!(this.loginService.isAuthenticated)) {
+    if (!(this.loginService.isAuthenticated) || this.loginService.userId == 0) {
       console.log(this.loginService.isAuthenticated)
+      console.log(this.loginService.currentUser)
       this.router.navigate(['/login']);
     }
 

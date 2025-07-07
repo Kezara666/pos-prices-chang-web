@@ -262,7 +262,7 @@ export class ProductComponent implements OnInit {
     this.productService.createProductWithDependencies(productDto).subscribe({
       next: (response) => {
         this.showToast('Product and its dependencies added successfully', 'success');
-        this.loadProducts();
+        this.loadAllEntities()
         this.displayModal = false;
         this.emptyProductPrice(); // Reset form state
         this.currentProduct = this.getEmptyProduct(); // Reset product form
