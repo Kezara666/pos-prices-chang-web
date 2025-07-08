@@ -26,11 +26,12 @@ import { LayoutService } from '../service/layout.service';
                     class="layout-topbar-action layout-topbar-action-highlight"
                     
                     (click)="showConfigurator = !showConfigurator"
+                    (onFocus)="showConfigurator = true"
                     >
                     <i class="pi pi-palette"></i>
                 </button>
 
-                <app-configurator [visible]= "showConfigurator"></app-configurator>
+                <app-configurator [visible]= "showConfigurator" (leave)="onConfiguratorLeave()"></app-configurator>
             </div>
 
                 
@@ -67,5 +68,9 @@ export class AppTopbar {
 
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
+    }
+
+    onConfiguratorLeave() {
+        this.showConfigurator = false; // Close configurator on mouse leave
     }
 }

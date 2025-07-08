@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, computed, inject, Input, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, ElementRef, EventEmitter, HostListener, inject, Input, Output, PLATFORM_ID, signal, ViewChild } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { $t, updatePreset, updateSurfacePalette } from '@primeng/themes';
@@ -115,9 +115,11 @@ declare type SurfacesType = {
 
 })
 export class AppConfigurator {
+    @ViewChild('productPanel', { static: false }) productPanel!: ElementRef;
     router = inject(Router);
     cookieService = inject(CookieService);
     @Input() visible = false;
+    @Output() leave = new EventEmitter<void>();
 
     config: PrimeNG = inject(PrimeNG);
 
@@ -135,6 +137,16 @@ export class AppConfigurator {
         { label: 'Static', value: 'static' },
         { label: 'Overlay', value: 'overlay' }
     ];
+
+    @HostListener('mouseleave', ['$event'])
+    onMouseLeave(event: MouseEvent) {
+        this.leave.emit(); // Emit leave event to close configurator
+    }
+
+    @HostListener('touchend', ['$event'])
+    onTouchEnd(event: TouchEvent) {
+        this.leave.emit(); // Mobile
+    }
 
     ngOnInit() {
         if (isPlatformBrowser(this.platformId)) {
