@@ -142,10 +142,16 @@ export class AppConfigurator {
     onMouseLeave(event: MouseEvent) {
         this.leave.emit(); // Emit leave event to close configurator
     }
+    constructor(private elementRef: ElementRef) {}
 
-    @HostListener('touchend', ['$event'])
-    onTouchEnd(event: TouchEvent) {
-        this.leave.emit(); // Mobile
+    @HostListener('document:touchend', ['$event'])
+    onDocumentTouchEnd(event: TouchEvent) {
+        const targetElement = event.target as HTMLElement;
+        const configuratorElement = this.elementRef.nativeElement; // Assuming ElementRef is injected
+
+        if (!configuratorElement.contains(targetElement)) {
+            this.leave.emit(); // Emit leave event to close configurator
+        }
     }
 
     ngOnInit() {
