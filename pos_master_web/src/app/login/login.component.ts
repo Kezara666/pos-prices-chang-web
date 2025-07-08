@@ -25,9 +25,6 @@ export class LoginComponent implements OnInit {
     if (this.loginService.isAuthenticated) {
       this.router.navigate(['/dashboard/stat']);
     }
-    else{
-      this.loginService.logout()
-    }
   }
 
   SignIn() {
