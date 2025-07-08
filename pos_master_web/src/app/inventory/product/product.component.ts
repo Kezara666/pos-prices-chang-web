@@ -12,6 +12,7 @@ import { QtyService } from '../qty/qty.service';
 import { QtyType } from '../../../models/qty-type/qty-type';
 import { SelectChangeEvent } from 'primeng/select';
 import { LoginService } from '../../login/login.service';
+import { IUser } from '../../../models/user/create-user.dto';
 
 @Component({
   selector: 'app-product',
@@ -35,10 +36,10 @@ export class ProductComponent implements OnInit {
   qrAndBarcodeVisible: boolean = false;
   @ViewChild('barcode') barcodeElement!: ElementRef;
   @ViewChild('qrcode') qrCodeElement!: ElementRef;
-  showDialogQRAndBarCode() {
-    this.qrAndBarcodeVisible = true;
-  }
+
+
   currentProductPrice!: ProductPrice
+  user: IUser | null = null;
 
   constructor(
     private productService: ProductService,
@@ -65,8 +66,8 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.loadAllEntities()
+    this.user = this.loginService.currentUser();
   }
 
   loadAllEntities() {
@@ -162,6 +163,7 @@ export class ProductComponent implements OnInit {
       next: (data) => {
         this.products = data
         console.log(data)
+        this.showToast(`Products loaded successfully ${this.user?.name}`, 'success',);
       },
       error: () => this.showToast('Failed to load products', 'error')
     });
@@ -418,6 +420,10 @@ export class ProductComponent implements OnInit {
     link.download = filename;
     link.click();
     URL.revokeObjectURL(url);
+  }
+
+  showDialogQRAndBarCode() {
+    this.qrAndBarcodeVisible = true;
   }
 
 

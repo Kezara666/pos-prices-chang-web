@@ -199,11 +199,19 @@ export class PurchaseOrderComponent implements OnInit {
       next: () => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order saved successfully!' });
         this.puchaseOrderService.clearOrder();
-
         //call localhost bill print service
-
       }
     });
+  }
+  //#region Order Clear
+  /**
+   
+   * Cancels the order.
+   */
+  cancelOrder() {
+    this.puchaseOrderService.clearOrder();
+    this.messageService.add({ severity: 'info', summary: 'Order Cancelled', detail: 'Order has been cancelled.' });
+    this.changeDetectorRef.markForCheck(); // Ensure the view updates
   }
 
   /**

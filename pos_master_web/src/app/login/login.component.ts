@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { MessageService } from 'primeng/api';
 import { LoginService } from './login.service';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   password: string = '';
   userName: string = '';
   constructor(private loginService: LoginService, private messageService: MessageService,private router: Router) { }
@@ -19,7 +19,16 @@ export class LoginComponent {
   showDialog() {
     this.visible = true;
   }
-
+  
+  ngOnInit(): void {
+    // Check if user is already logged in
+    if (this.loginService.isAuthenticated) {
+      this.router.navigate(['/dashboard/stat']);
+    }
+    else{
+      this.loginService.logout()
+    }
+  }
 
   SignIn() {
     this.loginService.login(this.userName, this.password).subscribe({

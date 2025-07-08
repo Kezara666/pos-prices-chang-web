@@ -48,7 +48,7 @@ export class LoginService {
 
   // Get the current logged-in user (read-only signal)
   get currentUser() {
-    return this.loggedUser.asReadonly();
+    return this.loggedUser;
   }
 
   // Check if a user is logged in
@@ -65,5 +65,11 @@ export class LoginService {
   get shopId(): number {
     return this.loggedUser()?.shopId ?? 0; // Assumes shop: { id: number; name: string }
     // Alternative: return this.loggedUser()?.shopId ?? null; // If shopId is directly in IUser
+  }
+
+  // Clear user (logout)
+  logout(): void {
+    this.loggedUser.set(null);
+    localStorage.removeItem('user');
   }
 }
