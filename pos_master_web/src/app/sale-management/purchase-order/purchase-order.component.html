@@ -42,7 +42,7 @@
 
 <div class="mt-10">
   <div class="card">
-    <p-table [value]="puchaseOrderService.order.itemsSelled" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table [value]="puchaseOrderService.order.itemsSelled" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" >
       <ng-template pTemplate="header">
         <tr>
           <th>Product ID</th>

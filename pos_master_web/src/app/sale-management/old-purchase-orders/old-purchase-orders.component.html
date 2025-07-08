@@ -4,75 +4,81 @@
   </h2>
 
   <div class="mb-8 overflow-hidden shadow-lg rounded-xl bg-[var(--surface-card)] border border-[var(--surface-border)]">
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-[var(--surface-border)]">
-        <thead class="bg-gradient-to-r from-[var(--primary-color-500)] to-[var(--primary-color)]">
-          <tr>
-            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
-              Order ID
-            </th>
-            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
-              Customer ID
-            </th>
-            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
-              Total Amount
-            </th>
-            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
-              Order Date
-            </th>
-            <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
-              Items Overview
-            </th>
-            <th scope="col" class="relative px-6 py-3">
-              <span class="sr-only">Details</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-[var(--surface-border)] bg-[var(--surface-card)]">
-          <ng-container *ngIf="purchaseOrders.length > 0; else noOrders">
-            <tr *ngFor="let invoice of purchaseOrders"
-              class="transition duration-150 ease-in-out cursor-pointer hover:bg-[var(--surface-hover)]"
-              (click)="showInvoiceDetails(invoice)">
-              <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-[var(--text-color)]">
-                {{ invoice.id || '-' }}
-              </td>
-              <td class="px-6 py-4 text-sm whitespace-nowrap text-[var(--text-color-secondary)]">
-                {{ invoice.customerId || '-' }}
-              </td>
-              <td class="px-6 py-4 text-sm whitespace-nowrap text-[var(--text-color-secondary)]">
-                {{ invoice.total | currency:'LKR ':'symbol-narrow':'1.2-2' }}
-              </td>
-              <td class="px-6 py-4 text-sm whitespace-nowrap text-[var(--text-color-secondary)]">
-                {{ invoice.createdAt | date: 'medium' }}
-              </td>
-              <td class="max-w-sm px-6 py-4 text-sm truncate text-[var(--text-color-secondary)]">
-                <ul class="list-disc list-inside">
-                  <li *ngFor="let item of invoice.itemsSelled; let i = index" [class.hidden]="i >= 2"
-                    [class.block]="i < 2">
-                    {{ item.product?.name || 'N/A' }} ({{ item.qty }} {{ item.qtyType?.name || 'N/A' }})
-                  </li>
-                  <li *ngIf="invoice.itemsSelled.length > 2" class="font-semibold text-[var(--primary-color)]">
-                    + {{ invoice.itemsSelled.length - 2 }} more items
-                  </li>
-                </ul>
-              </td>
-              <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                <span class="font-semibold hover:text-blue-900 text-[var(--primary-color)]">
-                  View Details
-                </span>
-              </td>
-            </tr>
-          </ng-container>
-          <ng-template #noOrders>
-            <tr>
-              <td colspan="6" class="py-8 text-lg text-center text-[var(--text-color-secondary)]">
-                No purchase orders found.
-              </td>
-            </tr>
-          </ng-template>
-        </tbody>
-      </table>
-    </div>
+    <p-table [value]="purchaseOrders" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 20, 50]"
+      [tableStyle]="{'min-width': '100%'}"
+      styleClass="p-datatable-gridlines p-datatable-striped"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+      
+      <ng-template pTemplate="header">
+        <tr class="bg-gradient-to-r from-[var(--primary-color-500)] to-[var(--primary-color)]">
+          <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+            Order ID
+          </th>
+          <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+            Customer ID
+          </th>
+          <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+            Total Amount
+          </th>
+          <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+            Order Date
+          </th>
+          <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+            Items Overview
+          </th>
+          <th class="relative px-6 py-3">
+            <span class="sr-only">Details</span>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-invoice>
+        <tr class="transition duration-150 ease-in-out cursor-pointer hover:bg-[var(--surface-hover)]"
+          (click)="showInvoiceDetails(invoice)">
+          <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-[var(--text-color)]">
+            {{ invoice.id || '-' }}
+          </td>
+          <td class="px-6 py-4 text-sm whitespace-nowrap text-[var(--text-color-secondary)]">
+            {{ invoice.customerId || '-' }}
+          </td>
+          <td class="px-6 py-4 text-sm whitespace-nowrap text-[var(--text-color-secondary)]">
+            {{ invoice.total | currency:'LKR ':'symbol-narrow':'1.2-2' }}
+          </td>
+          <td class="px-6 py-4 text-sm whitespace-nowrap text-[var(--text-color-secondary)]">
+            {{ invoice.createdAt | date: 'medium' }}
+          </td>
+          <td class="max-w-sm px-6 py-4 text-sm truncate text-[var(--text-color-secondary)]">
+            <ul class="list-disc list-inside">
+              <li *ngFor="let item of invoice.itemsSelled; let i = index" [class.hidden]="i >= 2"
+                [class.block]="i < 2">
+                {{ item.product?.name || 'N/A' }} ({{ item.qty }} {{ item.qtyType?.name || 'N/A' }})
+              </li>
+              <li *ngIf="invoice.itemsSelled.length > 2" class="font-semibold text-[var(--primary-color)]">
+                + {{ invoice.itemsSelled.length - 2 }} more items
+              </li>
+            </ul>
+          </td>
+          <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+            <span class="font-semibold hover:text-blue-900 text-[var(--primary-color)]">
+              View Details
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="py-8 text-lg text-center text-[var(--text-color-secondary)]">
+            No purchase orders found.
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="paginator">
+        
+      </ng-template>
+    </p-table>
   </div>
 
   <!-- PrimeNG Dialog -->
@@ -89,66 +95,91 @@
         </div>
         <div class="text-right md:text-left">
           <p><strong class="font-semibold">Total Amount :</strong>
-            <span class="font-bold text-[var(--primary-color)]">{{ selectedInvoice?.total | currency:'LKR
-              ':'symbol-narrow':'1.2-2' }}</span>
+            <span class="font-bold text-[var(--primary-color)]">{{ selectedInvoice?.total | currency:'LKR ':'symbol-narrow':'1.2-2' }}</span>
           </p>
           <p><strong class="font-semibold">Discount :</strong>
-            <span class="font-bold text-green-600">{{ selectedInvoice?.discount | currency:'LKR
-              ':'symbol-narrow':'1.2-2' }}</span>
+            <span class="font-bold text-green-600">{{ selectedInvoice?.discount | currency:'LKR ':'symbol-narrow':'1.2-2' }}</span>
           </p>
           <p><strong class="font-semibold">Net Total :</strong>
-            <span class="font-bold text-purple-600">{{ selectedInvoice?.netTotal | currency:'LKR
-              ':'symbol-narrow':'1.2-2' }}</span>
+            <span class="font-bold text-purple-600">{{ selectedInvoice?.netTotal | currency:'LKR ':'symbol-narrow':'1.2-2' }}</span>
           </p>
           <p *ngIf="selectedInvoice?.pendingdAmount !== undefined">
             <strong class="font-semibold">Pending Amount :</strong>
-            <span class="font-bold text-red-600">{{ selectedInvoice?.pendingdAmount | currency:'LKR
-              ':'symbol-narrow':'1.2-2' }}</span>
+            <span class="font-bold text-red-600">{{ selectedInvoice?.pendingdAmount | currency:'LKR ':'symbol-narrow':'1.2-2' }}</span>
           </p>
         </div>
       </div>
 
-      
+      <!-- PrimeNG Table for Items -->
+      <p-table [value]="selectedInvoice?.itemsSelled || []" [scrollable]="true" scrollHeight="24rem"
+        [tableStyle]="{'min-width': '100%'}"
+        styleClass="p-datatable-gridlines p-datatable-striped" [paginator]="true" [rows]="10">
+        
+        <ng-template pTemplate="header">
+          <tr class="bg-gradient-to-r from-[var(--primary-color-500)] to-[var(--primary-color)]">
+            <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+              Product
+            </th>
+            <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+              Price
+            </th>
+            <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+              Quantity
+            </th>
+            <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+              Price per Quantity
+            </th>
+            <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+              Status
+            </th>
+            <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+              Completed
+            </th>
+            <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-white uppercase">
+              Pending Amount
+            </th>
+          </tr>
+        </ng-template>
 
-      <!-- Scrollable container -->
-      <div class="pr-2 overflow-y-auto max-h-96">
-        <div class="space-y-4">
-          <div *ngFor="let item of selectedInvoice?.itemsSelled"
-            class="p-4 rounded-lg shadow-sm bg-[var(--surface-card)]">
+        <ng-template pTemplate="body" let-item>
+          <tr class="bg-[var(--surface-card)]">
+            <td class="px-6 py-4 text-sm text-[var(--text-color)]">
+              {{ item.product?.name || 'N/A' }}
+            </td>
+            <td class="px-6 py-4 text-sm text-[var(--primary-color)]">
+              {{ item.product?.currentPrice | currency:'LKR ':'symbol-narrow':'1.2-2' }}
+            </td>
+            <td class="px-6 py-4 text-sm text-[var(--text-color-secondary)]">
+              {{ item.qty }} {{ item.qtyType?.name || 'N/A' }}
+            </td>
+            <td class="px-6 py-4 text-sm text-[var(--text-color-secondary)]">
+              {{ item.qntPrice | currency:'LKR ':'symbol-narrow':'1.2-2' }}
+            </td>
+            <td class="px-6 py-4 text-sm text-[var(--text-color-secondary)]">
+              {{ item.status !== undefined ? item.status : '-' }}
+            </td>
+            <td class="px-6 py-4 text-sm">
+              <span [class.text-green-600]="item.completedItemSell" [class.text-red-600]="!item.completedItemSell">
+                {{ item.completedItemSell ? 'Yes' : 'No' }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-sm">
+              <span *ngIf="item.pendingdAmount !== undefined" class="text-orange-600">
+                {{ item.pendingdAmount | currency:'LKR ':'symbol-narrow':'1.2-2' }}
+              </span>
+              <span *ngIf="item.pendingdAmount === undefined">-</span>
+            </td>
+          </tr>
+        </ng-template>
 
-            <h4
-              class="pb-2 mt-8 mb-4 text-2xl font-bold border-b border-[var(--primary-color)] text-[var(--text-color)]">
-            </h4>
-
-            <!-- Product Name + Product Price (aligned right) -->
-            <div class="flex items-start justify-between mb-4">
-              <p><strong class="font-semibold">Product : </strong> {{ item.product?.name || 'N/A' }}</p>
-              <p>
-                <strong class="font-semibold text-[var(--primary-color)]">
-                  Price : {{ item.product?.currentPrice | currency:'LKR ':'symbol-narrow':'1.2-2' }}
-                </strong>
-              </p>
-            </div>
-
-            <!-- Other fields in grid -->
-            <div class="grid grid-cols-1 gap-2 mt-2 sm:grid-cols-2 text-[var(--text-color-secondary)]">
-              <p><strong class="font-semibold">Quantity:</strong> {{ item.qty }} {{ item.qtyType?.name || 'N/A' }}</p>
-              <p><strong class="font-semibold">Price per Quantity : </strong> {{ item.qntPrice | currency:'LKR
-                ':'symbol-narrow':'1.2-2' }}</p>
-              <p><strong class="font-semibold">Status:</strong> {{ item.status !== undefined ? item.status : '-' }}</p>
-              <p><strong class="font-semibold">Completed : </strong>
-                <span [class.text-green-600]="item.completedItemSell" [class.text-red-600]="!item.completedItemSell">
-                  {{ item.completedItemSell ? 'Yes' : 'No' }}
-                </span>
-              </p>
-              <p *ngIf="item.pendingdAmount !== undefined" class="col-span-full">
-                <strong class="font-semibold">Item Pending Amount : </strong>
-                <span class="text-orange-600">{{ item.pendingdAmount | currency:'LKR ':'symbol-narrow':'1.2-2' }}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="py-8 text-lg text-center text-[var(--text-color-secondary)]">
+              No items found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
 
       <ng-template pTemplate="footer">
         <button pButton type="button" label="Close" icon="pi pi-times" (click)="hideInvoiceDetails()"
