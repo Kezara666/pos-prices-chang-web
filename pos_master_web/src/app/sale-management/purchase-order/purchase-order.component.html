@@ -14,7 +14,7 @@
 
 <!-- Barcode/QR Scanner -->
 <div *ngIf="showScanner" class="mt-2">
-  <zxing-scanner (scanSuccess)="onScanSuccess($event)" [device]="selectedDevice"
+  <zxing-scanner (scanSuccess)="onScanSuccess($event)" [device]="selectedDevice" [videoConstraints]="{ width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 }}"
     [formats]="allowedFormats"></zxing-scanner>
   <p-dropdown [options]="availableDevices" [(ngModel)]="selectedDevice" optionLabel="label" placeholder="Select Camera"
     class="w-full mt-2" (onChange)="onDeviceChange($event)"></p-dropdown>
@@ -42,7 +42,7 @@
 
 <div class="mt-10">
   <div class="card">
-    <p-table [value]="puchaseOrderService.order.itemsSelled" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" >
+    <p-table [value]="puchaseOrderService.order.itemsSelled" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="10">
       <ng-template pTemplate="header">
         <tr>
           <th>Product ID</th>
