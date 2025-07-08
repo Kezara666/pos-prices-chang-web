@@ -221,6 +221,8 @@ export class ProductComponent implements OnInit {
       next: () => {
         this.loadProducts();
         this.showToast('Product updated successfully', 'success');
+        this.displayModal = false;
+        this.isEditMode = false;
       },
       error: (e) => {
         this.showToast('Failed to update product', 'error')
