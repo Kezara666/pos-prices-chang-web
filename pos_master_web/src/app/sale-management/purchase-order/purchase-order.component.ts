@@ -18,6 +18,8 @@ import { LoginService } from '../../login/login.service';
 })
 export class PurchaseOrderComponent implements OnInit {
 
+
+
   constructor(private messageService: MessageService,
     private productService: ProductService,
     private invoiceService: InvoiceService,
@@ -411,4 +413,13 @@ export class PurchaseOrderComponent implements OnInit {
     }
   }
   //#endregion Quantity Increase
+
+  downloadExe() {
+    const link = document.createElement('a');
+    link.href = 'https://pos-kesara.nimbuscode.online/app.exe';
+    link.download = 'app.exe';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 }
