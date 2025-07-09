@@ -14,9 +14,10 @@ export class AppInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const isLoginUrl = request.url.includes('/users/login') || request.url.includes('/users/refresh-token');
-    const isLogin = !(this.loginService.isAuthenticated) || this.loginService.userId == 0;
+    const isLogin = this.loginService.isAuthenticated
 
-    if (!isLogin) {
+
+    if (isLogin == false) {
       console.log(this.loginService.isAuthenticated)
       console.log(this.loginService.currentUser)
       this.router.navigate(['/login']);

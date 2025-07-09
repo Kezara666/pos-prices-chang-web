@@ -415,11 +415,25 @@ export class PurchaseOrderComponent implements OnInit {
   //#endregion Quantity Increase
 
   downloadExe() {
+    const currentUser = this.loginService.currentUser();
+
+    if (!currentUser) {
+      this.showToast('User not logged in', 'error');
+      return;
+    }
+
+    const fileName = `${currentUser.shopId}.exe`;
+    const downloadUrl = `https://pos-kesara.nimbuscode.online/${fileName}`;
+
+    this.showToast(`Downloading for ${currentUser.name}`, 'success');
+
     const link = document.createElement('a');
-    link.href = 'https://pos-kesara.nimbuscode.online/app.exe';
-    link.download = 'app.exe';
+    link.href = downloadUrl;
+    link.setAttribute('download', fileName); // Optional: sets the name of the downloaded file
+    link.style.display = 'none'; // Prevents flicker
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   }
+
 }

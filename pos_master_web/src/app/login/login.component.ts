@@ -13,23 +13,21 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   password: string = '';
   userName: string = '';
-  constructor(private loginService: LoginService, private messageService: MessageService,private router: Router) { }
+  constructor(private loginService: LoginService, private messageService: MessageService, private router: Router) { }
   visible: boolean = true;
- 
+
   showDialog() {
     this.visible = true;
   }
-  
+
   ngOnInit(): void {
     // Check if user is already logged in
-    if (this.loginService.isAuthenticated) {
-      this.router.navigate(['/dashboard/stat']);
-    }
+    
   }
 
   SignIn() {
     this.loginService.login(this.userName, this.password).subscribe({
-      next: (user:IUser) => {
+      next: (user: IUser) => {
         this.loginService.setUser(user)
         this.visible = false;
         this.messageService.add({ severity: 'success', summary: 'Login Success' });
