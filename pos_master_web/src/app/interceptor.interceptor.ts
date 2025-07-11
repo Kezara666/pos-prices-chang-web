@@ -17,7 +17,7 @@ export class AppInterceptor implements HttpInterceptor {
     const isLogin = this.loginService.isAuthenticated
 
 
-    if (isLogin == false) {
+    if (isLogin == false && !isLoginUrl && this.loginService.userId == 0) {
       console.log(this.loginService.isAuthenticated)
       console.log(this.loginService.currentUser)
       this.router.navigate(['/login']);
@@ -31,7 +31,7 @@ export class AppInterceptor implements HttpInterceptor {
       catchError((error) => {
         // Optionally handle error
         this.loadingSpinnerService.hide();
-        this.router.navigate(['/login']);
+        //this.router.navigate(['/login']);
         throw error;
       })
     );
