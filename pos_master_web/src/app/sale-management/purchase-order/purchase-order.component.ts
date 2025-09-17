@@ -51,8 +51,11 @@ export class PurchaseOrderComponent implements OnInit {
    * @param event The item sell DTO.
    */
   onQtyChange(event: ItemSellDto) {
-    if (event.product)
+    if (event.product){
       this.checkIsAvaibleProductAndSetMaxiumCanGet(event, event.qty)
+      this.calculateEachItemTotal();
+      this.calculateTotal();
+    }
   }
   //#endregion Quantity Management
 
@@ -119,6 +122,8 @@ export class PurchaseOrderComponent implements OnInit {
       this.selectedProduct = matched;
       this.addItemToOrder(matched)
     }
+    this.scannedCode = '';
+
   }
   //#endregion Barcode/QR Code Filtering
 
@@ -207,7 +212,7 @@ export class PurchaseOrderComponent implements OnInit {
   }
   //#region Order Clear
   /**
-   
+
    * Cancels the order.
    */
   cancelOrder() {
@@ -309,7 +314,7 @@ export class PurchaseOrderComponent implements OnInit {
   calculateTotal() {
     let total = 0;
     this.puchaseOrderService.order.itemsSelled.forEach(item => {
-      total += item.qntPrice * item.qty;
+      total += item.qntPrice
     });
     console.log('Total:', total);
     this.puchaseOrderService.order.total = total;

@@ -10,7 +10,7 @@
     </div>
     <div>
       <p-button type="button" icon="pi pi-plus" (click)="showAddModal()"
-        class="transition-transform duration-200 hover:scale-105 " label="Add Product" ></p-button>
+        class="transition-transform duration-200 hover:scale-105 " label="Add Product"></p-button>
     </div>
   </div>
 </div>
@@ -70,10 +70,11 @@
     </div>
 
     <div *ngFor="let product of products"
-         class="product-card bg-[var(--surface-card)] shadow-md rounded-lg p-4 mb-4 hover:scale-105">
+      class="product-card bg-[var(--surface-card)] shadow-md rounded-lg p-4 mb-4 hover:scale-105">
       <div class="flex flex-col mb-3 sm:flex-row sm:justify-between sm:items-center">
         <h3 class="text-xl font-bold text-[var(--p-primary-400)] mb-1 sm:mb-0">{{ product.name }}</h3>
-        <span class="text-2xl font-extrabold text-[var(--p-primary-400)]">Rs.{{ product.currentPrice | number:'1.2-2' }}</span>
+        <span class="text-2xl font-extrabold text-[var(--p-primary-400)]">Rs.{{ product.currentPrice | number:'1.2-2'
+          }}</span>
       </div>
 
       <div class="grid grid-cols-1 gap-2 mb-4 text-sm text-[var(--p-text-color)] sm:grid-cols-2">
@@ -88,11 +89,11 @@
           <span class="ml-1">{{ product.subcategory || 'N/A' }}</span>
         </div>
         <div class="flex items-center">
-            <i class="pi pi-shield text-[var(--p-primary-600)] mr-2"></i>
-            <span class="font-medium">Warranty:</span>
-            <span class="ml-1">{{ product.warranty || 'No Warranty' }}</span>
+          <i class="pi pi-shield text-[var(--p-primary-600)] mr-2"></i>
+          <span class="font-medium">Warranty:</span>
+          <span class="ml-1">{{ product.warranty || 'No Warranty' }}</span>
         </div>
-        </div>
+      </div>
 
       <div class="flex flex-col items-stretch justify-end gap-2 sm:flex-row sm:items-center">
         <p-button type="button" icon="pi pi-pencil" label="Edit" (click)="editProduct(product)"
@@ -103,7 +104,7 @@
       </div>
     </div>
     <div *ngIf="products.length === 0" class="py-8 text-center text-gray-500">
-        No products found.
+      No products found.
     </div>
   </div>
 </div>
@@ -135,9 +136,13 @@
           <input
             class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-200)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
             pInputText id="barCode" name="barCode" [(ngModel)]="currentProduct.barCode"
-            [ngClass]="{ 'border-red-500': isBarcodeTaken }" (input)="checkBarcodeUniqueness($event)" />
+            [ngClass]="{ 'border-red-500': isBarcodeTaken }" (input)="checkBarcodeUniqueness($event)" readonly required="true"/>
           <label for="barCode" class="font-medium text-[var(--p-text-color)]">Bar Code</label>
         </p-floatlabel>
+
+        <div class="mt-2">
+          <p-button (click)="generateRandomBarCode()" label="Show QR/BarCode" />
+        </div>
       </div>
       <div>
         <p-floatlabel variant="in">

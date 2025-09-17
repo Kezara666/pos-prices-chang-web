@@ -3,7 +3,7 @@
 <!-- Barcode Input and Scanner Toggle -->
 <div class="flex gap-2">
   <p-floatlabel variant="in">
-    <input #barCodeInput (input)="filterProductsByBarCodeOrQR(barCodeInput.value)"
+    <input #barCodeInput (keydown.enter)="filterProductsByBarCodeOrQR(barCodeInput.value)"
       class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
       pInputText id="barCode" name="barCode" [(ngModel)]="scannedCode" />
     <label for="barCode" class="font-medium text-gray-700">Bar Code</label>
@@ -69,7 +69,7 @@
           <td>
             <input type="number" pInputText [(ngModel)]="order.pendingdAmount" min="0" />
           </td>
-          <td>{{ order.qty * order.qntPrice | number: '1.2-2' }}</td>
+          <td>{{ order.qntPrice | number: '1.2-2' }}</td>
           <td>
             <button pButton type="button" icon="pi pi-times" (click)="removeItem(order)"
               class="p-button-danger"></button>
@@ -87,7 +87,7 @@
   </div>
 </div>
 
-<p-dialog header="Invoice  --kiosk-printing" [(visible)]="visible" [style]="{ width: '25rem' }" [maximizable]="true">
+<p-dialog header="Invoice  --kiosk-printing" [(visible)]="visible" [style]="{ width: '30rem' }" [maximizable]="true">
   <app-invoice></app-invoice>
 </p-dialog>
 

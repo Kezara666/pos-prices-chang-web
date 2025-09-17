@@ -22,6 +22,7 @@ import { IUser } from '../../../models/user/create-user.dto';
 })
 export class ProductComponent implements OnInit {
 
+
   products: Product[] = [];
   qtyTypes: QtyType[] = [];
   productPrices: ProductPrice[] = [];
@@ -205,6 +206,7 @@ export class ProductComponent implements OnInit {
     if (!this.currentProduct.category) missingFields.push('Category');
     if (!this.currentProduct.supplierId) missingFields.push('Supplier');
     if (!this.currentProduct.qtyTypeId) missingFields.push('Quantity Type');
+    if (!this.currentProduct.barCode) missingFields.push('Must Generate BarCode');
     if (missingFields.length > 0) {
       const message = `Please fill the following fields: ${missingFields.join(', ')}`;
       this.showToast(message, 'error', 10000);
@@ -389,19 +391,68 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  //#region Dowenload Barcode
+  //#region Gen Barcode
+  generateRandomBarCode() {
+    if(this.currentProduct.barCode && this.currentProduct.barCode.trim() !== '') {
+      this.showToast('Barcode already exists, cannot generate a new one.', 'error');
+      return;
+    }
+    else {
+      const randomCode = Math.floor(100000000 + Math.random() * 900000000).toString();
+      this.currentProduct.barCode = randomCode;
+      this.isBarcodeTaken = false;
+    }
+  }
+
   downloadBarcode() {
     const svg = this.barcodeElement.nativeElement.querySelector('svg');
-    if (!svg) return;
+    if (!svg) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Barcode SVG not found' });
+      return;
+    }
+
+    // Set desired dimensions for thermal printer (e.g., 300px width, 100px height for 80mm printer)
+    const targetWidth = 300; // Fits within 80mm (~576px at 203 DPI)
+    const targetHeight = 100; // Standard height for scannable barcode
 
     const serializer = new XMLSerializer();
     const source = serializer.serializeToString(svg);
 
-    const blob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
+    // Create image from SVG
+    const img = new Image();
+    const svgBlob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(svgBlob);
 
-    this.triggerDownload(url, `${this.currentProduct.name}.barcode.svg`);
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Canvas context not available' });
+        return;
+      }
 
+      // Draw the image with specified dimensions
+      ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+      URL.revokeObjectURL(url);
+
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to generate barcode image' });
+          return;
+        }
+        const cleanName = this.getCleanFileName(this.currentProduct.name);
+        this.triggerDownload(URL.createObjectURL(blob), `${cleanName}.barcode.png`);
+      }, 'image/png');
+    };
+
+    img.src = url;
+  }
+
+  private getCleanFileName(name: string): string {
+    const justFile = name.split(/[/\\]/).pop() || name;
+    return justFile.replace(/\.[^/.]+$/, '');
   }
 
   // QRCode download
