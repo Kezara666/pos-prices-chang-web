@@ -154,11 +154,38 @@
       </div>
       <div>
         <p-floatlabel variant="in">
-          <input
-            class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
-            pInputText id="category" name="category" [(ngModel)]="currentProduct.category" required />
+          <div class="relative">
+            <input
+              class="w-full p-3 pr-12 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+              pInputText id="category" name="category" [(ngModel)]="currentProduct.category" required />
+            <p-button 
+              type="button" 
+              icon="pi pi-chevron-down" 
+              class="absolute right-1 top-1/2 transform -translate-y-1/2 p-button-text p-button-sm"
+              (click)="categoryDropdown.toggle($event)"
+              pTooltip="Select from existing categories"
+              tooltipPosition="top">
+            </p-button>
+          </div>
           <label for="category" class="font-medium text-[var(--p-text-color)]">Category</label>
         </p-floatlabel>
+        
+        <!-- Category Dropdown -->
+        <p-overlayPanel #categoryDropdown [style]="{ width: '300px' }">
+          <div class="p-3">
+            <h4 class="mb-3 font-semibold text-[var(--p-text-color)]">Select Category</h4>
+            <div class="max-h-48 overflow-y-auto">
+              <div *ngIf="categories.length === 0" class="text-gray-500 text-sm">
+                No categories available. Type a new category in the input field.
+              </div>
+              <div *ngFor="let category of categories" 
+                   class="p-2 hover:bg-[var(--p-primary-50)] cursor-pointer rounded transition-colors duration-200"
+                   (click)="onCategoryDropdownSelect(category); categoryDropdown.hide()">
+                <span class="text-[var(--p-text-color)]">{{ category }}</span>
+              </div>
+            </div>
+          </div>
+        </p-overlayPanel>
       </div>
       <div>
         <p-floatlabel variant="in">

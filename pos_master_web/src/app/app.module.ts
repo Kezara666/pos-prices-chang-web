@@ -16,6 +16,7 @@ import { Dialog } from 'primeng/dialog';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { FloatLabel } from 'primeng/floatlabel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { QtyTypesComponent } from './inventory/qty-types/qty-types.component';
 import { QtyComponent } from './inventory/qty/qty.component';
 import { Select } from 'primeng/select';
@@ -96,6 +97,7 @@ import { LoginComponent } from './login/login.component';
     DatePickerModule,
     FloatLabel,
     AutoCompleteModule,
+    OverlayPanelModule,
     IftaLabelModule,
     AutoCompleteModule,
     SelectButtonModule, // Add this line

@@ -28,6 +28,7 @@ export class ProductComponent implements OnInit {
   productPrices: ProductPrice[] = [];
   productRelatedPrices: ProductPrice[] = [];
   suppliers: ISupplierDto[] = [];
+  categories: string[] = [];
   displayModal = false;
   isEditMode = false;
   currentProduct: Product = this.getEmptyProduct();
@@ -76,6 +77,21 @@ export class ProductComponent implements OnInit {
     this.loadQtyTypes();
     this.loadSuppliers();
     this.loadProductsPrices();
+  }
+
+  //#region Load Categories
+  loadCategories() {
+    // Extract unique categories from existing products
+    const uniqueCategories = [...new Set(this.products
+      .map(product => product.category)
+      .filter(category => category && category.trim() !== '')
+    )];
+    this.categories = uniqueCategories.sort();
+  }
+
+  //#region Handle Category Selection from Dropdown
+  onCategoryDropdownSelect(selectedCategory: string) {
+    this.currentProduct.category = selectedCategory;
   }
 
   //#region Load Product Price
@@ -164,6 +180,7 @@ export class ProductComponent implements OnInit {
       next: (data) => {
         this.products = data
         console.log(data)
+        this.loadCategories(); // Load categories after products are loaded
         this.showToast(`Products loaded successfully ${this.user?.name}`, 'success',);
       },
       error: () => this.showToast('Failed to load products', 'error')
@@ -269,6 +286,7 @@ export class ProductComponent implements OnInit {
       next: (response) => {
         this.showToast('Product and its dependencies added successfully', 'success');
         this.loadAllEntities()
+        this.loadCategories(); // Refresh categories after adding new product
         this.displayModal = false;
         this.emptyProductPrice(); // Reset form state
         this.currentProduct = this.getEmptyProduct(); // Reset product form
