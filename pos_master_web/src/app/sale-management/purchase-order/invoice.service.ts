@@ -16,8 +16,9 @@ export class InvoiceService {
   }
 
   createInvoice(invoice: InvoiceDto) {
-    this.invoices.push(invoice);
+    
     return this.http.post(`${this.apiUrl}`, invoice);
+    
   }
 
   getInvoices() {

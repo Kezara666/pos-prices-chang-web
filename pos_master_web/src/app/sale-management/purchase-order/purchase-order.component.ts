@@ -203,9 +203,12 @@ export class PurchaseOrderComponent implements OnInit {
     }
 
     this.invoiceService.createInvoice(this.puchaseOrderService.order).subscribe({
-      next: () => {
+      next: (response: any) => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order saved successfully!' });
-        this.puchaseOrderService.clearOrder();
+        console.log(response);
+        this.puchaseOrderService.order.id = response.id;
+        //this.puchaseOrderService.order = response;
+        //this.puchaseOrderService.clearOrder();
         //call localhost bill print service
       }
     });

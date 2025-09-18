@@ -264,6 +264,8 @@ export class ProductComponent implements OnInit {
       shopId: this.loginService.shopId,
       createdById: this.loginService.userId,
       updatedById: this.loginService.userId,
+      barCode: this.currentProduct.barCode || '',
+      qrCode: this.currentProduct.qrCode || '',
       // Include price data
       productPrice: {
         wholeSalePrice: this.currentProductPrice.wholeSalePrice,
