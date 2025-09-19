@@ -225,7 +225,13 @@ export class PurchaseOrderComponent implements OnInit {
         //this.puchaseOrderService.order = response;
         //this.puchaseOrderService.clearOrder();
         //call localhost bill print service
-        this.printInvoice();
+        if(response.id){
+          this.printInvoice()
+        }
+        else{
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to print order' });
+          this.printInvoice()
+        }
       }
     });
   }
