@@ -80,7 +80,6 @@ export class InvoiceComponent implements OnInit {
               width: ${bodyWidth};
               height: ${bodyHeight};
               margin: 0;
-              padding: ${padding};
               font-family: Arial, sans-serif;
               font-size: ${fontSize};
               line-height: 1.2;
@@ -135,13 +134,11 @@ export class InvoiceComponent implements OnInit {
                 width: 150px;
                 height: 150px;
                 display: block;
-                margin: 0 auto 10px auto;
                 object-fit: contain;
               }
 
             @media print {
               body {
-                margin: 20px;
                 width: ${bodyWidth};
                 height: ${bodyHeight};
                 padding: ${padding};
