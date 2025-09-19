@@ -244,6 +244,7 @@ export class PurchaseOrderComponent implements OnInit {
    */
   cancelOrder() {
     this.puchaseOrderService.clearOrder();
+    this.visible = false;
     this.messageService.add({ severity: 'info', summary: 'Order Cleared', detail: 'Order has been cancelled.' });
     this.changeDetectorRef.markForCheck(); // Ensure the view updates
   }
