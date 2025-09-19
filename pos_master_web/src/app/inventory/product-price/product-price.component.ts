@@ -39,6 +39,19 @@ export class ProductPriceComponent implements OnInit {
     }
     //#endregion
 
+    //#region Get Product By Bar Code
+
+    getProductByBarCode(event: any) {
+        const barcode = event.target.value;
+        const product = this.products.find(product => product.barCode === barcode);
+        if (product) {
+            this.currentProductPrice.productId = product.id;
+        }
+        else {
+            this.messageService.add({ severity: 'error', summary: 'Product not found' });
+        }
+    }
+
     //#region Data Loading
     loadProductPrices() {
         this.productPriceService.getAll().subscribe({

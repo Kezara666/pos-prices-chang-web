@@ -112,7 +112,16 @@ export class QtyComponent implements OnInit {
         this.displayModal = true;
     }
 
-
+    getProductByBarCode(event: any) {
+        const barcode = event.target.value;
+        const product = this.productList.find(product => product.barCode === barcode);
+        if (product) {
+            this.currentQuantity.productId = product.id;
+        }
+        else {
+            this.showToast('Product not found', 'error');
+        }
+    }
 
 
     saveQuantity() {

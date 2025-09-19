@@ -66,6 +66,13 @@
                 <div class="space-y-5">
                     <!-- Product Select -->
                     <div>
+                        <label for="qty" class="block mb-2 font-medium text-gray-700">Bar Code</label>
+                        <input pInputText type="number" id="barcode" name="barcode" placeholder="Enter BarCode ID"
+                            class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
+                            (keyup)="getProductByBarCode($event)" required />
+                    </div>
+                    
+                    <div>
                         <label for="product" class="block mb-2 font-medium text-gray-700">Product</label>
                         <p-select [options]="products" optionLabel="name" optionValue="id" placeholder="Select Product"
                             [(ngModel)]="currentProductPrice.productId" name="product"
