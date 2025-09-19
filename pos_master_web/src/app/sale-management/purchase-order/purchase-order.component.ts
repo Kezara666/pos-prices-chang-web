@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { InvoiceComponent } from '../invoice/invoice.component';
 import { Product } from '../../inventory/product/product.model';
 import { MessageService } from 'primeng/api';
 import { ProductService } from '../../inventory/product/product.service';
@@ -17,8 +18,7 @@ import { LoginService } from '../../login/login.service';
   providers: [MessageService]
 })
 export class PurchaseOrderComponent implements OnInit {
-
-
+  @ViewChild('invoiceComponent') invoiceComponent!: InvoiceComponent;
 
   constructor(private messageService: MessageService,
     private productService: ProductService,
@@ -43,7 +43,7 @@ export class PurchaseOrderComponent implements OnInit {
   multipleMatches: Product[] = []; // Add this line
   displayProductSelection: boolean = false; // Add this line
 
-
+  customerGivingPrice = 0;
 
   //#region Quantity Management
   /**
@@ -88,6 +88,21 @@ export class PurchaseOrderComponent implements OnInit {
    */
   showDialog() {
     this.visible = true;
+  }
+
+  /**
+   * Calls the print method from the invoice component.
+   */
+  printInvoice() {
+    if (this.invoiceComponent) {
+      this.invoiceComponent.print();
+    } else {
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: 'Error', 
+        detail: 'Invoice component not available' 
+      });
+    }
   }
   //#endregion Dialog Management
 
@@ -210,6 +225,7 @@ export class PurchaseOrderComponent implements OnInit {
         //this.puchaseOrderService.order = response;
         //this.puchaseOrderService.clearOrder();
         //call localhost bill print service
+        this.printInvoice();
       }
     });
   }

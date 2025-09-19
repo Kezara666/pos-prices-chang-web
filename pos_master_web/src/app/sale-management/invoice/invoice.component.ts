@@ -127,6 +127,7 @@ export class InvoiceComponent implements OnInit {
 
             @media print {
               body {
+                margin: 20px;
                 width: ${bodyWidth};
                 height: ${bodyHeight};
                 padding: ${padding};

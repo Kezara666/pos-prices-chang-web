@@ -80,21 +80,53 @@
     </p-table>
   </div>
 
+  <div class="flex items-center justify-between p-4 mt-4 rounded-lg shadow-sm">
+    <span class="text-lg font-medium text-gray-100">Discount:</span>
+    <input type="number" pInputText [(ngModel)]="puchaseOrderService.order.discount" 
+           min="0" step="0.01" (input)="calculateTotal()" 
+           class="p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+           placeholder="0.00" />
+  </div>
+
+  <!-- Total Section -->
+  <div class="flex items-center justify-between p-4  rounded-lg shadow-sm">
+    <span class="text-lg font-medium text-gray-100">Total Amount:</span>
+    <span class="text-lg font-bold text-gray-100">{{ puchaseOrderService.order.total | number: '1.2-2' }}</span>
+  </div>
+
   <!-- Total Section -->
   <div class="flex items-center justify-between p-4 mt-4 bg-gray-100 rounded-lg shadow-sm">
-    <span class="text-lg font-medium text-gray-700">Total Amount:</span>
-    <span class="text-lg font-bold text-gray-900">{{ puchaseOrderService.order.total | number: '1.2-2' }}</span>
+    <span class="text-lg font-medium text-gray-700">Total Net Amount:</span>
+    <span class="text-lg font-bold text-gray-900">{{ puchaseOrderService.order.netTotal | number: '1.2-2' }}</span>
   </div>
+
+  <div class="flex items-center justify-between p-4 mt-4 rounded-lg shadow-sm">
+    <span class="text-lg font-medium text-gray-100">Balance (ඉතිරි මුද​ල) : {{(customerGivingPrice - puchaseOrderService.order.netTotal) | number: '1.2-2'}}</span>
+    <p-floatlabel variant="in">
+      <input type="number" pInputText [(ngModel)]="customerGivingPrice" 
+           min="0" step="0.01" 
+           class="p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+           placeholder="Enter Customer Giving Price" />
+      <label for="barCode" class="font-medium text-gray-700">Customer Giving Price</label>
+    </p-floatlabel>
+    
+    
+  </div>
+
+  
+
 </div>
 
 <p-dialog header="Invoice  --kiosk-printing" [(visible)]="visible" [style]="{ width: '30rem' }" [maximizable]="true">
-  <app-invoice></app-invoice>
+  <app-invoice #invoiceComponent></app-invoice>
 </p-dialog>
 
 <!-- Action Buttons -->
 <div class="flex flex-wrap items-center justify-start gap-3 mt-6">
   <button pButton type="button" label="Show Bill" icon="pi pi-bill" (click)="showDialog()"
     class="p-button-secondary"></button>
+  <button pButton type="button" label="Print Invoice" icon="pi pi-print" (click)="printInvoice()"
+    class="p-button-warning"></button>
   <button pButton type="button" #saveOrderButton label="Save Order" icon="pi pi-check" (click)="saveOrder()"
     class="p-button-success"></button>
   <button pButton type="button" label="Save as Draft" icon="pi pi-save" (click)="saveDraft()"
