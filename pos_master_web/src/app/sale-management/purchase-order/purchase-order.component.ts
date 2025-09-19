@@ -230,7 +230,6 @@ export class PurchaseOrderComponent implements OnInit {
         }
         else{
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to print order' });
-          this.printInvoice()
         }
       }
     });
