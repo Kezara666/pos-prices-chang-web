@@ -118,7 +118,7 @@
 </div>
 
 <p-dialog header="Invoice  --kiosk-printing" [(visible)]="visible" [style]="{ width: '30rem' }" [maximizable]="true">
-  <app-invoice #invoiceComponent></app-invoice>
+  <app-invoice #invoiceComponent (notify)="cancelOrder()"></app-invoice>
 </p-dialog>
 
 <!-- Action Buttons -->

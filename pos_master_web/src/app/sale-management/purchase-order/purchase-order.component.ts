@@ -51,7 +51,7 @@ export class PurchaseOrderComponent implements OnInit {
    * @param event The item sell DTO.
    */
   onQtyChange(event: ItemSellDto) {
-    if (event.product){
+    if (event.product) {
       this.checkIsAvaibleProductAndSetMaxiumCanGet(event, event.qty)
       this.calculateEachItemTotal();
       this.calculateTotal();
@@ -97,10 +97,10 @@ export class PurchaseOrderComponent implements OnInit {
     if (this.invoiceComponent) {
       this.invoiceComponent.print();
     } else {
-      this.messageService.add({ 
-        severity: 'error', 
-        summary: 'Error', 
-        detail: 'Invoice component not available' 
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Invoice component not available'
       });
     }
   }
@@ -207,10 +207,11 @@ export class PurchaseOrderComponent implements OnInit {
   }
   //#endregion Product Filtering
 
-  //#region Order Management
   /**
    * Saves the order.
    */
+
+  //#region Save Order
   saveOrder() {
     if (this.puchaseOrderService.order.itemsSelled.length === 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'No items in order' });
@@ -225,13 +226,15 @@ export class PurchaseOrderComponent implements OnInit {
         //this.puchaseOrderService.order = response;
         //this.puchaseOrderService.clearOrder();
         //call localhost bill print service
-        if(response.id){
-          this.printInvoice()
+        console.log(response.id);
+        if (response.id > 0) {
+          this.showDialog();
         }
-        else{
+        else {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to print order' });
         }
       }
+      
     });
   }
   //#region Order Clear
@@ -241,7 +244,7 @@ export class PurchaseOrderComponent implements OnInit {
    */
   cancelOrder() {
     this.puchaseOrderService.clearOrder();
-    this.messageService.add({ severity: 'info', summary: 'Order Cancelled', detail: 'Order has been cancelled.' });
+    this.messageService.add({ severity: 'info', summary: 'Order Cleared', detail: 'Order has been cancelled.' });
     this.changeDetectorRef.markForCheck(); // Ensure the view updates
   }
 

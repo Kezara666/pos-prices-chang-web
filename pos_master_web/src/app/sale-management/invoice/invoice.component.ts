@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { ProductService } from '../../inventory/product/product.service';
 import { InvoiceService } from '../purchase-order/invoice.service';
@@ -12,6 +12,7 @@ import { LoginService } from '../../login/login.service';
 })
 export class InvoiceComponent implements OnInit {
   @ViewChild('receiptContent') receiptContent!: ElementRef;
+  @Output() notify = new EventEmitter();
 
   paperSizes = [
     { label: '80mm (Receipt)', value: '80mm' },
@@ -37,6 +38,12 @@ export class InvoiceComponent implements OnInit {
   today = new Date();
   nameOfShop = '';
   imageUrl = '';
+
+  //#region Notify Parent printed 
+
+  notifyParent() {
+    this.notify.emit();
+  }
 
   print(): void {
     const printContents = this.receiptContent.nativeElement.innerHTML;
@@ -180,5 +187,6 @@ export class InvoiceComponent implements OnInit {
     } else {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to open print window' });
     }
+    this.notifyParent();
   }
 }
