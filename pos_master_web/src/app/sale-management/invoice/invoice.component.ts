@@ -53,7 +53,7 @@ export class InvoiceComponent implements OnInit {
       const pageSize = this.selectedPaperSize === 'A4' ? 'A4' : '80mm auto';
       const bodyWidth = this.selectedPaperSize === 'A4' ? '210mm' : '80mm';
       const maxWidth = this.selectedPaperSize === 'A4' ? '190mm' : '80mm';
-      const padding = this.selectedPaperSize === 'A4' ? '10mm' : '2mm';
+      const padding = this.selectedPaperSize === 'A4' ? '10mm' : '0mm';
       const fontSize = this.selectedPaperSize === 'A4' ? '14px' : '16px';
       const tableFontSize = this.selectedPaperSize === 'A4' ? '13px' : '14px';
       const tablePadding = this.selectedPaperSize === 'A4' ? '2mm' : '1mm';
