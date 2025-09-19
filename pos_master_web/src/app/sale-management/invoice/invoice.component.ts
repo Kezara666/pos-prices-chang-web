@@ -131,6 +131,13 @@ export class InvoiceComponent implements OnInit {
             .mt-3.text-center {
               ${footerStyle}
             }
+            .logo {
+                width: 150px;
+                height: 150px;
+                display: block;
+                margin: 0 auto 10px auto;
+                object-fit: contain;
+              }
 
             @media print {
               body {
