@@ -69,6 +69,7 @@ export class PurchaseOrderComponent implements OnInit {
     return {
       productId: this.selectedProduct!.id,
       productPriceId: this.selectedProduct!.productPrice?.id ?? 0,
+      productPrice: this.selectedProduct!.productPrice,
       product: this.selectedProduct,
       qtyTypeId: 1,
       qty: this.quantity,

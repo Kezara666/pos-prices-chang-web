@@ -45,6 +45,31 @@ export class InvoiceComponent implements OnInit {
     this.notify.emit();
   }
 
+  // Calculate user bonus price (wholesale total - primary total)
+  calculateUserBonusPrice(): number {
+    let wholesaleTotal = 0;
+    let primaryTotal = 0;
+
+    this.puchaseOrderService.order.itemsSelled.forEach(item => {
+      if (item.productPrice) {
+        wholesaleTotal += item.productPrice.wholeSalePrice * item.qty;
+        primaryTotal += item.productPrice.primarySalePrice * item.qty;
+      }
+    });
+
+    return wholesaleTotal - primaryTotal + this.puchaseOrderService.order.discount;
+  }
+
+  calculateWholesaleTotal(): number {
+    let wholesaleTotal = 0;
+    this.puchaseOrderService.order.itemsSelled.forEach(item => {
+      if (item.productPrice) {
+        wholesaleTotal += item.productPrice.wholeSalePrice * item.qty;
+      }
+    });
+    return wholesaleTotal;
+  }
+
   print(): void {
     const printContents = this.receiptContent.nativeElement.innerHTML;
     const printWindow = window.open('', '_blank', 'width=600,height=400');
