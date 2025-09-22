@@ -44,6 +44,7 @@ export class PurchaseOrderComponent implements OnInit {
   displayProductSelection: boolean = false; // Add this line
 
   customerGivingPrice = 0;
+  customerAllBounsePrice = 0;
 
   //#region Quantity Management
   /**
@@ -342,7 +343,7 @@ export class PurchaseOrderComponent implements OnInit {
   calculateTotal() {
     let total = 0;
     this.puchaseOrderService.order.itemsSelled.forEach(item => {
-      total += item.qntPrice
+      total += item.qntPrice;   
     });
     console.log('Total:', total);
     this.puchaseOrderService.order.total = total;

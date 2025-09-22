@@ -47,12 +47,13 @@
       [rows]="10">
       <ng-template pTemplate="header">
         <tr>
-          <th>Product ID</th>
-          <th>Product Price</th>
+          <th>Product Name</th>
+          <th>Primary Price</th>
+          <th>Product Our Price</th>
           <th>Qty Type</th>
           <th>Quantity</th>
           <th>Unit Price</th>
-          <th>Pending Price</th>
+          
           <th>Total</th>
           <th>Actions</th>
         </tr>
@@ -60,15 +61,14 @@
       <ng-template pTemplate="body" let-order let-i="rowIndex">
         <tr>
           <td>{{ order.product.name }}</td>
+          <td>{{ order.product.productPrice.wholeSalePrice }}</td>
           <td>{{ order.product.currentPrice }}</td>
           <td>{{ order.product.qtyType.name }}</td>
           <td>
             <input type="number" pInputText [(ngModel)]="order.qty" min="0" (input)="onQtyChange(order)" />
           </td>
           <td>{{ order.qntPrice }}</td>
-          <td>
-            <input type="number" pInputText [(ngModel)]="order.pendingdAmount" min="0" />
-          </td>
+          
           <td>{{ order.qntPrice | number: '1.2-2' }}</td>
           <td>
             <button pButton type="button" icon="pi pi-times" (click)="removeItem(order)"
@@ -92,6 +92,11 @@
   <div class="flex items-center justify-between p-4  rounded-lg shadow-sm">
     <span class="text-lg font-medium text-gray-100">Total Amount:</span>
     <span class="text-lg font-bold text-gray-100">{{ puchaseOrderService.order.total | number: '1.2-2' }}</span>
+  </div>
+
+  <div class="flex items-center justify-between p-4  rounded-lg shadow-sm">
+    <span class="text-lg font-medium text-gray-100">Total User Bounse Price:</span>
+    <span class="text-lg font-bold text-gray-100">{{ customerAllBounsePrice | number: '1.2-2' }}</span>
   </div>
 
   <!-- Total Section -->
