@@ -25,7 +25,7 @@ export class InvoiceComponent implements OnInit {
     private productService: ProductService,
     private invoiceService: InvoiceService,
     public puchaseOrderService: PurchaseOrderService,
-    private loginService: LoginService
+    public loginService: LoginService
   ) { }
 
   ngOnInit(): void {
