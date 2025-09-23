@@ -83,11 +83,11 @@
           <span class="font-medium">Category:</span>
           <span class="ml-1">{{ product.category || 'N/A' }}</span>
         </div>
-        <div class="flex items-center">
+        <!-- <div class="flex items-center">
           <i class="pi pi-sitemap text-[var(--p-primary-600)] mr-2"></i>
           <span class="font-medium">Subcategory:</span>
           <span class="ml-1">{{ product.subcategory || 'N/A' }}</span>
-        </div>
+        </div> -->
         <div class="flex items-center">
           <i class="pi pi-shield text-[var(--p-primary-600)] mr-2"></i>
           <span class="font-medium">Warranty:</span>
@@ -116,6 +116,13 @@
   <form #productForm="ngForm" class="">
     <div class="space-y-5">
       <div>
+        <!-- #region Price Related -->
+        <div class="py-2">
+          <label for="supplierId" class="block mb-2 font-medium text-[var(--p-text-color)]">Supplier</label>
+          <p-select [options]="suppliers" optionLabel="name" placeholder="Select Supplier"
+            [(ngModel)]="currentProduct.supplierId" name="supplierId" optionValue="id"
+            class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200" />
+        </div>
         <p-floatlabel variant="in">
           <input
             class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
@@ -123,20 +130,21 @@
           <label for="name" class="font-medium text-[var(--p-text-color)]">Name</label>
         </p-floatlabel>
       </div>
-      <div>
+      <!-- <div>
         <p-floatlabel variant="in">
           <input
             class="w-full p-3 rounded-lg border border-gray-300 focus ring-2 focus:ring-[var(--p-primary-200)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
             pInputText id="description" name="description" [(ngModel)]="currentProduct.description" />
           <label for="description" class="font-medium text-[var(--p-text-color)]">Description</label>
         </p-floatlabel>
-      </div>
+      </div> -->
       <div class="grid">
         <p-floatlabel variant="in">
           <input
             class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-200)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
             pInputText id="barCode" name="barCode" [(ngModel)]="currentProduct.barCode"
-            [ngClass]="{ 'border-red-500': isBarcodeTaken }" (input)="checkBarcodeUniqueness($event)" readonly required="true"/>
+            [ngClass]="{ 'border-red-500': isBarcodeTaken }" (input)="checkBarcodeUniqueness($event)" readonly
+            required="true" />
           <label for="barCode" class="font-medium text-[var(--p-text-color)]">Bar Code</label>
         </p-floatlabel>
 
@@ -158,18 +166,15 @@
             <input
               class="w-full p-3 pr-12 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
               pInputText id="category" name="category" [(ngModel)]="currentProduct.category" required />
-            <p-button 
-              type="button" 
-              icon="pi pi-chevron-down" 
+            <p-button type="button" icon="pi pi-chevron-down"
               class="absolute right-1 top-1/2 transform -translate-y-1/2 p-button-text p-button-sm"
-              (click)="categoryDropdown.toggle($event)"
-              pTooltip="Select from existing categories"
+              (click)="categoryDropdown.toggle($event)" pTooltip="Select from existing categories"
               tooltipPosition="top">
             </p-button>
           </div>
           <label for="category" class="font-medium text-[var(--p-text-color)]">Category</label>
         </p-floatlabel>
-        
+
         <!-- Category Dropdown -->
         <p-overlayPanel #categoryDropdown [style]="{ width: '300px' }">
           <div class="p-3">
@@ -178,9 +183,9 @@
               <div *ngIf="categories.length === 0" class="text-gray-500 text-sm">
                 No categories available. Type a new category in the input field.
               </div>
-              <div *ngFor="let category of categories" 
-                   class="p-2 hover:bg-[var(--p-primary-50)] cursor-pointer rounded transition-colors duration-200"
-                   (click)="onCategoryDropdownSelect(category); categoryDropdown.hide()">
+              <div *ngFor="let category of categories"
+                class="p-2 hover:bg-[var(--p-primary-50)] cursor-pointer rounded transition-colors duration-200"
+                (click)="onCategoryDropdownSelect(category); categoryDropdown.hide()">
                 <span class="text-[var(--p-text-color)]">{{ category }}</span>
               </div>
             </div>
@@ -196,12 +201,12 @@
         </p-floatlabel>
       </div>
 
-      <p-floatlabel variant="in">
+      <!-- <p-floatlabel variant="in">
         <input
           class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
           pInputText id="warranty" name="warranty" type="number" [(ngModel)]="currentProduct.warranty" />
         <label for="warranty" class="font-medium text-[var(--p-text-color)]">Warranty (Days)</label>
-      </p-floatlabel>
+      </p-floatlabel> -->
 
       <!-- #region Price Related -->
       <div *ngIf="!isEditMode" class="space-y-5">
@@ -213,7 +218,7 @@
               class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
               pInputText id="broughtPrice" name="broughtPrice" type="number"
               [(ngModel)]="currentProductPrice.broughtPrice" autocomplete="off" required />
-            <label for="broughtPrice" class="font-medium text-[var(--p-text-color)]">Brought Price</label>
+            <label for="broughtPrice" class="font-medium text-[var(--p-text-color)]">ගැනුම් මි​ල</label>
           </p-floatlabel>
         </div>
         <!-- wholeSalePrice -->
@@ -223,7 +228,7 @@
               class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
               pInputText id="wholeSalePrice" name="wholeSalePrice" type="number"
               [(ngModel)]="currentProductPrice.wholeSalePrice" autocomplete="off" required />
-            <label for="wholeSalePrice" class="font-medium text-[var(--p-text-color)]">Primary Sale Price</label>
+            <label for="wholeSalePrice" class="font-medium text-[var(--p-text-color)]">වෙළඳ මිල</label>
           </p-floatlabel>
         </div>
 
@@ -234,7 +239,7 @@
               class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
               pInputText id="primarySalePrice" name="primarySalePrice" type="number"
               [(ngModel)]="currentProductPrice.primarySalePrice" autocomplete="off" required />
-            <label for="primarySalePrice" class="font-medium text-[var(--p-text-color)]">Our Primary Sale Price</label>
+            <label for="primarySalePrice" class="font-medium text-[var(--p-text-color)]">අපේ මි​ල</label>
           </p-floatlabel>
         </div>
         <div>
@@ -265,13 +270,7 @@
       </div>
 
 
-      <!-- #region Price Related -->
-      <div>
-        <label for="supplierId" class="block mb-2 font-medium text-[var(--p-text-color)]">Supplier</label>
-        <p-select [options]="suppliers" optionLabel="name" placeholder="Select Supplier"
-          [(ngModel)]="currentProduct.supplierId" name="supplierId" optionValue="id"
-          class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200" />
-      </div>
+
       <!-- #region QTy And QTYType Start-->
       <div *ngIf="!isEditMode">
         <div>
@@ -281,9 +280,9 @@
             class="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200" />
         </div>
 
-        <div>
-          <label for="quantity" class="block mb-2 font-medium text-[var(--p-text-color)]">Quantity</label>
-          <input pInputText type="number" id="quantity" name="quantity" placeholder="Enter Quantity"
+        <div class="py-2">
+          <label for="quantity" class="block mb-2 font-medium text-[var(--p-text-color)]">ප්‍රමාණ​ය</label>
+          <input pInputText type="number" id="quantity" name="quantity" placeholder="ප්‍රමාණ​ය"
             [(ngModel)]="currentProduct.qty" required
             class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200" />
         </div>

@@ -8,18 +8,18 @@
       pInputText id="barCode" name="barCode" [(ngModel)]="scannedCode" />
     <label for="barCode" class="font-medium text-gray-700">Bar Code</label>
   </p-floatlabel>
-  <button pButton type="button" label="{{ showScanner ? 'Hide Scanner' : 'Scan Barcode/QR' }}" icon="pi pi-camera"
-    (click)="toggleScanner()" class="p-button-outlined"></button>
+  <!-- <button pButton type="button" label="{{ showScanner ? 'Hide Scanner' : 'Scan Barcode/QR' }}" icon="pi pi-camera"
+    (click)="toggleScanner()" class="p-button-outlined"></button> -->
 </div>
 
 <!-- Barcode/QR Scanner -->
-<div *ngIf="showScanner" class="mt-2">
+<!-- <div *ngIf="1>2" class="mt-2">
   <zxing-scanner (scanSuccess)="onScanSuccess($event)" [device]="selectedDevice"
     [videoConstraints]="{ width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 }}"
     [formats]="allowedFormats"></zxing-scanner>
   <p-dropdown [options]="availableDevices" [(ngModel)]="selectedDevice" optionLabel="label" placeholder="Select Camera"
     class="w-full mt-2" (onChange)="onDeviceChange($event)"></p-dropdown>
-</div>
+</div> -->
 
 <!-- Product Dropdown -->
 <div class="mt-2 md:col-span-3">
@@ -53,7 +53,7 @@
           <th>Qty Type</th>
           <th>Quantity</th>
           <th>Unit Price</th>
-          
+
           <th>Total</th>
           <th>Actions</th>
         </tr>
@@ -68,7 +68,7 @@
             <input type="number" pInputText [(ngModel)]="order.qty" min="0" (input)="onQtyChange(order)" />
           </td>
           <td>{{ order.qntPrice }}</td>
-          
+
           <td>{{ order.qntPrice | number: '1.2-2' }}</td>
           <td>
             <button pButton type="button" icon="pi pi-times" (click)="removeItem(order)"
@@ -82,10 +82,10 @@
 
   <div class="flex items-center justify-between p-4 mt-4 rounded-lg shadow-sm">
     <span class="text-lg font-medium text-gray-100">Discount:</span>
-    <input type="number" pInputText [(ngModel)]="puchaseOrderService.order.discount" 
-           min="0" step="0.01" (input)="calculateTotal()" 
-           class="p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-           placeholder="0.00" />
+    <input type="number" pInputText [(ngModel)]="puchaseOrderService.order.discount" min="0" step="0.01"
+      (input)="calculateTotal()"
+      class="p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      placeholder="0.00" />
   </div>
 
   <!-- Total Section -->
@@ -106,19 +106,19 @@
   </div>
 
   <div class="flex items-center justify-between p-4 mt-4 rounded-lg shadow-sm">
-    <span class="text-lg font-medium text-gray-100">Balance (ඉතිරි මුද​ල) : {{(customerGivingPrice - puchaseOrderService.order.netTotal) | number: '1.2-2'}}</span>
+    <span class="text-lg font-medium text-gray-100">Balance (ඉතිරි මුද​ල) : {{(customerGivingPrice -
+      puchaseOrderService.order.netTotal) | number: '1.2-2'}}</span>
     <p-floatlabel variant="in">
-      <input type="number" pInputText [(ngModel)]="customerGivingPrice" 
-           min="0" step="0.01" 
-           class="p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-           placeholder="Enter Customer Giving Price" />
+      <input type="number" pInputText [(ngModel)]="customerGivingPrice" min="0" step="0.01"
+        class="p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Enter Customer Giving Price" />
       <label for="barCode" class="font-medium text-gray-700">Customer Giving Price</label>
     </p-floatlabel>
-    
-    
+
+
   </div>
 
-  
+
 
 </div>
 
@@ -128,17 +128,19 @@
 
 <!-- Action Buttons -->
 <div class="flex flex-wrap items-center justify-start gap-3 mt-6">
-  <button pButton type="button" label="Show Bill" icon="pi pi-bill" (click)="showDialog()"
+  <button pButton type="button" #saveOrderButton label="Save Order" icon="pi pi-check" (click)="saveOrder()"
+    class="p-button-success"></button>
+  <button pButton type="button" label="Clear" icon="pi pi-times" (click)="cancelOrder()"
+    class="p-button-danger"></button>
+  <!-- <button pButton type="button" label="Show Bill" icon="pi pi-bill" (click)="showDialog()"
     class="p-button-secondary"></button>
   <button pButton type="button" label="Print Invoice" icon="pi pi-print" (click)="printInvoice()"
     class="p-button-warning"></button>
-  <button pButton type="button" #saveOrderButton label="Save Order" icon="pi pi-check" (click)="saveOrder()"
-    class="p-button-success"></button>
-  <button pButton type="button" label="Save as Draft" icon="pi pi-save" (click)="saveDraft()"
-    class="p-button-info"></button>
 
-  <button pButton type="button" label="Clear" icon="pi pi-times" (click)="cancelOrder()"
-    class="p-button-danger"></button>
+  <button pButton type="button" label="Save as Draft" icon="pi pi-save" (click)="saveDraft()"
+    class="p-button-info"></button> -->
+
+
 
   <button pButton type="button" label="Download Printer EXE" icon="pi pi-download" (click)="downloadExe()"
     severity="help"></button>
