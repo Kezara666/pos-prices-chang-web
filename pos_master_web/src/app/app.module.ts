@@ -46,6 +46,7 @@ import { StatManagementComponent } from './stat-management/stat-management/stat-
 import { ChartModule } from 'primeng/chart';
 import { CardModule } from 'primeng/card';
 import { LoginComponent } from './login/login.component';
+import { LoginService } from './login/login.service';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,6 @@ import { LoginComponent } from './login/login.component';
 
 
   ],
-  providers: [MessageService, ConfirmationService,LayoutService],
+  providers: [MessageService, ConfirmationService, LayoutService, LoginService],
 })
 export class AppModule { }

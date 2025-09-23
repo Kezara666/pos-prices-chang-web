@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { LoginService } from '../../../login/login.service';
+import { Router } from '@angular/router';
 import { LayoutService } from '../service/layout.service';
 
 @Component({
@@ -41,6 +43,33 @@ import { LayoutService } from '../service/layout.service';
                 <i class="pi pi-ellipsis-v"></i>
             </button>
 
+            <!-- User Profile Dropdown -->
+            <div class="relative user-menu-container">
+                <button class="layout-topbar-action" (click)="showUserMenu = !showUserMenu" title="User Menu">
+                    <i class="pi pi-user"></i>
+                    <span class="hidden sm:inline ml-2">{{ loginService.loggedUser()?.name || 'User' }}</span>
+                </button>
+                
+                <!-- User Dropdown Menu -->
+                <div *ngIf="showUserMenu" class="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                    <div class="p-3 border-b border-gray-200 dark:border-gray-700">
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ loginService.loggedUser()?.name || 'User' }}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ loginService.loggedUser()?.role || 'User' }}</p>
+                    </div>
+                    <div class="py-1">
+                        <button class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" (click)="logout()">
+                            <i class="pi pi-sign-out mr-2"></i>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Logout Button (fallback) -->
+            <button class="layout-topbar-action lg:hidden xl:hidden" (click)="logout()" title="Logout">
+                <i class="pi pi-sign-out"></i>
+            </button>
+
             <div class="layout-topbar-menu hidden lg:block">
                 <div class="layout-topbar-menu-content">
                     <button type="button" class="layout-topbar-action">
@@ -55,6 +84,10 @@ import { LayoutService } from '../service/layout.service';
                         <i class="pi pi-user"></i>
                         <span>Profile</span>
                     </button>
+                    <button type="button" class="layout-topbar-action" (click)="logout()">
+                        <i class="pi pi-sign-out"></i>
+                        <span>Logout</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -63,8 +96,13 @@ import { LayoutService } from '../service/layout.service';
 export class AppTopbar {
     items!: MenuItem[];
     showConfigurator = false;
+    showUserMenu = false;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(
+        public layoutService: LayoutService,
+        public loginService: LoginService,
+        private router: Router
+    ) { }
 
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
@@ -72,5 +110,23 @@ export class AppTopbar {
 
     onConfiguratorLeave() {
         this.showConfigurator = false; // Close configurator on mouse leave
+    }
+
+    logout() {
+        this.loginService.logout();
+        this.showUserMenu = false;
+        this.router.navigate(['/login']);
+    }
+
+    closeUserMenu() {
+        this.showUserMenu = false;
+    }
+
+    @HostListener('document:click', ['$event'])
+    onDocumentClick(event: Event) {
+        const target = event.target as HTMLElement;
+        if (!target.closest('.user-menu-container')) {
+            this.showUserMenu = false;
+        }
     }
 }
