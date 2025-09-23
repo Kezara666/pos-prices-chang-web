@@ -51,7 +51,7 @@ export class ProductComponent implements OnInit {
     private productPriceService: ProductPriceService,
     private qtyService: QtyService,
     private cd: ChangeDetectorRef,
-    private loginService: LoginService
+    public loginService: LoginService
   ) {
     this.currentProductPrice = {
       id: 0,

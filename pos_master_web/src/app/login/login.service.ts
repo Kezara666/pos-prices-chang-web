@@ -9,7 +9,7 @@ import { IUser } from "../../models/user/create-user.dto";
 })
 export class LoginService {
   private apiUrl = `${environment.backendUrl}/users/login`; // Matches provided endpoint
-  private loggedUser = signal<IUser | null>(null); // Signal to store IUser or null
+  public loggedUser = signal<IUser | null>(null); // Signal to store IUser or null
 
   constructor(private http: HttpClient) {
     // Initialize loggedUser from localStorage on service creation
