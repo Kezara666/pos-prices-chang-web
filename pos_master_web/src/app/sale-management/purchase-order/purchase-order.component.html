@@ -106,7 +106,7 @@
   </div>
 
   <div class="flex items-center justify-between p-4 mt-4 rounded-lg shadow-sm">
-    <span class="text-lg font-medium text-gray-100">Balance (ඉතිරි මුද​ල) : {{(customerGivingPrice -
+    <span class="text-lg font-medium text-gray-100">Balance(ඉතිරි මුද​ල) : {{(customerGivingPrice -
       puchaseOrderService.order.netTotal) | number: '1.2-2'}}</span>
     <p-floatlabel variant="in">
       <input type="number" pInputText [(ngModel)]="customerGivingPrice" min="0" step="0.01"

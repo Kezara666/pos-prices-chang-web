@@ -142,6 +142,8 @@ export class PurchaseOrderComponent implements OnInit {
     this.scannedCode = '';
 
   }
+
+  
   //#endregion Barcode/QR Code Filtering
 
   //#region Load Product

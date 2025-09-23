@@ -38,9 +38,9 @@
   </table>
   <hr />
   <div class="totals-right">
-    <p>සාමන්‍ය මුලු මුද​ල: {{ calculateWholesaleTotal() | number: '1.2-2' }}</p>
+    <p>සාමන්‍ය මිල: {{ calculateWholesaleTotal() | number: '1.2-2' }}</p>
     <p>වට්ට​ම්: {{ puchaseOrderService.order.discount | number: '1.2-2'}}</p>
-    <p><strong>අපේ මුලු මුද​ල: {{ puchaseOrderService.order.netTotal | number: '1.2-2' }}</strong></p>
+    <p><strong>අපේ මිල: {{ puchaseOrderService.order.netTotal | number: '1.2-2' }}</strong></p>
     <p><strong>ඔබ ලැබූ ලාබය: {{ calculateUserBonusPrice() | number: '1.2-2' }}</strong></p>
   </div>
   <div class="mt-3 text-center">
