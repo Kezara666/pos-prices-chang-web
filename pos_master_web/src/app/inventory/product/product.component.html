@@ -145,7 +145,7 @@
             <input
               class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-200)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
               pInputText id="barCode" name="barCode" [(ngModel)]="currentProduct.barCode"
-              [ngClass]="{ 'border-red-500': isBarcodeTaken }" (input)="checkBarcodeUniqueness($event)" readonly
+              [ngClass]="{ 'border-red-500': isBarcodeTaken }" (input)="checkBarcodeUniqueness($event)"
               required="true" />
             <label for="barCode" class="font-medium text-[var(--p-text-color)]">Bar Code</label>
           </p-floatlabel>
@@ -194,14 +194,14 @@
             </div>
           </p-overlayPanel>
         </div>
-        <div>
+        <!-- <div>
           <p-floatlabel variant="in">
             <input
               class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[var(--p-primary-500)] focus:border-transparent bg-white bg-opacity-80 shadow-sm transition-all duration-200"
               pInputText id="subcategory" name="subcategory" [(ngModel)]="currentProduct.subcategory" />
             <label for="subcategory" class="font-medium text-[var(--p-text-color)]">Subcategory</label>
           </p-floatlabel>
-        </div>
+        </div> -->
 
         <!-- <p-floatlabel variant="in">
         <input

@@ -11,7 +11,7 @@
   <img [src]="imageUrl" alt="Shop Logo" class="logo">
   <p class="text-center"><b>{{nameOfShop}}</b></p>
   <div class="text-center">
-    <p>haldaduwana dankotuwa</p>
+    <p>Haldaduwana Dankotuwa</p>
     <p>{{loginService.loggedUser()?.phoneNumber}}</p>
     <p>Date: {{ today | date: 'longDate'}}</p>
     <p>Time: {{ now }}</p>
@@ -38,10 +38,10 @@
   </table>
   <hr />
   <div class="totals-right">
-    <p>සාමන්‍ය මිල: {{ calculateWholesaleTotal() | number: '1.2-2' }}</p>
-    <p>වට්ට​ම්: {{ puchaseOrderService.order.discount | number: '1.2-2'}}</p>
-    <p><strong>අපේ මිල: {{ puchaseOrderService.order.netTotal | number: '1.2-2' }}</strong></p>
-    <p><strong>ඔබ ලැබූ ලාබය: {{ calculateUserBonusPrice() | number: '1.2-2' }}</strong></p>
+    <!-- <p>සාමන්‍ය මිල: {{ calculateWholesaleTotal() | number: '1.2-2' }}</p> -->
+    <!-- <p>වට්ට​ම්: {{ puchaseOrderService.order.discount | number: '1.2-2'}}</p> -->
+    <p><strong>මුළු මිල මිල: {{ puchaseOrderService.order.netTotal | number: '1.2-2' }}</strong></p>
+    <!-- <p><strong>ඔබ ලැබූ ලාබය: {{ calculateUserBonusPrice() | number: '1.2-2' }}</strong></p> -->
   </div>
   <div class="mt-3 text-center">
     <p>*** Thank You Come Agian ***</p>
